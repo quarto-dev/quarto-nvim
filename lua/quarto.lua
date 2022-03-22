@@ -29,7 +29,9 @@ end
 
 function M.setup(opts)
   opts = opts or {}
-  print("quarto-nvim set up.")
+  if opts.debug then
+    print("quarto-nvim set up.")
+  end
 end
 
 return M
