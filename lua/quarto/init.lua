@@ -28,13 +28,14 @@ function M.renderProject()
 end
 
 function M.setup()
-  vim.cmd [[
-    command! QPreviewFile lua require'quarto-nvim'.previewFile()
-    command! QPreviewProject lua require'quarto-nvim'.previewProject()
-    command! QRenderFile lua require'quarto-nvim'.renderFile()
-    command! QRenderProject lua require'quarto-nvim'.renderProject()
-  ]]
+  print("quarto-nvim set up.")
 end
 
+vim.cmd [[
+  command! QPreviewFile lua require'quarto-nvim'.previewFile()
+  command! QPreviewProject lua require'quarto-nvim'.previewProject()
+  command! QRenderFile lua require'quarto-nvim'.renderFile()
+  command! QRenderProject lua require'quarto-nvim'.renderProject()
+]]
 
 return M
