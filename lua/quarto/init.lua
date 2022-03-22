@@ -27,11 +27,14 @@ function M.renderProject()
   vim.cmd('tabedit term://' .. command)
 end
 
-vim.cmd [[
-  command! QPreviewFile lua require'quarto'.previewFile()
-  command! QPreviewProject lua require'quarto'.previewProject()
-  command! QRenderFile lua require'quarto'.renderFile()
-  command! QRenderProject lua require'quarto'.renderProject()
-]]
+function M.setup()
+  vim.cmd [[
+    command! QPreviewFile lua require'quarto'.previewFile()
+    command! QPreviewProject lua require'quarto'.previewProject()
+    command! QRenderFile lua require'quarto'.renderFile()
+    command! QRenderProject lua require'quarto'.renderProject()
+  ]]
+end
+
 
 return M
