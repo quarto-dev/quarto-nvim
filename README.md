@@ -56,3 +56,18 @@ Here are a couple of recommendations:
   - <https://github.com/saadparwaiz1/cmp_luasnip>
   - <https://github.com/rafamadriz/friendly-snippets>
 
+## Example editing experience
+
+Showing
+- autocompletion with `cmp`
+  - buffer
+  - citations!
+  - paths
+- snippets with `LuaSnip`
+- Live preview with the `QPreviewFile` function from this plugin
+
+
+https://user-images.githubusercontent.com/17450586/160104172-a35001b8-e28c-4a26-8bbd-c522560541cd.mp4
+
+
+
