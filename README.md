@@ -23,16 +23,20 @@ Plug 'jmbuhr/quarto-nvim'
 Use one of the commands:
 
 ```
-QPreviewFile
-QPreviewProject
-QRenderFile
-QRenderProject
+:lua require"quarto".quartoPreview()
 ```
 
+Or create a keybinding for it from your `init.lua`:
+
+```
+local quarto = require'quarto'
+vim.keymap.set('n', '<leader>qp', quarto.quartoPreview, {silent = true, noremap = true})
+```
+
+Then use the keyboard shortcut
 to open `quarto preview` / `render` for the current file
 or project in the active working directory
-in the neovim integrated terminal in a new tab
-(use `gt` to go back to your source tab).
+in the neovim integrated terminal in a new tab.
 
 ## Recommended Plugins
 
@@ -64,7 +68,7 @@ Showing
   - citations!
   - paths
 - snippets with `LuaSnip`
-- Live preview with the `QPreviewFile` function from this plugin
+- Live preview with the `quartoPreview` function from this plugin
 
 
 https://user-images.githubusercontent.com/17450586/160104172-a35001b8-e28c-4a26-8bbd-c522560541cd.mp4
