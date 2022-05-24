@@ -1,0 +1,23 @@
+============================================================================
+                                                                 *quarto.nvim*
+
+This plugin helps you author quarto documents.
+Learn more about quarto here: https://quarto.org/.
+
+
+                                                      *quarto.quartoPreview()*
+quartoPreview()
+
+	require'quarto'.QuartoPreview()
+
+                                                               *QuartoPreview*
+QuartoPreview
+
+  Run quarto preview on the current file or project.
+
+	:QuartoPreview
+
+
+
+
+ vim:tw=78:ts=8:ft=help:norl:
