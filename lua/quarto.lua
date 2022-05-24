@@ -1,6 +1,6 @@
 local M = {}
 local api = vim.api
-local util = require("lspconfig.util")
+local util = require"lspconfig.util"
 
 local function contains(list, x)
   for _, v in pairs(list) do
@@ -14,7 +14,8 @@ function M.quartoPreview()
   -- <https://github.com/quarto-dev/quarto-emacs/blob/main/quarto-mode.el>
 
   -- find root directory / check if it is a project
-  local buffer_path = vim.api.nvim_buf_get_name(0)
+  local buffer_path = api.nvim_buf_get_name(0)
+  print(buffer_path)
   local root_dir = util.root_pattern("_quarto.yml")(buffer_path)
   local command
   local mode
@@ -28,6 +29,10 @@ function M.quartoPreview()
 
   local quarto_extensions = { ".qmd", ".Rmd", ".ipynb", ".md" }
   local file_extension = buffer_path:match("^.+(%..+)$")
+  if mode == "file" and not file_extension then
+    vim.notify("Not in a file. exiting.")
+    return
+  end
   if mode == "file" and not contains(quarto_extensions, file_extension) then
     vim.notify("Not a quarto file, ends in " .. file_extension .. " exiting.")
     return
@@ -41,12 +46,13 @@ function M.quartoPreview()
 end
 
 
-M.test = function ()
-  vim.notify("hello")
+
+
+
+M.setup = function ()
+  api.nvim_create_user_command('QuartoPreview', require'quarto'.quartoPreview, {})
+  -- print("hi")
 end
-
-
-
 
 
 

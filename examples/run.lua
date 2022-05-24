@@ -1,12 +1,8 @@
 package.loaded['quarto'] = nil
-local quarto = require'quarto'
+local quarto = R'quarto'
 local q = require'vim.treesitter.query'
 local api = vim.api
 local bufnr = 1
-
-local function i(x)
-  print(vim.inspect(x))
-end
 
 local function lines(str)
   local result = {}
@@ -99,6 +95,5 @@ local function get_non_language_lines(bufnr, language)
 end
 
 lines = get_non_language_lines(bufnr, language)
-i(lines)
-
+P(lines)
 
