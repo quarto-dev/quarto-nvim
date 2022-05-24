@@ -41,4 +41,16 @@ function M.quartoPreview()
 end
 
 
+M.test = function ()
+  vim.notify("hello")
+end
+
+
+
+
+
+
+
+
 return M
+
