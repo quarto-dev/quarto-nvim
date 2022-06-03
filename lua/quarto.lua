@@ -9,6 +9,24 @@ local function contains(list, x)
   return false
 end
 
+
+-- from emacs:
+-- quarto-preview resets preview
+-- get port from stdout
+-- get quarto-mode-preview-url from stdout
+-- does not watch inputs
+-- posts to the servers instead: l 275
+-- has a websocket back to emacs
+-- secret uuid as command in quarto,
+-- send this as GET command to quarto server to rerender
+-- it's a new one now, check quarto-cli
+-- or set the environment variable QUARTO_RENDER_TOKEN
+-- and then the server uses this
+-- param is complete path for file
+-- watch response
+-- non 200: user wants to render file in a different project
+-- kill process, start new project
+
 function M.quartoPreview()
   -- Modelled after quarto-emacs:
   -- <https://github.com/quarto-dev/quarto-emacs/blob/main/quarto-mode.el>

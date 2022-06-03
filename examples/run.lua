@@ -1,8 +1,8 @@
-package.loaded['quarto'] = nil
 local quarto = R'quarto'
-local q = require'vim.treesitter.query'
+local q = vim.treesitter.query
 local api = vim.api
-local bufnr = 1
+local bufnr = 14
+
 
 local function lines(str)
   local result = {}
@@ -51,18 +51,11 @@ end
 local language = 'python'
 local text = get_language_content(bufnr, language)
 
--- create new emtpy buffer
-local buf = api.nvim_create_buf(true, false)
--- api.nvim_buf_set_option(buf, 'bufhidden', 'wipe')
 
-for _,t in ipairs(text) do
-  -- does not write empty lines
-  api.nvim_buf_set_lines(buf, t.range[1], t.range[3], false, t.text)
-end
 
 -- TODO: it might be easier to get all the lines
 -- not belonging to the language, copying the buffer
--- and deleting those lines
+-- and replace those lines with spaces
 local function get_non_language_lines(bufnr, language)
   -- get and parse AST
   local language_tree = vim.treesitter.get_parser(bufnr, 'markdown')
@@ -96,4 +89,13 @@ end
 
 lines = get_non_language_lines(bufnr, language)
 P(lines)
+
+-- -- create new emtpy buffer
+-- local buf = api.nvim_create_buf(true, false)
+-- -- api.nvim_buf_set_option(buf, 'bufhidden', 'wipe')
+--
+-- for _,t in ipairs(text) do
+--   -- does not write empty lines
+--   api.nvim_buf_set_lines(buf, t.range[1], t.range[3], false, t.text)
+-- end
 
