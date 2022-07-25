@@ -1,4 +1,10 @@
-# quarto-nvim
+# Moved:
+
+This repo is now at <https://github.com/quarto-dev/quarto-nvim>
+
+
+
+## quarto-nvim
 
 Quarto-nvim provides tools for working on [quarto](https://quarto.org/) manuscripts in neovim.
 
