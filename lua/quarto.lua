@@ -1,6 +1,6 @@
 local M = {}
 local api = vim.api
-local util = require"lspconfig.util"
+local util = require "lspconfig.util"
 
 local function contains(list, x)
   for _, v in pairs(list) do
@@ -9,28 +9,7 @@ local function contains(list, x)
   return false
 end
 
-
--- from emacs:
--- quarto-preview resets preview
--- get port from stdout
--- get quarto-mode-preview-url from stdout
--- does not watch inputs
--- posts to the servers instead: l 275
--- has a websocket back to emacs
--- secret uuid as command in quarto,
--- send this as GET command to quarto server to rerender
--- it's a new one now, check quarto-cli
--- or set the environment variable QUARTO_RENDER_TOKEN
--- and then the server uses this
--- param is complete path for file
--- watch response
--- non 200: user wants to render file in a different project
--- kill process, start new project
-
 function M.quartoPreview()
-  -- Modelled after quarto-emacs:
-  -- <https://github.com/quarto-dev/quarto-emacs/blob/main/quarto-mode.el>
-
   -- find root directory / check if it is a project
   local buffer_path = api.nvim_buf_get_name(0)
   print(buffer_path)
@@ -63,18 +42,10 @@ function M.quartoPreview()
 
 end
 
-
-
-
-
-M.setup = function ()
-  api.nvim_create_user_command('QuartoPreview', require'quarto'.quartoPreview, {})
-  -- print("hi")
+M.setup = function()
+  api.nvim_create_user_command('QuartoPreview', require 'quarto'.quartoPreview, {})
 end
 
 
 
-
-
 return M
-
