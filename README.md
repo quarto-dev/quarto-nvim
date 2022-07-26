@@ -9,7 +9,11 @@ Install the plugin from GitHub with your favourite neovim plugin manager e.g.
 [packer.nvim](https://github.com/wbthomason/packer.nvim):
 
 ```lua
-use { 'jmbuhr/quarto-nvim' }
+use { 'jmbuhr/quarto-nvim',
+  config = function ()
+    require'quarto'.setup()
+  end
+}
 ```
 
 or [vim-plug](https://github.com/junegunn/vim-plug)
@@ -20,23 +24,20 @@ Plug 'jmbuhr/quarto-nvim'
 
 ## Usage
 
-Use one of the commands:
+The setup function creates a user command
 
 ```vim
-:lua require"quarto".quartoPreview()
+QuartoPreview
 ```
 
-Or create a keybinding for it from your `init.lua`:
+You can also access it from lua, e.g. to create a keybinding:
 
 ```lua
 local quarto = require'quarto'
 vim.keymap.set('n', '<leader>qp', quarto.quartoPreview, {silent = true, noremap = true})
 ```
 
-Then use the keyboard shortcut
-to open `quarto preview` / `render` for the current file
-or project in the active working directory
-in the neovim integrated terminal in a new tab.
+Then use the keyboard shortcut to open `quarto preview` for the current file or project in the active working directory in the neovim integrated terminal in a new tab.
 
 ## Recommended Plugins
 
