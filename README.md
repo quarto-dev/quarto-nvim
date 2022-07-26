@@ -9,7 +9,7 @@ Install the plugin from GitHub with your favourite neovim plugin manager e.g.
 [packer.nvim](https://github.com/wbthomason/packer.nvim):
 
 ```lua
-use { 'jmbuhr/quarto-nvim',
+use { 'quarto-dev/quarto-nvim',
   config = function ()
     require'quarto'.setup()
   end
@@ -19,7 +19,7 @@ use { 'jmbuhr/quarto-nvim',
 or [vim-plug](https://github.com/junegunn/vim-plug)
 
 ```vim
-Plug 'jmbuhr/quarto-nvim'
+Plug 'quarto-dev/quarto-nvim'
 ```
 
 ## Usage
