@@ -43,7 +43,6 @@ function M.quartoPreview()
 end
 
 M.setup = function()
-  api.nvim_create_user_command('QuartoPreview', require 'quarto'.quartoPreview, {})
 end
 
 
