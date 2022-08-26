@@ -9,12 +9,15 @@ Install the plugin from GitHub with your favourite neovim plugin manager e.g.
 [packer.nvim](https://github.com/wbthomason/packer.nvim):
 
 ```lua
-use { 'quarto-dev/quarto-nvim' }
+use { 'quarto-dev/quarto-nvim',
+  requires = { {'nvim-lua/plenary.nvim'} }
+}
 ```
 
 or [vim-plug](https://github.com/junegunn/vim-plug)
 
 ```vim
+Plug 'nvim-lua/plenary.nvim'
 Plug 'quarto-dev/quarto-nvim'
 ```
 
@@ -34,6 +37,18 @@ vim.keymap.set('n', '<leader>qp', quarto.quartoPreview, {silent = true, noremap 
 ```
 
 Then use the keyboard shortcut to open `quarto preview` for the current file or project in the active working directory in the neovim integrated terminal in a new tab.
+
+## Configure
+
+You can pass a lua table with options to the setup function.
+It will be merged with the default options, which are shown below in the example
+(i.e. if you are fine with the defaults you don't have to call the setup function).
+
+```lua
+require'quarto'.setup{
+  closePreviewOnExit = true, -- close preview terminal on closing of qmd file buffer
+}
+```
 
 ## Recommended Plugins
 
