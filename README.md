@@ -9,11 +9,7 @@ Install the plugin from GitHub with your favourite neovim plugin manager e.g.
 [packer.nvim](https://github.com/wbthomason/packer.nvim):
 
 ```lua
-use { 'quarto-dev/quarto-nvim',
-  config = function ()
-    require'quarto'.setup()
-  end
-}
+use { 'quarto-dev/quarto-nvim' }
 ```
 
 or [vim-plug](https://github.com/junegunn/vim-plug)
@@ -24,13 +20,13 @@ Plug 'quarto-dev/quarto-nvim'
 
 ## Usage
 
-The setup function creates a user command
+Use the command
 
 ```vim
 QuartoPreview
 ```
 
-You can also access it from lua, e.g. to create a keybinding:
+or access the function from lua, e.g. to create a keybinding:
 
 ```lua
 local quarto = require'quarto'
