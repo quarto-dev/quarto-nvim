@@ -9,15 +9,12 @@ Install the plugin from GitHub with your favourite neovim plugin manager e.g.
 [packer.nvim](https://github.com/wbthomason/packer.nvim):
 
 ```lua
-use { 'quarto-dev/quarto-nvim',
-  requires = { {'nvim-lua/plenary.nvim'} }
-}
+use { 'quarto-dev/quarto-nvim' }
 ```
 
 or [vim-plug](https://github.com/junegunn/vim-plug)
 
 ```vim
-Plug 'nvim-lua/plenary.nvim'
 Plug 'quarto-dev/quarto-nvim'
 ```
 
