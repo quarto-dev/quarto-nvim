@@ -144,6 +144,7 @@ local function update_language_buffer(qmd_bufnr, language)
   local bufnr_lang = vim.uri_to_bufnr(bufuri_lang)
   a.nvim_buf_set_name(bufnr_lang, bufname_lang)
   a.nvim_buf_set_option(bufnr_lang,'filetype', language)
+  a.nvim_buf_set_option(qmd_bufnr,'filetype', 'markdown')
   a.nvim_buf_set_lines(bufnr_lang, 0, -1, false, {})
   a.nvim_buf_set_lines(bufnr_lang, 0, nmax, false, spaces(nmax))
 
@@ -155,7 +156,7 @@ local function update_language_buffer(qmd_bufnr, language)
 end
 
 
-local enable_language_diagnostics = function(lang)
+local function enable_language_diagnostics(lang)
   local ns  = a.nvim_create_namespace('quarto'..lang)
   local augroup = a.nvim_create_augroup("quartoUpdate"..lang, {})
 
@@ -173,13 +174,8 @@ local enable_language_diagnostics = function(lang)
   a.nvim_exec_autocmds('TextChanged', {})
 end
 
-M.debug = function()
-  M.setup()
-end
 
-
-M.setup = function(opt)
-  M.config = vim.tbl_deep_extend('force', defaultConfig, opt or {})
+M.enableDiagnostics = function()
   if M.config.diagnostics.enabled then
     for _,lang in ipairs(M.config.diagnostics.languages) do
       enable_language_diagnostics(lang)
@@ -187,5 +183,15 @@ M.setup = function(opt)
   end
 end
 
+
+M.setup = function(opt)
+  M.config = vim.tbl_deep_extend('force', defaultConfig, opt or {})
+end
+
+
+M.debug = function()
+  M.enableDiagnostics()
+  a.nvim_exec_autocmds({'TextChangedI', 'TextChanged'}, {})
+end
 
 return M
