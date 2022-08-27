@@ -3,13 +3,21 @@ local a = vim.api
 local q = vim.treesitter.query
 local util = require "lspconfig.util"
 
+local p = function (x)
+  print(vim.inspect(x))
+end
+
 local defaultConfig = {
   closePreviewOnExit = true,
+  diagnostics = {
+    enabled = true,
+    languages = {'r', 'python'}
+  }
 }
 
-M.setup = function(opt)
-  M.config = vim.tbl_deep_extend('force', defaultConfig, opt or {})
-end
+M.config = defaultConfig
+
+
 
 
 local function contains(list, x)
@@ -121,7 +129,7 @@ end
 
 local function update_language_buffer(qmd_bufnr, language)
   local language_lines = get_language_content(qmd_bufnr, language)
-  local nmax = a.nvim_buf_line_count(qmd_bufnr)
+  local nmax = language_lines[#language_lines].range[3] -- last code line
   local qmd_path = a.nvim_buf_get_name(qmd_bufnr)
   local postfix
   if language == 'python' then
@@ -135,10 +143,11 @@ local function update_language_buffer(qmd_bufnr, language)
   local bufuri_lang = 'file://'..bufname_lang
   local bufnr_lang = vim.uri_to_bufnr(bufuri_lang)
   a.nvim_buf_set_name(bufnr_lang, bufname_lang)
+  a.nvim_buf_set_option(bufnr_lang,'filetype', language)
   a.nvim_buf_set_lines(bufnr_lang, 0, -1, false, {})
   a.nvim_buf_set_lines(bufnr_lang, 0, nmax, false, spaces(nmax))
 
-  -- write langue lines
+  -- write language lines
   for _,t in ipairs(language_lines) do
     a.nvim_buf_set_lines(bufnr_lang, t.range[1], t.range[3], false, t.text)
   end
@@ -146,65 +155,37 @@ local function update_language_buffer(qmd_bufnr, language)
 end
 
 
-M.attach_lang = function (bufnr_qmd, lang)
-  local bufnr_py = update_language_buffer(bufnr_qmd, lang)
-  return bufnr_py
-end
-
-
-M.send_hover_request = function (bufnr_lang)
-  local cursor = a.nvim_win_get_cursor(0)
-  local params = {
-    textDocument = {
-      uri = "file://"..a.nvim_buf_get_name(bufnr_lang)
-    },
-    position = {
-      line = cursor[1] - 1,
-      character = cursor[2],
-    }
-  }
-  local clients = vim.lsp.buf_get_clients(bufnr_lang)
-end
-
--- local attach_docs = function()
---   local bufnr_py = M.attach_py(0)
---   P('attached py buffer')
---   P(bufnr_py)
---   local get_hover = function ()
---     M.send_hover_request(bufnr_py)
---   end
---   nmap('K', get_hover)
--- end
-
-M.debug = function()
-  local qmd_buf = a.nvim_get_current_buf()
-  local py_buf = M.attach_lang(qmd_buf, 'python')
-  local r_buf = M.attach_lang(qmd_buf, 'r')
-
-  local ns  = a.nvim_create_namespace('quarto')
-  local py_diag = vim.diagnostic.get(py_buf)
-  local r_diag = vim.diagnostic.get(r_buf)
-
-  local py_extmarks = a.nvim_buf_get_extmarks(py_buf, ns, 0, -1, {})
-  local r_extmarks = a.nvim_buf_get_extmarks(r_buf, ns, 0, -1, {})
-  local pos = a.nvim_win_get_cursor(0)
-
-  vim.diagnostic.reset(ns, qmd_buf)
-  vim.diagnostic.set(ns, qmd_buf, r_diag, {})
-
+local enable_language_diagnostics = function(lang)
+  local ns  = a.nvim_create_namespace('quarto'..lang)
+  local augroup = a.nvim_create_augroup("quartoUpdate"..lang, {})
 
   a.nvim_create_autocmd({ "TextChanged", "TextChangedI" }, {
-    buffer = qmd_buf,
-    group = a.nvim_create_augroup("quartoUpdate", {}),
-    callback = function(_, _)
-      py_buf = M.attach_lang(qmd_buf, 'python')
-      r_buf = M.attach_lang(qmd_buf, 'r')
+    -- buffer = qmd_buf,
+    pattern = '*.qmd',
+    group = augroup,
+    callback = function(args)
+      local buf = update_language_buffer(0, lang)
+      local diag = vim.diagnostic.get(buf)
+      vim.diagnostic.reset(ns, 0)
+      vim.diagnostic.set(ns, 0, diag, {})
     end
   })
-
-  -- print('py: '..py_buf..' r: '..r_buf)
+  a.nvim_exec_autocmds('TextChanged', {})
 end
 
+M.debug = function()
+  M.setup()
+end
+
+
+M.setup = function(opt)
+  M.config = vim.tbl_deep_extend('force', defaultConfig, opt or {})
+  if M.config.diagnostics.enabled then
+    for _,lang in ipairs(M.config.diagnostics.languages) do
+      enable_language_diagnostics(lang)
+    end
+  end
+end
 
 
 return M
