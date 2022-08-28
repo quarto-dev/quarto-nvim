@@ -10,7 +10,7 @@ end
 local defaultConfig = {
   closePreviewOnExit = true,
   diagnostics = {
-    enabled = false,
+    enabled = true,
     languages = {'r', 'python', 'julia'}
   }
 }
@@ -152,7 +152,6 @@ local function update_language_buffer(qmd_bufnr, language)
   local bufnr_lang = vim.uri_to_bufnr(bufuri_lang)
   a.nvim_buf_set_name(bufnr_lang, bufname_lang)
   a.nvim_buf_set_option(bufnr_lang,'filetype', language)
-  a.nvim_buf_set_option(qmd_bufnr,'filetype', 'markdown')
   a.nvim_buf_set_lines(bufnr_lang, 0, -1, false, {})
   a.nvim_buf_set_lines(bufnr_lang, 0, nmax, false, spaces(nmax))
 
