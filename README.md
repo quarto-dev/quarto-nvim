@@ -44,6 +44,10 @@ It will be merged with the default options, which are shown below in the example
 ```lua
 require'quarto'.setup{
   closePreviewOnExit = true, -- close preview terminal on closing of qmd file buffer
+  diagnostics = {
+    enabled = true, -- enable diagnostics for embedded languages
+    languages = {'r', 'python', 'julia'}
+  }
 }
 ```
 
