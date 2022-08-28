@@ -10,8 +10,8 @@ end
 local defaultConfig = {
   closePreviewOnExit = true,
   diagnostics = {
-    enabled = true,
-    languages = {'r', 'python'}
+    enabled = false,
+    languages = {'r', 'python', 'julia'}
   }
 }
 
@@ -79,9 +79,10 @@ end
 -- lps support
 local function lines(str)
   local result = {}
-  for line in str:gmatch '[^\n]+' do
+  for line in str:gmatch '([^\n]*)\n?' do
     table.insert(result, line)
   end
+  result[#result] = nil
   return result
 end
 
@@ -118,8 +119,11 @@ local function get_language_content(bufnr, language)
     local text = q.get_node_text(captures[2], bufnr)
     -- line numbers start at 0
     -- {start line, col, end line, col}
-    local result = {range = metadata.content[1],
-                    text = lines(text)}
+    local result = {
+      range = metadata.content[1],
+      -- text = lines(text)
+      text = lines(text)
+    }
     table.insert(results, result)
   end
 
@@ -129,6 +133,10 @@ end
 
 local function update_language_buffer(qmd_bufnr, language)
   local language_lines = get_language_content(qmd_bufnr, language)
+  if next(language_lines) == nil then
+    return
+  end
+
   local nmax = language_lines[#language_lines].range[3] -- last code line
   local qmd_path = a.nvim_buf_get_name(qmd_bufnr)
   local postfix
@@ -157,7 +165,7 @@ end
 
 
 local function enable_language_diagnostics(lang)
-  local ns  = a.nvim_create_namespace('quarto'..lang)
+  local ns  = a.nvim_create_namespace('quarto')
   local augroup = a.nvim_create_augroup("quartoUpdate"..lang, {})
 
   a.nvim_create_autocmd({ "TextChanged", "TextChangedI" }, {
@@ -195,3 +203,4 @@ M.debug = function()
 end
 
 return M
+
