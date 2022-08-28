@@ -164,7 +164,6 @@ end
 
 
 local function enable_language_diagnostics(lang)
-  local ns  = a.nvim_create_namespace('quarto')
   local augroup = a.nvim_create_augroup("quartoUpdate"..lang, {})
 
   a.nvim_create_autocmd({ "TextChanged", "TextChangedI" }, {
@@ -172,6 +171,7 @@ local function enable_language_diagnostics(lang)
     pattern = '*.qmd',
     group = augroup,
     callback = function(args)
+      local ns  = a.nvim_create_namespace('quarto'..lang)
       local buf = update_language_buffer(0, lang)
       local diag = vim.diagnostic.get(buf)
       vim.diagnostic.reset(ns, 0)
@@ -188,6 +188,7 @@ M.enableDiagnostics = function()
       enable_language_diagnostics(lang)
     end
   end
+  a.nvim_exec_autocmds({'TextChangedI', 'TextChanged'}, {})
 end
 
 
@@ -198,7 +199,6 @@ end
 
 M.debug = function()
   M.enableDiagnostics()
-  a.nvim_exec_autocmds({'TextChangedI', 'TextChanged'}, {})
 end
 
 return M
