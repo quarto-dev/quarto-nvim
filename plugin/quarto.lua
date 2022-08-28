@@ -1,7 +1,7 @@
 local a = vim.api
 
 a.nvim_create_user_command('QuartoPreview', require'quarto'.quartoPreview, {})
-
+a.nvim_create_user_command('QuartoDiagnostics', require'quarto'.enableDiagnostics, {})
 
 a.nvim_create_autocmd({ "BufEnter" }, {
   pattern = '*.qmd',
