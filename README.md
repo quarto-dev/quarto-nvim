@@ -20,6 +20,8 @@ Plug 'quarto-dev/quarto-nvim'
 
 ## Usage
 
+### Preview
+
 Use the command
 
 ```vim
@@ -34,6 +36,22 @@ vim.keymap.set('n', '<leader>qp', quarto.quartoPreview, {silent = true, noremap 
 ```
 
 Then use the keyboard shortcut to open `quarto preview` for the current file or project in the active working directory in the neovim integrated terminal in a new tab.
+
+### Language support
+
+Enable code diagnostics for embedded languages with 
+
+```vim
+QuartoDiagnostics
+```
+
+or
+
+```vim
+lua require'quarto'.enableDiagnostics
+```
+
+Diagnostics are enabled by default, but if you add a code chunk with a language that was not in the document when it was first opened, you have to reload the diagnostics once using the command.
 
 ## Configure
 
