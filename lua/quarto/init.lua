@@ -10,7 +10,7 @@ end
 local defaultConfig = {
   closePreviewOnExit = true,
   diagnostics = {
-    enabled = true,
+    enabled = false,
     languages = {'r', 'python', 'julia'}
   }
 }
