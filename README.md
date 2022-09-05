@@ -9,13 +9,16 @@ Install the plugin from GitHub with your favourite neovim plugin manager e.g.
 [packer.nvim](https://github.com/wbthomason/packer.nvim):
 
 ```lua
-use { 'quarto-dev/quarto-nvim' }
+use { 'quarto-dev/quarto-nvim',
+  requires = {'neovim/nvim-lspconfig'}
+}
 ```
 
 or [vim-plug](https://github.com/junegunn/vim-plug)
 
 ```vim
 Plug 'quarto-dev/quarto-nvim'
+Plug 'neovim/nvim-lspconfig'
 ```
 
 ## Usage
@@ -37,8 +40,9 @@ vim.keymap.set('n', '<leader>qp', quarto.quartoPreview, {silent = true, noremap 
 
 Then use the keyboard shortcut to open `quarto preview` for the current file or project in the active working directory in the neovim integrated terminal in a new tab.
 
-### Language support
+### Language support (WIP)
 
+Language support is very buggy for not, so it is not enabled by default.
 Enable code diagnostics for embedded languages with 
 
 ```vim
@@ -51,8 +55,6 @@ or
 lua require'quarto'.enableDiagnostics
 ```
 
-Diagnostics are enabled by default, but if you add a code chunk with a language that was not in the document when it was first opened, you have to reload the diagnostics once using the command.
-
 ## Configure
 
 You can pass a lua table with options to the setup function.
@@ -63,7 +65,7 @@ It will be merged with the default options, which are shown below in the example
 require'quarto'.setup{
   closePreviewOnExit = true, -- close preview terminal on closing of qmd file buffer
   diagnostics = {
-    enabled = true, -- enable diagnostics for embedded languages
+    enabled = false, -- enable diagnostics for embedded languages
     languages = {'r', 'python', 'julia'}
   }
 }
