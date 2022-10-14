@@ -42,8 +42,8 @@ Then use the keyboard shortcut to open `quarto preview` for the current file or 
 
 ### Language support (WIP)
 
-Language support is very buggy for not, so it is not enabled by default.
-Enable code diagnostics for embedded languages with 
+Language support is very buggy for now, so it is not enabled by default.
+Enable code diagnostics for embedded languages with
 
 ```vim
 QuartoDiagnostics
