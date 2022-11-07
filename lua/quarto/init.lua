@@ -191,7 +191,8 @@ M.enableDiagnostics = function()
   a.nvim_exec_autocmds({'TextChangedI', 'TextChanged'}, {})
 end
 
-M.searchHelp = function(topic)
+M.searchHelp = function(cmd_input)
+  local topic = cmd_input.args
   local url = 'https://quarto.org/?q='..topic..'&show-results=1'
   local sysname = vim.loop.os_uname().sysname
   local cmd
