@@ -191,6 +191,20 @@ M.enableDiagnostics = function()
   a.nvim_exec_autocmds({'TextChangedI', 'TextChanged'}, {})
 end
 
+M.searchHelp = function(topic)
+  local url = 'https://quarto.org/?q='..topic..'&show-results=1'
+  local sysname = vim.loop.os_uname().sysname
+  local cmd
+  if sysname == "Linux" then
+    cmd = 'xdg-open "'..url..'"'
+  elseif sysname == "Darwin" then
+    cmd = 'open "'..url..'"'
+  else
+    print('sorry, I do not know how to make windows open a url with the default browser. This feature currently only works on linux and mac.')
+    return
+  end
+  vim.fn.jobstart(cmd)
+end
 
 M.setup = function(opt)
   M.config = vim.tbl_deep_extend('force', defaultConfig, opt or {})
