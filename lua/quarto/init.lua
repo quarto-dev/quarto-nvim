@@ -178,18 +178,25 @@ end
 
 M.enableDiagnostics = function()
   local bufnrs = update_language_buffers(0)
+
+  -- auto-close language files on qmd file close
   a.nvim_create_autocmd({ "QuitPre", "WinClosed" }, {
     buffer = a.nvim_get_current_buf(),
     group = a.nvim_create_augroup("quartoLSP", {}),
     callback = function(_, _)
       for _, bufnr in ipairs(bufnrs) do
         if a.nvim_buf_is_loaded(bufnr) then
+          -- delete tmp file
+          local path = a.nvim_buf_get_name(bufnr)
+          vim.fn.delete(path)
+          -- remove buffer
           a.nvim_buf_delete(bufnr, { force = true })
         end
       end
     end
   })
 end
+
 
 M.searchHelp = function(cmd_input)
   local topic = cmd_input.args
