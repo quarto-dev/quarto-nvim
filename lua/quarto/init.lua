@@ -158,7 +158,7 @@ local function update_language_buffers(qmd_bufnr)
     local qmd_path = a.nvim_buf_get_name(qmd_bufnr)
 
     -- create buffer filled with spaces
-    local bufname_lang = qmd_path .. postfix
+    local bufname_lang = qmd_path .. '-tmp' .. postfix
     local bufuri_lang = 'file://' .. bufname_lang
     local bufnr_lang = vim.uri_to_bufnr(bufuri_lang)
     table.insert(bufnrs, bufnr_lang)
@@ -176,12 +176,20 @@ local function update_language_buffers(qmd_bufnr)
   return bufnrs
 end
 
+local function copy_diagnostics(qmdbufnr, bufnr)
+  local ns   = a.nvim_create_namespace('quarto-lang-' .. bufnr)
+  local diag = vim.diagnostic.get(bufnr)
+  vim.diagnostic.reset(ns, 0)
+  vim.diagnostic.set(ns, 0, diag, {})
+end
+
 M.enableDiagnostics = function()
   local bufnrs = update_language_buffers(0)
+  local qmdbufnr = a.nvim_get_current_buf()
 
   -- auto-close language files on qmd file close
   a.nvim_create_autocmd({ "QuitPre", "WinClosed" }, {
-    buffer = a.nvim_get_current_buf(),
+    buffer = qmdbufnr,
     group = a.nvim_create_augroup("quartoLSP", {}),
     callback = function(_, _)
       for _, bufnr in ipairs(bufnrs) do
@@ -195,6 +203,19 @@ M.enableDiagnostics = function()
       end
     end
   })
+
+  -- update hidden buffers on changes
+  a.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+    buffer = qmdbufnr,
+    group = a.nvim_create_augroup("quartoLSP", { clear = false }),
+    callback = function(_, _)
+      bufnrs = update_language_buffers(0)
+      for _, bufnr in ipairs(bufnrs) do
+        copy_diagnostics(qmdbufnr, bufnr)
+      end
+    end
+  })
+
 end
 
 
