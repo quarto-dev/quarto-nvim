@@ -1,0 +1,43 @@
+---
+title: Hello World
+format: html
+---
+
+# Hello World
+
+This is some python code,
+in which we define a function `hello`:
+
+```{python} 
+def hello():
+  print("Hello")
+```
+
+Now, we use the function in the next code chunk
+to highlight the necessity of having all code
+chunks in the same hidden document for the language server:
+
+```{python} 
+hello()
+```
+
+Let's make this work!
+
+# Furthermore
+
+And then we can work on integrating this for multiple 
+languages in the same document, like this R function:
+
+```{r} 
+hello_from_r <- function() {
+    print("hello")
+}
+```
+
+Unsurprisingly, the function does the same thing:
+
+```{r} 
+hello_from_r()
+```
+
+
