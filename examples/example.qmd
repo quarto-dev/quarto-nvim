@@ -40,4 +40,3 @@ Unsurprisingly, the function does the same thing:
 hello_from_r()
 ```
 
-

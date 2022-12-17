@@ -3,21 +3,16 @@ local a = vim.api
 local q = vim.treesitter.query
 local util = require "lspconfig.util"
 
-local p = function (x)
-  print(vim.inspect(x))
-end
 
 local defaultConfig = {
   closePreviewOnExit = true,
-  diagnostics = {
+  lspFeatures = {
     enabled = false,
-    languages = {'r', 'python', 'julia'}
+    languages = { 'r', 'python', 'julia' }
   }
 }
 
 M.config = defaultConfig
-
-
 
 
 local function contains(list, x)
@@ -57,6 +52,7 @@ function M.quartoPreview()
   vim.cmd('tabedit term://' .. cmd)
   local quartoOutputBuf = vim.api.nvim_get_current_buf()
   vim.cmd('tabprevious')
+  a.nvim_buf_set_var(0, 'quartoOutputBuf', quartoOutputBuf)
 
 
   -- close preview terminal on exit of the quarto buffer
@@ -73,8 +69,13 @@ function M.quartoPreview()
   end
 end
 
-
-
+function M.quartoClosePreview()
+  local success, quartoOutputBuf = pcall(a.nvim_buf_get_var, 0, 'quartoOutputBuf')
+  if not success then return end
+  if a.nvim_buf_is_loaded(quartoOutputBuf) then
+    a.nvim_buf_delete(quartoOutputBuf, { force = true })
+  end
+end
 
 -- lps support
 local function lines(str)
@@ -88,7 +89,7 @@ end
 
 local function spaces(n)
   local s = {}
-  for i=1,n do
+  for i = 1, n do
     s[i] = ' '
   end
   return s
@@ -102,7 +103,7 @@ local function get_language_content(bufnr, language)
 
   -- create capture
   local query = vim.treesitter.parse_query('markdown',
-  string.gsub([[
+    string.gsub([[
   (fenced_code_block
     (info_string
       (language) @lang
@@ -110,7 +111,7 @@ local function get_language_content(bufnr, language)
     )
     (code_fence_content) @code (#offset! @code)
   )
-  ]], "%$(%w+)", {language=language})
+  ]] , "%$(%w+)", { language = language })
   )
 
   -- get text ranges
@@ -130,7 +131,6 @@ local function get_language_content(bufnr, language)
   return results
 end
 
-
 local function update_language_buffer(qmd_bufnr, language)
   local language_lines = get_language_content(qmd_bufnr, language)
   if next(language_lines) == nil then
@@ -147,32 +147,31 @@ local function update_language_buffer(qmd_bufnr, language)
   end
 
   -- create buffer filled with spaces
-  local bufname_lang = qmd_path..postfix
-  local bufuri_lang = 'file://'..bufname_lang
+  local bufname_lang = qmd_path .. postfix
+  local bufuri_lang = 'file://' .. bufname_lang
   local bufnr_lang = vim.uri_to_bufnr(bufuri_lang)
   a.nvim_buf_set_name(bufnr_lang, bufname_lang)
-  a.nvim_buf_set_option(bufnr_lang,'filetype', language)
+  a.nvim_buf_set_option(bufnr_lang, 'filetype', language)
   a.nvim_buf_set_lines(bufnr_lang, 0, -1, false, {})
   a.nvim_buf_set_lines(bufnr_lang, 0, nmax, false, spaces(nmax))
 
   -- write language lines
-  for _,t in ipairs(language_lines) do
+  for _, t in ipairs(language_lines) do
     a.nvim_buf_set_lines(bufnr_lang, t.range[1], t.range[3], false, t.text)
   end
   return bufnr_lang
 end
 
-
 local function enable_language_diagnostics(lang)
-  local augroup = a.nvim_create_augroup("quartoUpdate"..lang, {})
+  local augroup = a.nvim_create_augroup("quartoUpdate" .. lang, {})
 
   a.nvim_create_autocmd({ "TextChanged", "TextChangedI" }, {
     -- buffer = qmd_buf,
     pattern = '*.qmd',
     group = augroup,
     callback = function(args)
-      local ns  = a.nvim_create_namespace('quarto'..lang)
-      local buf = update_language_buffer(0, lang)
+      local ns   = a.nvim_create_namespace('quarto' .. lang)
+      local buf  = update_language_buffer(0, lang)
       local diag = vim.diagnostic.get(buf)
       vim.diagnostic.reset(ns, 0)
       vim.diagnostic.set(ns, 0, diag, {})
@@ -181,25 +180,24 @@ local function enable_language_diagnostics(lang)
   a.nvim_exec_autocmds('TextChanged', {})
 end
 
-
 M.enableDiagnostics = function()
-  if M.config.diagnostics.enabled then
-    for _,lang in ipairs(M.config.diagnostics.languages) do
+  if M.config.lspFeatures.enabled then
+    for _, lang in ipairs(M.config.lspFeatures.languages) do
       enable_language_diagnostics(lang)
     end
   end
-  a.nvim_exec_autocmds({'TextChangedI', 'TextChanged'}, {})
+  a.nvim_exec_autocmds({ 'TextChangedI', 'TextChanged' }, {})
 end
 
 M.searchHelp = function(cmd_input)
   local topic = cmd_input.args
-  local url = 'https://quarto.org/?q='..topic..'&show-results=1'
+  local url = 'https://quarto.org/?q=' .. topic .. '&show-results=1'
   local sysname = vim.loop.os_uname().sysname
   local cmd
   if sysname == "Linux" then
-    cmd = 'xdg-open "'..url..'"'
+    cmd = 'xdg-open "' .. url .. '"'
   elseif sysname == "Darwin" then
-    cmd = 'open "'..url..'"'
+    cmd = 'open "' .. url .. '"'
   else
     print('sorry, I do not know how to make windows open a url with the default browser. This feature currently only works on linux and mac.')
     return
@@ -207,14 +205,15 @@ M.searchHelp = function(cmd_input)
   vim.fn.jobstart(cmd)
 end
 
+-- setup
 M.setup = function(opt)
   M.config = vim.tbl_deep_extend('force', defaultConfig, opt or {})
 end
 
-
 M.debug = function()
-  M.enableDiagnostics()
+  quarto = require 'quarto'
+  print(quarto.config)
 end
 
-return M
 
+return M
