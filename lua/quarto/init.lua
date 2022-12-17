@@ -146,9 +146,7 @@ local function update_language_buffers(qmd_bufnr)
   local language_content = get_language_content(qmd_bufnr)
   local bufnrs = {}
   for _, lang in ipairs(quarto.config.lspFeatures.languages) do
-    print(lang)
     local language_lines = language_content[lang]
-    if language_lines == nil then return end
     local postfix
     if lang == 'python' then
       postfix = '.py'
@@ -173,15 +171,13 @@ local function update_language_buffers(qmd_bufnr)
     for _, t in ipairs(language_lines) do
       a.nvim_buf_set_lines(bufnr_lang, t.range['from'][1], t.range['to'][1], false, t.text)
     end
-
-
-    return bufnrs
   end
+
+  return bufnrs
 end
 
 M.enableDiagnostics = function()
   local bufnrs = update_language_buffers(0)
-  P(bufnrs)
   a.nvim_create_autocmd({ "QuitPre", "WinClosed" }, {
     buffer = a.nvim_get_current_buf(),
     group = a.nvim_create_augroup("quartoLSP", {}),
@@ -224,7 +220,7 @@ M.debug = function()
     closePreviewOnExit = true,
     lspFeatures = {
       enabled = true,
-      languages = { 'python', 'r' }
+      languages = { 'python', 'r' },
     }
   }
   quarto.enableDiagnostics()
