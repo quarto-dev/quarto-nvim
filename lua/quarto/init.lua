@@ -117,6 +117,8 @@ local function get_language_content(bufnr, language)
   -- get text ranges
   local results = {}
   for _, captures, metadata in query:iter_matches(root, bufnr) do
+    print(captures)
+    print(captures)
     local text = q.get_node_text(captures[2], bufnr)
     -- line numbers start at 0
     -- {start line, col, end line, col}
@@ -181,12 +183,10 @@ local function enable_language_diagnostics(lang)
 end
 
 M.enableDiagnostics = function()
-  if M.config.lspFeatures.enabled then
-    for _, lang in ipairs(M.config.lspFeatures.languages) do
-      enable_language_diagnostics(lang)
-    end
+  for _, lang in ipairs(M.config.lspFeatures.languages) do
+    enable_language_diagnostics(lang)
   end
-  a.nvim_exec_autocmds({ 'TextChangedI', 'TextChanged' }, {})
+  -- a.nvim_exec_autocmds({ 'TextChangedI', 'TextChanged' }, {})
 end
 
 M.searchHelp = function(cmd_input)
@@ -211,8 +211,18 @@ M.setup = function(opt)
 end
 
 M.debug = function()
+  package.loaded['quarto'] = nil
   quarto = require 'quarto'
-  print(quarto.config)
+  print("test")
+  quarto.setup{
+    debug = true,
+    closePreviewOnExit = true,
+    lspFeatures = {
+      enabled = true,
+      languages = { 'python' }
+    }
+  }
+  -- quarto.enableDiagnostics()
 end
 
 
