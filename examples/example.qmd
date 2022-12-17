@@ -32,7 +32,7 @@ languages in the same document, like this R function:
 hello_from_r <- function() {
     print("hello")
 }
-```
+`` 
 
 Unsurprisingly, the function does the same thing:
 
