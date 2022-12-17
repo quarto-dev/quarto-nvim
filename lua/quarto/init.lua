@@ -176,21 +176,14 @@ local function update_language_buffers(qmd_bufnr)
   return bufnrs
 end
 
-local function copy_diagnostics(qmdbufnr, bufnr)
-  local ns   = a.nvim_create_namespace('quarto-lang-' .. bufnr)
-  local diag = vim.diagnostic.get(bufnr)
-  vim.diagnostic.reset(ns, 0)
-  vim.diagnostic.set(ns, 0, diag, {})
-end
-
 M.enableDiagnostics = function()
-  local bufnrs = update_language_buffers(0)
   local qmdbufnr = a.nvim_get_current_buf()
+  local bufnrs = update_language_buffers(qmdbufnr)
 
   -- auto-close language files on qmd file close
   a.nvim_create_autocmd({ "QuitPre", "WinClosed" }, {
     buffer = qmdbufnr,
-    group = a.nvim_create_augroup("quartoLSP", {}),
+    group = a.nvim_create_augroup("quartoAutoclose", {}),
     callback = function(_, _)
       for _, bufnr in ipairs(bufnrs) do
         if a.nvim_buf_is_loaded(bufnr) then
@@ -205,17 +198,30 @@ M.enableDiagnostics = function()
   })
 
   -- update hidden buffers on changes
-  a.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+  a.nvim_create_autocmd({ "CursorHold", "TextChanged" }, {
     buffer = qmdbufnr,
-    group = a.nvim_create_augroup("quartoLSP", { clear = false }),
+    group = a.nvim_create_augroup("quartoLSPDiagnositcs", { clear = false }),
     callback = function(_, _)
-      bufnrs = update_language_buffers(0)
-      for _, bufnr in ipairs(bufnrs) do
-        copy_diagnostics(qmdbufnr, bufnr)
+      local bufs = update_language_buffers(0)
+      for _, bufnr in ipairs(bufs) do
+        local diag = vim.diagnostic.get(bufnr)
+        local ns = a.nvim_create_namespace('quarto-lang-' .. bufnr)
+        vim.diagnostic.reset(ns, 0)
+        vim.diagnostic.set(ns, 0, diag, {})
       end
     end
   })
 
+  a.nvim_buf_set_keymap(qmdbufnr, 'n', '<c-e>', ':lua require"quarto".editCode()<cr>', {})
+
+end
+
+
+M.editCode = function()
+  local qmdbufnr = a.nvim_get_current_buf()
+  local bufnrs = update_language_buffers(qmdbufnr)
+  local language_content = get_language_content(qmd_bufnr)
+  P(language_content)
 end
 
 
@@ -252,6 +258,7 @@ M.debug = function()
     }
   }
   quarto.enableDiagnostics()
+  quarto.editCode()
 end
 
 

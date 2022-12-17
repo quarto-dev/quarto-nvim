@@ -18,7 +18,7 @@ to highlight the necessity of having all code
 chunks in the same hidden document for the language server:
 
 ```{python} 
-hello()
+helo()
 ```
 
 Let's make this work!
