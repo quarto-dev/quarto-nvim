@@ -7,19 +7,27 @@ format: html
 
 This is some python code,
 in which we define a function `hello`:
-
+  
 ```{python} 
 def hello():
   print("Hello")
 ```
 
-Now, we use the function in the next code chunk
-to highlight the necessity of having all code
-chunks in the same hidden document for the language server:
+This is how we call it:
 
 ```{python} 
 hello()
 ```
+
+And this function is not found because we have a typo:
+
+```{python} 
+helo()
+```
+
+Now, we use the function in the next code chunk
+to highlight the necessity of having all code
+chunks in the same hidden document for the language server:
 
 Let's make this work!
 

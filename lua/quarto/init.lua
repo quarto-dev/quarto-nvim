@@ -3,17 +3,19 @@ local a = vim.api
 local q = vim.treesitter.query
 local util = require "lspconfig.util"
 
-
 local defaultConfig = {
+  debug = false,
   closePreviewOnExit = true,
   lspFeatures = {
     enabled = false,
     languages = { 'r', 'python', 'julia' }
+  },
+  keymap = {
+    hover = 'K',
   }
 }
 
 M.config = defaultConfig
-
 
 local function contains(list, x)
   for _, v in pairs(list) do
@@ -95,7 +97,7 @@ local function spaces(n)
   return s
 end
 
-local function get_language_content(bufnr, language)
+local function get_language_content(bufnr)
   -- get and parse AST
   local language_tree = vim.treesitter.get_parser(bufnr, 'markdown')
   local syntax_tree = language_tree:parse()
@@ -103,91 +105,138 @@ local function get_language_content(bufnr, language)
 
   -- create capture
   local query = vim.treesitter.parse_query('markdown',
-    string.gsub([[
-  (fenced_code_block
+    [[
+    (fenced_code_block
     (info_string
       (language) @lang
-      (#eq? @lang $language)
     )
     (code_fence_content) @code (#offset! @code)
-  )
-  ]] , "%$(%w+)", { language = language })
+    )
+    ]]
   )
 
   -- get text ranges
   local results = {}
-  for _, captures, metadata in query:iter_matches(root, bufnr) do
-    local text = q.get_node_text(captures[2], bufnr)
-    -- line numbers start at 0
-    -- {start line, col, end line, col}
-    local result = {
-      range = metadata.content[1],
-      -- text = lines(text)
-      text = lines(text)
-    }
-    table.insert(results, result)
+  for pattern, match, metadata in query:iter_matches(root, bufnr) do
+    local lang
+    for id, node in pairs(match) do
+      local name = query.captures[id]
+      local text = q.get_node_text(node, 0)
+      if name == 'lang' then
+        lang = text
+      end
+      if name == 'code' then
+        local row1, col1, row2, col2 = node:range() -- range of the capture
+        local result = {
+          range = { from = { row1, col1 }, to = { row2, col2 } },
+          lang = lang,
+          text = lines(text)
+        }
+        if results[lang] == nil then
+          results[lang] = {}
+        end
+        table.insert(results[lang], result)
+      end
+    end
   end
 
   return results
 end
 
-local function update_language_buffer(qmd_bufnr, language)
-  local language_lines = get_language_content(qmd_bufnr, language)
-  if next(language_lines) == nil then
-    return
-  end
+local function update_language_buffers(qmd_bufnr)
+  local language_content = get_language_content(qmd_bufnr)
+  local bufnrs = {}
+  for _, lang in ipairs(M.config.lspFeatures.languages) do
+    local language_lines = language_content[lang]
+    if language_lines ~= nil then
+      local postfix
+      if lang == 'python' then
+        postfix = '.py'
+      elseif lang == 'r' then
+        postfix = '.R'
+      elseif lang == 'julia' then
+        postfix = '.jl'
+      end
 
-  local nmax = language_lines[#language_lines].range[3] -- last code line
-  local qmd_path = a.nvim_buf_get_name(qmd_bufnr)
-  local postfix
-  if language == 'python' then
-    postfix = '.py'
-  elseif language == 'r' then
-    postfix = '.R'
-  end
+      local nmax = language_lines[#language_lines].range['to'][1] -- last code line
+      local qmd_path = a.nvim_buf_get_name(qmd_bufnr)
 
-  -- create buffer filled with spaces
-  local bufname_lang = qmd_path .. postfix
-  local bufuri_lang = 'file://' .. bufname_lang
-  local bufnr_lang = vim.uri_to_bufnr(bufuri_lang)
-  a.nvim_buf_set_name(bufnr_lang, bufname_lang)
-  a.nvim_buf_set_option(bufnr_lang, 'filetype', language)
-  a.nvim_buf_set_lines(bufnr_lang, 0, -1, false, {})
-  a.nvim_buf_set_lines(bufnr_lang, 0, nmax, false, spaces(nmax))
+      -- create buffer filled with spaces
+      local bufname_lang = qmd_path .. '-tmp' .. postfix
+      local bufuri_lang = 'file://' .. bufname_lang
+      local bufnr_lang = vim.uri_to_bufnr(bufuri_lang)
+      table.insert(bufnrs, bufnr_lang)
+      a.nvim_buf_set_name(bufnr_lang, bufname_lang)
+      a.nvim_buf_set_option(bufnr_lang, 'filetype', lang)
+      a.nvim_buf_set_lines(bufnr_lang, 0, -1, false, {})
+      a.nvim_buf_set_lines(bufnr_lang, 0, nmax, false, spaces(nmax))
 
-  -- write language lines
-  for _, t in ipairs(language_lines) do
-    a.nvim_buf_set_lines(bufnr_lang, t.range[1], t.range[3], false, t.text)
-  end
-  return bufnr_lang
-end
-
-local function enable_language_diagnostics(lang)
-  local augroup = a.nvim_create_augroup("quartoUpdate" .. lang, {})
-
-  a.nvim_create_autocmd({ "TextChanged", "TextChangedI" }, {
-    -- buffer = qmd_buf,
-    pattern = '*.qmd',
-    group = augroup,
-    callback = function(args)
-      local ns   = a.nvim_create_namespace('quarto' .. lang)
-      local buf  = update_language_buffer(0, lang)
-      local diag = vim.diagnostic.get(buf)
-      vim.diagnostic.reset(ns, 0)
-      vim.diagnostic.set(ns, 0, diag, {})
+      -- write language lines
+      for _, t in ipairs(language_lines) do
+        a.nvim_buf_set_lines(bufnr_lang, t.range['from'][1], t.range['to'][1], false, t.text)
+      end
     end
-  })
-  a.nvim_exec_autocmds('TextChanged', {})
+  end
+  return bufnrs
 end
 
 M.enableDiagnostics = function()
-  if M.config.lspFeatures.enabled then
-    for _, lang in ipairs(M.config.lspFeatures.languages) do
-      enable_language_diagnostics(lang)
+  local qmdbufnr = a.nvim_get_current_buf()
+  local bufnrs = update_language_buffers(qmdbufnr)
+
+  -- auto-close language files on qmd file close
+  a.nvim_create_autocmd({ "QuitPre", "WinClosed" }, {
+    buffer = qmdbufnr,
+    group = a.nvim_create_augroup("quartoAutoclose", {}),
+    callback = function(_, _)
+      for _, bufnr in ipairs(bufnrs) do
+        if a.nvim_buf_is_loaded(bufnr) then
+          -- delete tmp file
+          local path = a.nvim_buf_get_name(bufnr)
+          vim.fn.delete(path)
+          -- remove buffer
+          a.nvim_buf_delete(bufnr, { force = true })
+        end
+      end
     end
-  end
-  a.nvim_exec_autocmds({ 'TextChangedI', 'TextChanged' }, {})
+  })
+
+  -- update hidden buffers on changes
+  a.nvim_create_autocmd({ "CursorHold", "TextChanged" }, {
+    buffer = qmdbufnr,
+    group = a.nvim_create_augroup("quartoLSPDiagnositcs", { clear = false }),
+    callback = function(_, _)
+      local bufs = update_language_buffers(0)
+      for _, bufnr in ipairs(bufs) do
+        local diag = vim.diagnostic.get(bufnr)
+        local ns = a.nvim_create_namespace('quarto-lang-' .. bufnr)
+        vim.diagnostic.reset(ns, 0)
+        vim.diagnostic.set(ns, 0, diag, {})
+      end
+    end
+  })
+
+  local key = M.config.keymap.hover
+  vim.api.nvim_set_keymap('n', key, ":lua require'quarto'.quartoHover()<cr>", {silent = true})
 end
+
+M.quartoHover = function()
+  local qmdbufnr = a.nvim_get_current_buf()
+  local bufnrs = update_language_buffers(qmdbufnr)
+  for _, bufnr in ipairs(bufnrs) do
+    local uri = vim.uri_from_bufnr(bufnr)
+    local position_params = vim.lsp.util.make_position_params()
+    position_params.textDocument = {
+      uri = uri
+    }
+    vim.lsp.buf_request(bufnr, "textDocument/hover", position_params, function(err, response, method, ...)
+      if response ~= nil then
+        vim.lsp.handlers["textDocument/hover"](err, response, method, ...)
+      end
+    end)
+  end
+end
+
 
 M.searchHelp = function(cmd_input)
   local topic = cmd_input.args
@@ -211,8 +260,18 @@ M.setup = function(opt)
 end
 
 M.debug = function()
+  package.loaded['quarto'] = nil
   quarto = require 'quarto'
-  print(quarto.config)
+  quarto.setup {
+    debug = true,
+    closePreviewOnExit = true,
+    lspFeatures = {
+      enabled = true,
+      languages = { 'python', 'r', 'julia' },
+      -- languages = { 'python' },
+    }
+  }
+  quarto.enableDiagnostics()
 end
 
 
