@@ -91,6 +91,18 @@ lua require'quarto'.enableDiagnostics
 After enabling the language features, you can open the hover documentation
 for R, python and julia code chunks with `K` (or configure a different shortcut).
 
+To make diagnostics work with R you have to configure the linter a bit, since the language
+buffers in the background separate code with blank links, which we want to ignore.
+Otherwise you get a lot more diagnostics than you probably want.
+Add file `.lintr` to your home folder and fill it with:
+
+```
+linters: linters_with_defaults(
+    trailing_blank_lines_linter = NULL,
+    trailing_whitespace_linter = NULL
+  )
+```
+
 ## Available Commnds
 
 ```vim
