@@ -3,17 +3,19 @@ local a = vim.api
 local q = vim.treesitter.query
 local util = require "lspconfig.util"
 
-
 local defaultConfig = {
+  debug = false,
   closePreviewOnExit = true,
   lspFeatures = {
     enabled = false,
     languages = { 'r', 'python', 'julia' }
+  },
+  keymap = {
+    hover = 'K',
   }
 }
 
 M.config = defaultConfig
-
 
 local function contains(list, x)
   for _, v in pairs(list) do
@@ -123,7 +125,6 @@ local function get_language_content(bufnr)
       if name == 'lang' then
         lang = text
       end
-      local nodeData = metadata[id] -- Node level metadata
       if name == 'code' then
         local row1, col1, row2, col2 = node:range() -- range of the capture
         local result = {
@@ -145,34 +146,37 @@ end
 local function update_language_buffers(qmd_bufnr)
   local language_content = get_language_content(qmd_bufnr)
   local bufnrs = {}
-  for _, lang in ipairs(quarto.config.lspFeatures.languages) do
+  for _, lang in ipairs(M.config.lspFeatures.languages) do
     local language_lines = language_content[lang]
-    local postfix
-    if lang == 'python' then
-      postfix = '.py'
-    elseif lang == 'r' then
-      postfix = '.R'
-    end
+    if language_lines ~= nil then
+      local postfix
+      if lang == 'python' then
+        postfix = '.py'
+      elseif lang == 'r' then
+        postfix = '.R'
+      elseif lang == 'julia' then
+        postfix = '.jl'
+      end
 
-    local nmax = language_lines[#language_lines].range['to'][1] -- last code line
-    local qmd_path = a.nvim_buf_get_name(qmd_bufnr)
+      local nmax = language_lines[#language_lines].range['to'][1] -- last code line
+      local qmd_path = a.nvim_buf_get_name(qmd_bufnr)
 
-    -- create buffer filled with spaces
-    local bufname_lang = qmd_path .. '-tmp' .. postfix
-    local bufuri_lang = 'file://' .. bufname_lang
-    local bufnr_lang = vim.uri_to_bufnr(bufuri_lang)
-    table.insert(bufnrs, bufnr_lang)
-    a.nvim_buf_set_name(bufnr_lang, bufname_lang)
-    a.nvim_buf_set_option(bufnr_lang, 'filetype', lang)
-    a.nvim_buf_set_lines(bufnr_lang, 0, -1, false, {})
-    a.nvim_buf_set_lines(bufnr_lang, 0, nmax, false, spaces(nmax))
+      -- create buffer filled with spaces
+      local bufname_lang = qmd_path .. '-tmp' .. postfix
+      local bufuri_lang = 'file://' .. bufname_lang
+      local bufnr_lang = vim.uri_to_bufnr(bufuri_lang)
+      table.insert(bufnrs, bufnr_lang)
+      a.nvim_buf_set_name(bufnr_lang, bufname_lang)
+      a.nvim_buf_set_option(bufnr_lang, 'filetype', lang)
+      a.nvim_buf_set_lines(bufnr_lang, 0, -1, false, {})
+      a.nvim_buf_set_lines(bufnr_lang, 0, nmax, false, spaces(nmax))
 
-    -- write language lines
-    for _, t in ipairs(language_lines) do
-      a.nvim_buf_set_lines(bufnr_lang, t.range['from'][1], t.range['to'][1], false, t.text)
+      -- write language lines
+      for _, t in ipairs(language_lines) do
+        a.nvim_buf_set_lines(bufnr_lang, t.range['from'][1], t.range['to'][1], false, t.text)
+      end
     end
   end
-
   return bufnrs
 end
 
@@ -212,16 +216,25 @@ M.enableDiagnostics = function()
     end
   })
 
-  a.nvim_buf_set_keymap(qmdbufnr, 'n', '<c-e>', ':lua require"quarto".editCode()<cr>', {})
-
+  local key = M.config.keymap.hover
+  vim.api.nvim_set_keymap('n', key, ":lua require'quarto'.quartoHover()<cr>", {silent = true})
 end
 
-
-M.editCode = function()
+M.quartoHover = function()
   local qmdbufnr = a.nvim_get_current_buf()
   local bufnrs = update_language_buffers(qmdbufnr)
-  local language_content = get_language_content(qmd_bufnr)
-  P(language_content)
+  for _, bufnr in ipairs(bufnrs) do
+    local uri = vim.uri_from_bufnr(bufnr)
+    local position_params = vim.lsp.util.make_position_params()
+    position_params.textDocument = {
+      uri = uri
+    }
+    vim.lsp.buf_request(bufnr, "textDocument/hover", position_params, function(err, response, method, ...)
+      if response ~= nil then
+        vim.lsp.handlers["textDocument/hover"](err, response, method, ...)
+      end
+    end)
+  end
 end
 
 
@@ -254,11 +267,11 @@ M.debug = function()
     closePreviewOnExit = true,
     lspFeatures = {
       enabled = true,
-      languages = { 'python', 'r' },
+      languages = { 'python', 'r', 'julia' },
+      -- languages = { 'python' },
     }
   }
   quarto.enableDiagnostics()
-  quarto.editCode()
 end
 
 
