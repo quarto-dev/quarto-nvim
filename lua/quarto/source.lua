@@ -1,14 +1,14 @@
 -- derived from <https://github.com/hrsh7th/cmp-nvim-lsp>
 local source = {}
-local buffers = require'quarto.buffers'
 
-source.new = function(client, qmdbufnr, bufnr)
+source.new = function(client, qmdbufnr, bufnr, updater)
   local self = setmetatable({}, { __index = source })
   self.client = client
   self.bufnr = bufnr
   self.qmdbufnr = qmdbufnr
   self.id = qmdbufnr
   self.request_ids = {}
+  self.updater = updater
   return self
 end
 
@@ -62,7 +62,7 @@ end
 ---@param params cmp.SourceCompletionApiParams
 ---@param callback function
 source.complete = function(self, params, callback)
-  local bufnrs = buffers.updateLanguageBuffers(self.qmdbufnr)
+  local bufnrs = self.updater(self.qmdbufnr)
   local win = vim.api.nvim_get_current_win()
   local lsp_params = vim.lsp.util.make_position_params(win, self.client.offset_encoding)
   lsp_params.textDocument = {

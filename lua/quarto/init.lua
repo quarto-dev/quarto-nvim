@@ -1,8 +1,11 @@
 local M = {}
 local api = vim.api
 local util = require "lspconfig.util"
-local buffers = require'quarto.buffers'
 local source = require'quarto.source'
+local tools = require'quarto.tools'
+local lines = tools.lines
+local spaces = tools.spaces
+local api = vim.api
 
 M.defaultConfig = {
   debug = false,
@@ -21,6 +24,90 @@ M.defaultConfig = {
     hover = 'K',
   }
 }
+
+
+local function get_language_content(bufnr)
+  -- get and parse AST
+  local language_tree = vim.treesitter.get_parser(bufnr, 'markdown')
+  local syntax_tree = language_tree:parse()
+  local root = syntax_tree[1]:root()
+
+  -- create capture
+  local query = vim.treesitter.parse_query('markdown',
+    [[
+    (fenced_code_block
+    (info_string
+      (language) @lang
+    )
+    (code_fence_content) @code (#offset! @code)
+    )
+    ]]
+  )
+
+  -- get text ranges
+  local results = {}
+  for pattern, match, metadata in query:iter_matches(root, bufnr) do
+    local lang
+    for id, node in pairs(match) do
+      local name = query.captures[id]
+      local text = vim.treesitter.query.get_node_text(node, 0)
+      if name == 'lang' then
+        lang = text
+      end
+      if name == 'code' then
+        local row1, col1, row2, col2 = node:range() -- range of the capture
+        local result = {
+          range = { from = { row1, col1 }, to = { row2, col2 } },
+          lang = lang,
+          text = lines(text)
+        }
+        if results[lang] == nil then
+          results[lang] = {}
+        end
+        table.insert(results[lang], result)
+      end
+    end
+  end
+
+  return results
+end
+
+M.updateLanguageBuffers = function(qmd_bufnr)
+  local language_content = get_language_content(qmd_bufnr)
+  local bufnrs = {}
+  for _, lang in ipairs(M.config.lspFeatures.languages) do
+    local language_lines = language_content[lang]
+    if language_lines ~= nil then
+      local postfix
+      if lang == 'python' then
+        postfix = '.py'
+      elseif lang == 'r' then
+        postfix = '.R'
+      elseif lang == 'julia' then
+        postfix = '.jl'
+      end
+
+      local nmax = language_lines[#language_lines].range['to'][1] -- last code line
+      local qmd_path = api.nvim_buf_get_name(qmd_bufnr)
+
+      -- create buffer filled with spaces
+      local bufname_lang = qmd_path .. '-tmp' .. postfix
+      local bufuri_lang = 'file://' .. bufname_lang
+      local bufnr_lang = vim.uri_to_bufnr(bufuri_lang)
+      table.insert(bufnrs, bufnr_lang)
+      api.nvim_buf_set_name(bufnr_lang, bufname_lang)
+      api.nvim_buf_set_option(bufnr_lang, 'filetype', lang)
+      api.nvim_buf_set_lines(bufnr_lang, 0, -1, false, {})
+      api.nvim_buf_set_lines(bufnr_lang, 0, nmax, false, spaces(nmax))
+
+      -- write language lines
+      for _, t in ipairs(language_lines) do
+        api.nvim_buf_set_lines(bufnr_lang, t.range['from'][1], t.range['to'][1], false, t.text)
+      end
+    end
+  end
+  return bufnrs
+end
 
 ---Registered client and source mapping.
 M.cmp_client_source_map = {}
@@ -47,11 +134,9 @@ M.cmp_on_insert_enter = function(qmdbufnr, bufnr)
   for _, client in ipairs(vim.lsp.get_active_clients({bufnr = bufnr})) do
     allowed_clients[client.id] = client
     if not M.cmp_client_source_map[client.id] then
-      local s = source.new(client, qmdbufnr, bufnr)
+      local s = source.new(client, qmdbufnr, bufnr, M.updateLanguageBuffers)
       if s:is_available() then
         P('register source for ' .. s.client.name)
-        P(client.id)
-        P(s.client.name)
         M.cmp_client_source_map[client.id] = cmp.register_source('quarto', s)
         P(M.cmp_client_source_map)
       end
@@ -62,7 +147,7 @@ M.cmp_on_insert_enter = function(qmdbufnr, bufnr)
   for _, client in ipairs(vim.lsp.buf_get_clients(0)) do
     allowed_clients[client.id] = client
     if not M.cmp_client_source_map[client.id] then
-      local s = source.new(client, qmdbufnr, bufnr)
+      local s = source.new(client, qmdbufnr, bufnr, M.updateLanguageBuffers)
       if s:is_available() then
         M.cmp_client_source_map[client.id] = cmp.register_source('quarto', s)
       end
@@ -136,7 +221,7 @@ end
 
 M.activateLspFeatures = function()
   local qmdbufnr = api.nvim_get_current_buf()
-  local bufnrs = buffers.updateLanguageBuffers(qmdbufnr, M.config.lspFeatures.languages)
+  local bufnrs = M.updateLanguageBuffers(qmdbufnr)
 
   -- auto-close language files on qmd file close
   api.nvim_create_autocmd({ "QuitPre", "WinClosed" }, {
@@ -168,7 +253,7 @@ M.activateLspFeatures = function()
       buffer = 0,
       group = api.nvim_create_augroup("quartoCmp", { clear = false }),
       callback = function(_, _)
-        local bufnrs = buffers.updateLanguageBuffers(0, M.config.lspFeatures.languages)
+        local bufnrs = M.updateLanguageBuffers(0)
       end
     })
   end
@@ -183,7 +268,7 @@ M.enableDiagnostics = function()
     buffer = 0,
     group = api.nvim_create_augroup("quartoLSPDiagnositcs", { clear = false }),
     callback = function(_, _)
-      local bufnrs = buffers.updateLanguageBuffers(0, M.config.lspFeatures.languages)
+      local bufnrs = M.updateLanguageBuffers(0)
       for _, bufnr in ipairs(bufnrs) do
         local diag = vim.diagnostic.get(bufnr)
         local ns = api.nvim_create_namespace('quarto-lang-' .. bufnr)
@@ -196,7 +281,7 @@ end
 
 M.quartoHover = function()
   local qmdbufnr = api.nvim_get_current_buf()
-  local bufnrs = buffers.updateLanguageBuffers(qmdbufnr, M.config.lspFeatures.languages)
+  local bufnrs = M.updateLanguageBuffers(qmdbufnr)
   for _, bufnr in ipairs(bufnrs) do
     local uri = vim.uri_from_bufnr(bufnr)
     local position_params = vim.lsp.util.make_position_params()
