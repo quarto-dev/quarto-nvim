@@ -1,4 +1,6 @@
 local quarto = require'quarto'
+local config = require'quarto.config'
+local conf = config.config
 local a = vim.api
 
 a.nvim_create_user_command('QuartoPreview', quarto.quartoPreview, {})
@@ -11,10 +13,9 @@ a.nvim_create_user_command('QuartoHover', quarto.quartoHover, {})
 a.nvim_create_autocmd({"BufEnter"}, {
   pattern = {"*.qmd"},
   callback = function ()
-    quarto = require'quarto'
-    if quarto.config.lspFeatures.enabled then
+    if conf.lspFeatures.enabled then
       quarto.activateLspFeatures()
-      if quarto.config.lspFeatures.diagnostics.enabled then
+      if conf.lspFeatures.diagnostics.enabled then
         quarto.enableDiagnostics()
       end
     end
