@@ -15,6 +15,7 @@ M.defaultConfig = {
     languages = { 'r', 'python', 'julia' },
     diagnostics = {
       enabled = true,
+      triggers = { "BufEnter", "InsertLeave", "TextChanged" }
     },
     cmpSource = {
       enabled = true,
@@ -263,7 +264,7 @@ end
 
 M.enableDiagnostics = function()
   -- update diagnostics on changes
-  api.nvim_create_autocmd({ "CursorHold", "TextChanged" }, {
+  api.nvim_create_autocmd(M.config.lspFeatures.diagnostics.triggers, {
     buffer = 0,
     group = api.nvim_create_augroup("quartoLSPDiagnositcs", { clear = false }),
     callback = function(_, _)
