@@ -138,7 +138,6 @@ M.cmp_on_insert_enter = function(qmdbufnr, bufnr)
       if s:is_available() then
         P('register source for ' .. s.client.name)
         M.cmp_client_source_map[client.id] = cmp.register_source('quarto', s)
-        P(M.cmp_client_source_map)
       end
     end
   end
