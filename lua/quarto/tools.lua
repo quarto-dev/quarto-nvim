@@ -1,4 +1,4 @@
-M = {}
+local M = {}
 
 M.contains = function(list, x)
   for _, v in pairs(list) do
@@ -25,5 +25,9 @@ M.spaces = function(n)
   return s
 end
 
-return M
+M.if_nil = function(val, default)
+  if val == nil then return default end
+  return val
+end
 
+return M
