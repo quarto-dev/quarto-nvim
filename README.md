@@ -54,7 +54,11 @@ require'quarto'.setup{
     enabled = false,
     languages = { 'r', 'python', 'julia' },
     diagnostics = {
-      enabled = false,
+      enabled = true,
+      triggers = { "BufEnter", "InsertLeave", "TextChanged" }
+    },
+    cmpSource = {
+      enabled = true,
     },
   },
   keymap = {
@@ -65,7 +69,7 @@ require'quarto'.setup{
 
 ## Language support (WIP)
 
-This might need quite a few resources, especially for multi-language docuemnts,
+This might need quite a few resources, especially for multi-language documents,
 as it maintains hidden buffers for all the embedded languages in your quarto document (R, python and julia) and
 talks to language servers attached to each.
 
@@ -99,6 +103,23 @@ lua require'quarto'.enableDiagnostics
 
 After enabling the language features, you can open the hover documentation
 for R, python and julia code chunks with `K` (or configure a different shortcut).
+
+### Autocompletion
+
+`quarto-nvim` now comes with a completion source for [nvim-cmp](https://github.com/hrsh7th/nvim-cmp) to deliver swift autocompletion for code in quarto code chunks.
+With the quarto language features enabled, you can add the source in your `cmp` configuration:
+
+```lua
+-- ...
+  sources = {
+    { name = 'quarto' },
+  }
+-- ...
+```
+
+Limitation: Currently this only works for one of the languages in a multi-language document. I am on it!
+
+### R diagnostics configuration
 
 To make diagnostics work with R you have to configure the linter a bit, since the language
 buffers in the background separate code with blank links, which we want to ignore.
