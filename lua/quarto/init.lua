@@ -1,14 +1,19 @@
 local M = {}
-local a = vim.api
-local q = vim.treesitter.query
+local api = vim.api
 local util = require "lspconfig.util"
+local tools = require'quarto.tools'
+local lines = tools.lines
+local spaces = tools.spaces
 
 local defaultConfig = {
   debug = false,
   closePreviewOnExit = true,
   lspFeatures = {
     enabled = false,
-    languages = { 'r', 'python', 'julia' }
+    languages = { 'r', 'python', 'julia' },
+    diagnostics = {
+      enabled = true,
+    },
   },
   keymap = {
     hover = 'K',
@@ -17,16 +22,10 @@ local defaultConfig = {
 
 M.config = defaultConfig
 
-local function contains(list, x)
-  for _, v in pairs(list) do
-    if v == x then return true end
-  end
-  return false
-end
 
 function M.quartoPreview()
   -- find root directory / check if it is a project
-  local buffer_path = a.nvim_buf_get_name(0)
+  local buffer_path = api.nvim_buf_get_name(0)
   local root_dir = util.root_pattern("_quarto.yml")(buffer_path)
   local cmd
   local mode
@@ -44,7 +43,7 @@ function M.quartoPreview()
     vim.notify("Not in a file. exiting.")
     return
   end
-  if mode == "file" and not contains(quarto_extensions, file_extension) then
+  if mode == "file" and not tools.contains(quarto_extensions, file_extension) then
     vim.notify("Not a quarto file, ends in " .. file_extension .. " exiting.")
     return
   end
@@ -54,17 +53,17 @@ function M.quartoPreview()
   vim.cmd('tabedit term://' .. cmd)
   local quartoOutputBuf = vim.api.nvim_get_current_buf()
   vim.cmd('tabprevious')
-  a.nvim_buf_set_var(0, 'quartoOutputBuf', quartoOutputBuf)
+  api.nvim_buf_set_var(0, 'quartoOutputBuf', quartoOutputBuf)
 
 
   -- close preview terminal on exit of the quarto buffer
   if M.config.closePreviewOnExit then
-    a.nvim_create_autocmd({ "QuitPre", "WinClosed" }, {
-      buffer = a.nvim_get_current_buf(),
-      group = a.nvim_create_augroup("quartoPreview", {}),
+    api.nvim_create_autocmd({ "QuitPre", "WinClosed" }, {
+      buffer = api.nvim_get_current_buf(),
+      group = api.nvim_create_augroup("quartoPreview", {}),
       callback = function(_, _)
-        if a.nvim_buf_is_loaded(quartoOutputBuf) then
-          a.nvim_buf_delete(quartoOutputBuf, { force = true })
+        if api.nvim_buf_is_loaded(quartoOutputBuf) then
+          api.nvim_buf_delete(quartoOutputBuf, { force = true })
         end
       end
     })
@@ -72,29 +71,11 @@ function M.quartoPreview()
 end
 
 function M.quartoClosePreview()
-  local success, quartoOutputBuf = pcall(a.nvim_buf_get_var, 0, 'quartoOutputBuf')
+  local success, quartoOutputBuf = pcall(api.nvim_buf_get_var, 0, 'quartoOutputBuf')
   if not success then return end
-  if a.nvim_buf_is_loaded(quartoOutputBuf) then
-    a.nvim_buf_delete(quartoOutputBuf, { force = true })
+  if api.nvim_buf_is_loaded(quartoOutputBuf) then
+    api.nvim_buf_delete(quartoOutputBuf, { force = true })
   end
-end
-
--- lps support
-local function lines(str)
-  local result = {}
-  for line in str:gmatch '([^\n]*)\n?' do
-    table.insert(result, line)
-  end
-  result[#result] = nil
-  return result
-end
-
-local function spaces(n)
-  local s = {}
-  for i = 1, n do
-    s[i] = ' '
-  end
-  return s
 end
 
 local function get_language_content(bufnr)
@@ -121,7 +102,7 @@ local function get_language_content(bufnr)
     local lang
     for id, node in pairs(match) do
       local name = query.captures[id]
-      local text = q.get_node_text(node, 0)
+      local text = vim.treesitter.query.get_node_text(node, 0)
       if name == 'lang' then
         lang = text
       end
@@ -159,69 +140,75 @@ local function update_language_buffers(qmd_bufnr)
       end
 
       local nmax = language_lines[#language_lines].range['to'][1] -- last code line
-      local qmd_path = a.nvim_buf_get_name(qmd_bufnr)
+      local qmd_path = api.nvim_buf_get_name(qmd_bufnr)
 
       -- create buffer filled with spaces
       local bufname_lang = qmd_path .. '-tmp' .. postfix
       local bufuri_lang = 'file://' .. bufname_lang
       local bufnr_lang = vim.uri_to_bufnr(bufuri_lang)
       table.insert(bufnrs, bufnr_lang)
-      a.nvim_buf_set_name(bufnr_lang, bufname_lang)
-      a.nvim_buf_set_option(bufnr_lang, 'filetype', lang)
-      a.nvim_buf_set_lines(bufnr_lang, 0, -1, false, {})
-      a.nvim_buf_set_lines(bufnr_lang, 0, nmax, false, spaces(nmax))
+      api.nvim_buf_set_name(bufnr_lang, bufname_lang)
+      api.nvim_buf_set_option(bufnr_lang, 'filetype', lang)
+      api.nvim_buf_set_lines(bufnr_lang, 0, -1, false, {})
+      api.nvim_buf_set_lines(bufnr_lang, 0, nmax, false, spaces(nmax))
 
       -- write language lines
       for _, t in ipairs(language_lines) do
-        a.nvim_buf_set_lines(bufnr_lang, t.range['from'][1], t.range['to'][1], false, t.text)
+        api.nvim_buf_set_lines(bufnr_lang, t.range['from'][1], t.range['to'][1], false, t.text)
       end
     end
   end
   return bufnrs
 end
 
-M.enableDiagnostics = function()
-  local qmdbufnr = a.nvim_get_current_buf()
+M.activateLspFeatures = function()
+  local qmdbufnr = api.nvim_get_current_buf()
   local bufnrs = update_language_buffers(qmdbufnr)
 
   -- auto-close language files on qmd file close
-  a.nvim_create_autocmd({ "QuitPre", "WinClosed" }, {
-    buffer = qmdbufnr,
-    group = a.nvim_create_augroup("quartoAutoclose", {}),
+  api.nvim_create_autocmd({ "QuitPre", "WinClosed" }, {
+    buffer = 0,
+    group = api.nvim_create_augroup("quartoAutoclose", {}),
     callback = function(_, _)
       for _, bufnr in ipairs(bufnrs) do
-        if a.nvim_buf_is_loaded(bufnr) then
+        if api.nvim_buf_is_loaded(bufnr) then
           -- delete tmp file
-          local path = a.nvim_buf_get_name(bufnr)
+          local path = api.nvim_buf_get_name(bufnr)
           vim.fn.delete(path)
           -- remove buffer
-          a.nvim_buf_delete(bufnr, { force = true })
+          api.nvim_buf_delete(bufnr, { force = true })
         end
       end
     end
   })
 
-  -- update hidden buffers on changes
-  a.nvim_create_autocmd({ "CursorHold", "TextChanged" }, {
-    buffer = qmdbufnr,
-    group = a.nvim_create_augroup("quartoLSPDiagnositcs", { clear = false }),
+  if M.config.lspFeatures.diagnostics.enabled then
+    M.enableDiagnostics()
+  end
+
+  local key = M.config.keymap.hover
+  vim.api.nvim_set_keymap('n', key, ":lua require'quarto'.quartoHover()<cr>", { silent = true })
+end
+
+M.enableDiagnostics = function()
+  -- update diagnostics on changes
+  api.nvim_create_autocmd({ "CursorHold", "TextChanged" }, {
+    buffer = 0,
+    group = api.nvim_create_augroup("quartoLSPDiagnositcs", { clear = false }),
     callback = function(_, _)
-      local bufs = update_language_buffers(0)
-      for _, bufnr in ipairs(bufs) do
+      local bufnrs = update_language_buffers(0)
+      for _, bufnr in ipairs(bufnrs) do
         local diag = vim.diagnostic.get(bufnr)
-        local ns = a.nvim_create_namespace('quarto-lang-' .. bufnr)
+        local ns = api.nvim_create_namespace('quarto-lang-' .. bufnr)
         vim.diagnostic.reset(ns, 0)
         vim.diagnostic.set(ns, 0, diag, {})
       end
     end
   })
-
-  local key = M.config.keymap.hover
-  vim.api.nvim_set_keymap('n', key, ":lua require'quarto'.quartoHover()<cr>", {silent = true})
 end
 
 M.quartoHover = function()
-  local qmdbufnr = a.nvim_get_current_buf()
+  local qmdbufnr = api.nvim_get_current_buf()
   local bufnrs = update_language_buffers(qmdbufnr)
   for _, bufnr in ipairs(bufnrs) do
     local uri = vim.uri_from_bufnr(bufnr)
@@ -268,10 +255,12 @@ M.debug = function()
     lspFeatures = {
       enabled = true,
       languages = { 'python', 'r', 'julia' },
-      -- languages = { 'python' },
+      diagnostics = {
+        enabled = true
+      }
     }
   }
-  quarto.enableDiagnostics()
+  quarto.activateLspFeatures()
 end
 
 

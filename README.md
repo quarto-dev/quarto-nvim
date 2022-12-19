@@ -51,11 +51,15 @@ require'quarto'.setup{
   debug = false,
   closePreviewOnExit = true,
   lspFeatures = {
-    enabled = true,
-    languages = { 'r', 'python', 'julia' }
+    enabled = false,
+    languages = { 'r', 'python', 'julia' },
+    diagnostics = {
+      enabled = false,
+    },
   },
   keymap = {
     hover = 'K',
+  }
 }
 ```
 
@@ -65,13 +69,16 @@ This might need quite a few resources, especially for multi-language docuemnts,
 as it maintains hidden buffers for all the embedded languages in your quarto document (R, python and julia) and
 talks to language servers attached to each.
 
-Configure quarto-nvim's lsp features by configuring it with
+Enable quarto-nvim's lsp features by configuring it with
 
 ```lua
 require'quarto'.setup{
   lspFeatures = {
     enabled = true,
-    languages = { 'r', 'python', 'julia' }
+    languages = { 'r', 'python', 'julia' },
+    diagnostics = {
+      enabled = true,
+    },
   }
 }
 ```
@@ -79,12 +86,14 @@ require'quarto'.setup{
 Or explicitly run
 
 ```vim
+QuartoActivate
 QuartoDiagnostics
 ```
 
 or
 
 ```vim
+lua require'quarto'.activateLspFeatures
 lua require'quarto'.enableDiagnostics
 ```
 
@@ -103,12 +112,17 @@ linters: linters_with_defaults(
   )
 ```
 
+You can now also enable other lsp features, such as the show hover function
+and shortcut, independent of showing diagnostics by enabling lsp features
+but not enabling diagnostics.
+
 ## Available Commnds
 
 ```vim
 QuartoPreview
 QuartoClosePreview
-QuartoHelp ...
+QuartoHelp <..>
+QuartoActivate
 QuartoDiagnostics
 QuartoHover
 ```
