@@ -4,7 +4,7 @@ local lines = tools.lines
 local spaces = tools.spaces
 local api = vim.api
 
-M = {}
+local M = {}
 
 local function get_language_content(bufnr)
   -- get and parse AST

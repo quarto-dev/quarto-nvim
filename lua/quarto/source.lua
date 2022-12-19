@@ -7,6 +7,7 @@ source.new = function(client, qmdbufnr, bufnr)
   self.client = client
   self.bufnr = bufnr
   self.qmdbufnr = qmdbufnr
+  self.id = qmdbufnr
   self.request_ids = {}
   return self
 end

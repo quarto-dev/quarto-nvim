@@ -26,7 +26,7 @@ hello()
 And this function is not found because we have a typo:
 
 ```{python} 
-helo()
+hello()
 ```
 
 Now, we use the function in the next code chunk
@@ -49,6 +49,6 @@ hello_from_r <- function() {
 Unsurprisingly, the function does the same thing:
 
 ```{r} 
-hello_from_r()
+ello_from_r()
 ```
 
