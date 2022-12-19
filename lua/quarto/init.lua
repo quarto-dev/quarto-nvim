@@ -119,7 +119,7 @@ M.cmp_setup_source = function(qmdbufnr, bufnr)
   end
   vim.api.nvim_create_autocmd('InsertEnter', {
     buffer = qmdbufnr,
-    group = vim.api.nvim_create_augroup('cmp_quarto', { clear = false }),
+    group = vim.api.nvim_create_augroup('cmp_quarto'..bufnr, { clear = true }),
     callback = callback
   })
 end
