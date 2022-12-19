@@ -3,8 +3,24 @@ local api = vim.api
 local util = require "lspconfig.util"
 local buffers = require'quarto.buffers'
 local source = require'quarto.source'
-local config = require'quarto.config'.config
-local update_config = require'quarto.config'.update
+
+M.defaultConfig = {
+  debug = false,
+  closePreviewOnExit = true,
+  lspFeatures = {
+    enabled = false,
+    languages = { 'r', 'python', 'julia' },
+    diagnostics = {
+      enabled = true,
+    },
+    cmpSource = {
+      enabled = true,
+    },
+  },
+  keymap = {
+    hover = 'K',
+  }
+}
 
 ---Registered client and source mapping.
 M.cmp_client_source_map = {}
@@ -97,7 +113,7 @@ function M.quartoPreview()
 
 
   -- close preview terminal on exit of the quarto buffer
-  if config.closePreviewOnExit then
+  if M.config.closePreviewOnExit then
     api.nvim_create_autocmd({ "QuitPre", "WinClosed" }, {
       buffer = api.nvim_get_current_buf(),
       group = api.nvim_create_augroup("quartoPreview", {}),
@@ -120,7 +136,7 @@ end
 
 M.activateLspFeatures = function()
   local qmdbufnr = api.nvim_get_current_buf()
-  local bufnrs = buffers.updateLanguageBuffers(qmdbufnr)
+  local bufnrs = buffers.updateLanguageBuffers(qmdbufnr, M.config.lspFeatures.languages)
 
   -- auto-close language files on qmd file close
   api.nvim_create_autocmd({ "QuitPre", "WinClosed" }, {
@@ -139,11 +155,11 @@ M.activateLspFeatures = function()
     end
   })
 
-  if config.lspFeatures.diagnostics.enabled then
+  if M.config.lspFeatures.diagnostics.enabled then
     M.enableDiagnostics()
   end
 
-  if config.lspFeatures.cmpSource.enabled then
+  if M.config.lspFeatures.cmpSource.enabled then
     for _,bufnr in ipairs(bufnrs) do
       M.cmp_setup_source(qmdbufnr, bufnr)
     end
@@ -152,12 +168,12 @@ M.activateLspFeatures = function()
       buffer = 0,
       group = api.nvim_create_augroup("quartoCmp", { clear = false }),
       callback = function(_, _)
-        local bufnrs = buffers.updateLanguageBuffers(0)
+        local bufnrs = buffers.updateLanguageBuffers(0, M.config.lspFeatures.languages)
       end
     })
   end
 
-  local key = config.keymap.hover
+  local key = M.config.keymap.hover
   vim.api.nvim_set_keymap('n', key, ":lua require'quarto'.quartoHover()<cr>", { silent = true })
 end
 
@@ -167,7 +183,7 @@ M.enableDiagnostics = function()
     buffer = 0,
     group = api.nvim_create_augroup("quartoLSPDiagnositcs", { clear = false }),
     callback = function(_, _)
-      local bufnrs = buffers.updateLanguageBuffers(0)
+      local bufnrs = buffers.updateLanguageBuffers(0, M.config.lspFeatures.languages)
       for _, bufnr in ipairs(bufnrs) do
         local diag = vim.diagnostic.get(bufnr)
         local ns = api.nvim_create_namespace('quarto-lang-' .. bufnr)
@@ -180,7 +196,7 @@ end
 
 M.quartoHover = function()
   local qmdbufnr = api.nvim_get_current_buf()
-  local bufnrs = buffers.updateLanguageBuffers(qmdbufnr)
+  local bufnrs = buffers.updateLanguageBuffers(qmdbufnr, M.config.lspFeatures.languages)
   for _, bufnr in ipairs(bufnrs) do
     local uri = vim.uri_from_bufnr(bufnr)
     local position_params = vim.lsp.util.make_position_params()
@@ -214,7 +230,7 @@ end
 
 -- setup
 M.setup = function(opt)
-  update_config(opt)
+  M.config = vim.tbl_deep_extend('force', M.defaultConfig, opt or {})
 end
 
 M.debug = function()

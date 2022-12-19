@@ -49,6 +49,6 @@ hello_from_r <- function() {
 Unsurprisingly, the function does the same thing:
 
 ```{r} 
-ello_from_r()
+hello_from_r()
 ```
 

@@ -1,5 +1,5 @@
 local quarto = require'quarto'
-local config = require'quarto.config'.config
+local config = require'quarto'.config
 local a = vim.api
 
 a.nvim_create_user_command('QuartoPreview', quarto.quartoPreview, {})

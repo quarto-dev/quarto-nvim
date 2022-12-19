@@ -1,5 +1,4 @@
 local tools = require'quarto.tools'
-local config = require'quarto.config'.config
 local lines = tools.lines
 local spaces = tools.spaces
 local api = vim.api
@@ -52,10 +51,10 @@ local function get_language_content(bufnr)
   return results
 end
 
-M.updateLanguageBuffers = function(qmd_bufnr)
+M.updateLanguageBuffers = function(qmd_bufnr, languages)
   local language_content = get_language_content(qmd_bufnr)
   local bufnrs = {}
-  for _, lang in ipairs(config.lspFeatures.languages) do
+  for _, lang in ipairs(languages) do
     local language_lines = language_content[lang]
     if language_lines ~= nil then
       local postfix
