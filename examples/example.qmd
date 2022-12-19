@@ -15,7 +15,6 @@ def hello():
 
 ```{python} 
 import numpy as np
-np.ze
 ```
 
 This is how we call it:
