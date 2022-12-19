@@ -112,6 +112,10 @@ linters: linters_with_defaults(
   )
 ```
 
+You can now also enable other lsp features, such as the show hover function
+and shortcut, independent of showing diagnostics by enabling lsp features
+but not enabling diagnostics.
+
 ## Available Commnds
 
 ```vim
