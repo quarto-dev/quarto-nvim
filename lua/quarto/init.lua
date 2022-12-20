@@ -316,6 +316,18 @@ end
 -- setup
 M.setup = function(opt)
   M.config = vim.tbl_deep_extend('force', M.defaultConfig, opt or {})
+
+  api.nvim_create_autocmd({"BufEnter"}, {
+    pattern = {"*.qmd"},
+    callback = function ()
+      if M.config.lspFeatures.enabled then
+        M.activateLspFeatures()
+        if M.config.lspFeatures.diagnostics.enabled then
+          M.enableDiagnostics()
+        end
+      end
+    end,
+  })
 end
 
 M.debug = function()
