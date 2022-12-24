@@ -86,9 +86,13 @@ require'quarto'.setup{
 
 ## Language support (WIP)
 
-This might need quite a few resources, especially for multi-language documents,
-as it maintains hidden buffers for all the embedded languages in your quarto document (R, python and julia) and
-talks to language servers attached to each.
+### Demo
+
+
+https://user-images.githubusercontent.com/17450586/209436101-4dd560f4-c876-4dbc-a0f4-b3a2cbff0748.mp4
+
+
+### Usage
 
 Enable quarto-nvim's lsp features by configuring it with
 
