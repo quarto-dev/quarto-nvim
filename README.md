@@ -2,6 +2,8 @@
 
 Quarto-nvim provides tools for working on [quarto](https://quarto.org/) manuscripts in neovim.
 
+**Note**: Some functtionality has been refactored into its own library [otter.nvim](https://github.com/jmbuhr/otter.nvim) for better extensibility.
+
 ## Setup
 
 Install the plugin from GitHub with your favourite neovim plugin manager e.g.
@@ -10,8 +12,21 @@ Install the plugin from GitHub with your favourite neovim plugin manager e.g.
 
 ```lua
 use { 'quarto-dev/quarto-nvim',
-  requires = {'neovim/nvim-lspconfig'}
+  requires = {
+    'neovim/nvim-lspconfig',
+    'jmbuhr/otter.nvim'
+  }
 }
+```
+
+or [lazy](https://github.com/folke/lazy.nvim)
+
+```lua
+{ 'quarto-dev/quarto-nvim',
+  dependencies = {
+    'jmbuhr/otter.nvim',
+    'neovim/nvim-lspconfig'
+  },
 ```
 
 or [vim-plug](https://github.com/junegunn/vim-plug)
@@ -19,6 +34,7 @@ or [vim-plug](https://github.com/junegunn/vim-plug)
 ```vim
 Plug 'quarto-dev/quarto-nvim'
 Plug 'neovim/nvim-lspconfig'
+Plug 'jmbuhr/otter.nvim'
 ```
 
 ## Usage
@@ -55,14 +71,15 @@ require'quarto'.setup{
     languages = { 'r', 'python', 'julia' },
     diagnostics = {
       enabled = true,
-      triggers = { "BufEnter", "InsertLeave", "TextChanged" }
+      triggers = { "BufWrite" }
     },
-    cmpSource = {
-      enabled = true,
+    completion = {
+      enabled = false,
     },
   },
   keymap = {
     hover = 'K',
+    definition = 'gd'
   }
 }
 ```
@@ -79,10 +96,6 @@ Enable quarto-nvim's lsp features by configuring it with
 require'quarto'.setup{
   lspFeatures = {
     enabled = true,
-    languages = { 'r', 'python', 'julia' },
-    diagnostics = {
-      enabled = true,
-    },
   }
 }
 ```
@@ -97,7 +110,7 @@ QuartoDiagnostics
 or
 
 ```vim
-lua require'quarto'.activateLspFeatures
+lua require'quarto'.activate
 lua require'quarto'.enableDiagnostics
 ```
 
@@ -112,7 +125,7 @@ With the quarto language features enabled, you can add the source in your `cmp` 
 ```lua
 -- ...
   sources = {
-    { name = 'quarto' },
+    { name = 'otter' },
   }
 -- ...
 ```
