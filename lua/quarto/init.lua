@@ -114,15 +114,11 @@ M.quartoDefinition = function()
   local main_nr = api.nvim_get_current_buf()
   local main_uri = vim.uri_from_bufnr(main_nr)
   otter.send_request(main_nr, "textDocument/definition", function(response)
-    local modified_response = {}
-    for _,res in ipairs(response) do
-      if res.uri ~= nil then
-        if require'otter.tools.functions'.is_otterpath(res.uri) then
-            res.uri = main_uri
-        end
-        table.insert(modified_response, res)
+    if response.uri ~= nil then
+      if require'otter.tools.functions'.is_otterpath(response.uri) then
+          response.uri = main_uri
       end
-    return modified_response
+      return response
     end
     end
   )
