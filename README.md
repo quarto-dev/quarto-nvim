@@ -2,7 +2,7 @@
 
 Quarto-nvim provides tools for working on [quarto](https://quarto.org/) manuscripts in neovim.
 
-**Note**: Some functtionality has been refactored into its own library [otter.nvim](https://github.com/jmbuhr/otter.nvim) for better extensibility.
+**Note**: Some functionality has been refactored into its own library [otter.nvim](https://github.com/jmbuhr/otter.nvim) for better extensibility.
 
 ## Setup
 
