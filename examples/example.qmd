@@ -13,28 +13,21 @@ def hello():
   print("Hello")
 ```
 
-```{python} 
-import numpy as np
-np.zeros()
-```
-
 This is how we call it:
 
 ```{python} 
 hello()
 ```
 
-And this function is not found because we have a typo:
+We can press `gd` to go to its definition.
+
+Let's demonstrate the autompletion:
 
 ```{python} 
-hello()
+import numpy as np
 ```
 
-Now, we use the function in the next code chunk
-to highlight the necessity of having all code
-chunks in the same hidden document for the language server:
-
-Let's make this work!
+And code hovers with `K`.
 
 # Furthermore
 
