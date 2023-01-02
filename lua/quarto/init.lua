@@ -152,7 +152,8 @@ M.setup = function(opt)
   api.nvim_create_autocmd({"BufEnter"}, {
     pattern = {"*.qmd"},
     callback = function ()
-      if M.config.lspFeatures.enabled and not vim.bo.buftype == 'terminal' then
+      P(vim.bo.buftype)
+      if M.config.lspFeatures.enabled and vim.bo.buftype ~= 'terminal' then
         M.activate()
 
         vim.api.nvim_buf_set_keymap(0, 'n', M.config.keymap.definition, ":lua require'quarto'.quartoDefinition()<cr>", { silent = true })
