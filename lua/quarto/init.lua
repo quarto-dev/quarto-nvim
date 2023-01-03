@@ -152,7 +152,6 @@ M.setup = function(opt)
   api.nvim_create_autocmd({"BufEnter"}, {
     pattern = {"*.qmd"},
     callback = function ()
-      P(vim.bo.buftype)
       if M.config.lspFeatures.enabled and vim.bo.buftype ~= 'terminal' then
         M.activate()
 

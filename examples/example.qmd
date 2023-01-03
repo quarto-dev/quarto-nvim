@@ -7,7 +7,7 @@ format: html
 
 This is some python code,
 in which we define a function `hello`:
-  
+
 ```{python} 
 def hello():
   print("Hello")
@@ -36,7 +36,7 @@ languages in the same document, like this R function:
 
 ```{r} 
 hello_from_r <- function() {
-    print("hello")
+  print("hello")
 }
 ```
 
@@ -45,4 +45,10 @@ Unsurprisingly, the function does the same thing:
 ```{r} 
 hello_from_r()
 ```
+
+
+```{r}
+library(tidyverse)
+```
+
 
