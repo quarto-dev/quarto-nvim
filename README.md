@@ -88,9 +88,7 @@ require'quarto'.setup{
 
 ### Demo
 
-
 https://user-images.githubusercontent.com/17450586/209436101-4dd560f4-c876-4dbc-a0f4-b3a2cbff0748.mp4
-
 
 ### Usage
 
@@ -134,8 +132,6 @@ With the quarto language features enabled, you can add the source in your `cmp` 
 -- ...
 ```
 
-Limitation: Currently this only works for one of the languages in a multi-language document. I am on it!
-
 ### R diagnostics configuration
 
 To make diagnostics work with R you have to configure the linter a bit, since the language
@@ -153,6 +149,12 @@ linters: linters_with_defaults(
 You can now also enable other lsp features, such as the show hover function
 and shortcut, independent of showing diagnostics by enabling lsp features
 but not enabling diagnostics.
+
+### Other edgecases
+
+Other languages might have similar issues (e.g. I see a lot of warnings about whitespace when activating diagnostics with `lua`).
+If you come across them and have a fix, I will be very happy about a pull request!
+Or, what might ultimately be the cleaner way of documenting language specific issues, an entry in the [wiki](https://github.com/quarto-dev/quarto-nvim/wiki).
 
 ## Available Commnds
 
