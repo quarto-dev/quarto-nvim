@@ -35,7 +35,7 @@ function M.quartoPreview()
     cmd = 'quarto preview'
   else
     mode = "file"
-    cmd = 'quarto preview ' .. buffer_path
+    cmd = 'quarto preview \'' .. buffer_path .. '\''
   end
 
   local quarto_extensions = { ".qmd", ".Rmd", ".ipynb", ".md" }
