@@ -5,8 +5,7 @@ format: html
 
 # Hello World
 
-This is some python code,
-in which we define a function `hello`:
+This is some python code, in which we define a function `hello`:
 
 ```{python} 
 def hello():
@@ -17,6 +16,10 @@ This is how we call it:
 
 ```{python} 
 hello()
+```
+
+```{haskell}
+xs = [x | x <- [1..10]]
 ```
 
 We can press `gd` to go to its definition.
