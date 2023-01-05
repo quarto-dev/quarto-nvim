@@ -3,7 +3,8 @@
 ==============================================================================
 Table of Contents                                   *quarto-table-of-contents*
 
-1. quarto-nvim                                            |quarto-quarto-nvim|
+1. Moved:                                                      |quarto-moved:|
+  - quarto-nvim                                           |quarto-quarto-nvim|
   - Setup                                                       |quarto-setup|
   - Usage                                                       |quarto-usage|
   - Configure                                               |quarto-configure|
@@ -12,7 +13,11 @@ Table of Contents                                   *quarto-table-of-contents*
   - Recommended Plugins                           |quarto-recommended-plugins|
 
 ==============================================================================
-1. quarto-nvim                                            *quarto-quarto-nvim*
+1. Moved:                                                      *quarto-moved:*
+
+This repo is now at https://github.com/quarto-dev/quarto-nvim
+
+QUARTO-NVIM                                               *quarto-quarto-nvim*
 
 Quarto-nvim provides tools for working on quarto <https://quarto.org/>
 manuscripts in neovim.
