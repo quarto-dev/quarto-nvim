@@ -1,0 +1,17 @@
+---
+title: Hello world
+format: html
+---
+
+# Hello
+
+```{haskell}
+xs :: [Int]
+xs = [x | x <- [1..10]]
+```
+
+
+```{haskell}
+s :: Int
+s = sum xs
+```

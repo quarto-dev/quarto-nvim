@@ -1,0 +1,57 @@
+---
+title: Hello World
+format: html
+---
+
+# Hello World
+
+This is some python code, in which we define a function `hello`:
+
+```{python} 
+def hello():
+  print("Hello")
+```
+
+This is how we call it:
+
+```{python} 
+hello()
+```
+
+```{haskell}
+xs = [x | x <- [1..10]]
+```
+
+We can press `gd` to go to its definition.
+
+Let's demonstrate the autompletion:
+
+```{python} 
+import numpy as np
+```
+
+And code hovers with `K`.
+
+# Furthermore
+
+And then we can work on integrating this for multiple 
+languages in the same document, like this R function:
+
+```{r} 
+hello_from_r <- function() {
+  print("hello")
+}
+```
+
+Unsurprisingly, the function does the same thing:
+
+```{r} 
+hello_from_r()
+```
+
+
+```{r}
+library(tidyverse)
+```
+
+

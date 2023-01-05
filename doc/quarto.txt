@@ -1,23 +1,218 @@
-============================================================================
-                                                                 *quarto.nvim*
+*quarto.txt*                                           Quarto mode for neovim.
 
-This plugin helps you author quarto documents.
-Learn more about quarto here: https://quarto.org/.
+==============================================================================
+Table of Contents                                   *quarto-table-of-contents*
+
+1. quarto-nvim                                            |quarto-quarto-nvim|
+  - Setup                                                       |quarto-setup|
+  - Usage                                                       |quarto-usage|
+  - Configure                                               |quarto-configure|
+  - Language support (WIP)                     |quarto-language-support-(wip)|
+  - Available Commnds                               |quarto-available-commnds|
+  - Recommended Plugins                           |quarto-recommended-plugins|
+
+==============================================================================
+1. quarto-nvim                                            *quarto-quarto-nvim*
+
+Quarto-nvim provides tools for working on quarto <https://quarto.org/>
+manuscripts in neovim.
+
+**Note**: Some functionality has been refactored into its own library
+otter.nvim <https://github.com/jmbuhr/otter.nvim> for better extensibility.
+
+SETUP                                                           *quarto-setup*
+
+Install the plugin from GitHub with your favourite neovim plugin manager e.g.
+
+packer.nvim <https://github.com/wbthomason/packer.nvim>:
+
+>
+    use { 'quarto-dev/quarto-nvim',
+      requires = {
+        'neovim/nvim-lspconfig',
+        'jmbuhr/otter.nvim'
+      }
+    }
+<
 
 
-                                                      *quarto.quartoPreview()*
-quartoPreview()
+or lazy <https://github.com/folke/lazy.nvim>
 
-	require'quarto'.QuartoPreview()
-
-                                                               *QuartoPreview*
-QuartoPreview
-
-  Run quarto preview on the current file or project.
-
-	:QuartoPreview
+>
+    { 'quarto-dev/quarto-nvim',
+      dependencies = {
+        'jmbuhr/otter.nvim',
+        'neovim/nvim-lspconfig'
+      },
+<
 
 
+or vim-plug <https://github.com/junegunn/vim-plug>
+
+>
+    Plug 'quarto-dev/quarto-nvim'
+    Plug 'neovim/nvim-lspconfig'
+    Plug 'jmbuhr/otter.nvim'
+<
 
 
- vim:tw=78:ts=8:ft=help:norl:
+USAGE                                                           *quarto-usage*
+
+PREVIEW ~
+
+Use the command
+
+>
+    QuartoPreview
+<
+
+
+or access the function from lua, e.g. to create a keybinding:
+
+>
+    local quarto = require'quarto'
+    vim.keymap.set('n', '<leader>qp', quarto.quartoPreview, {silent = true, noremap = true})
+<
+
+
+Then use the keyboard shortcut to open `quarto preview` for the current file or
+project in the active working directory in the neovim integrated terminal in a
+new tab.
+
+CONFIGURE                                                   *quarto-configure*
+
+You can pass a lua table with options to the setup function. It will be merged
+with the default options, which are shown below in the example (i.e. if you
+are fine with the defaults you don’t have to call the setup function).
+
+>
+    require'quarto'.setup{
+      debug = false,
+      closePreviewOnExit = true,
+      lspFeatures = {
+        enabled = false,
+        languages = { 'r', 'python', 'julia' },
+        diagnostics = {
+          enabled = true,
+          triggers = { "BufWrite" }
+        },
+        completion = {
+          enabled = false,
+        },
+      },
+      keymap = {
+        hover = 'K',
+        definition = 'gd'
+      }
+    }
+<
+
+
+LANGUAGE SUPPORT (WIP)                         *quarto-language-support-(wip)*
+
+DEMO ~
+
+
+https://user-images.githubusercontent.com/17450586/209436101-4dd560f4-c876-4dbc-a0f4-b3a2cbff0748.mp4
+
+USAGE ~
+
+Enable quarto-nvim’s lsp features by configuring it with
+
+>
+    require'quarto'.setup{
+      lspFeatures = {
+        enabled = true,
+      }
+    }
+<
+
+
+Or explicitly run
+
+>
+    QuartoActivate
+    QuartoDiagnostics
+<
+
+
+or
+
+>
+    lua require'quarto'.activate
+    lua require'quarto'.enableDiagnostics
+<
+
+
+After enabling the language features, you can open the hover documentation for
+R, python and julia code chunks with `K` (or configure a different shortcut).
+
+AUTOCOMPLETION ~
+
+`quarto-nvim` now comes with a completion source for nvim-cmp
+<https://github.com/hrsh7th/nvim-cmp> to deliver swift autocompletion for code
+in quarto code chunks. With the quarto language features enabled, you can add
+the source in your `cmp` configuration:
+
+>
+    -- ...
+      sources = {
+        { name = 'otter' },
+      }
+    -- ...
+<
+
+
+R DIAGNOSTICS CONFIGURATION ~
+
+To make diagnostics work with R you have to configure the linter a bit, since
+the language buffers in the background separate code with blank links, which we
+want to ignore. Otherwise you get a lot more diagnostics than you probably
+want. Add file `.lintr` to your home folder and fill it with:
+
+>
+    linters: linters_with_defaults(
+        trailing_blank_lines_linter = NULL,
+        trailing_whitespace_linter = NULL
+      )
+<
+
+
+You can now also enable other lsp features, such as the show hover function and
+shortcut, independent of showing diagnostics by enabling lsp features but not
+enabling diagnostics.
+
+OTHER EDGECASES ~
+
+Other languages might have similar issues (e.g. I see a lot of warnings about
+whitespace when activating diagnostics with `lua`). If you come across them and
+have a fix, I will be very happy about a pull request! Or, what might
+ultimately be the cleaner way of documenting language specific issues, an entry
+in the wiki <https://github.com/quarto-dev/quarto-nvim/wiki>.
+
+AVAILABLE COMMNDS                                   *quarto-available-commnds*
+
+>
+    QuartoPreview
+    QuartoClosePreview
+    QuartoHelp <..>
+    QuartoActivate
+    QuartoDiagnostics
+    QuartoHover
+<
+
+
+RECOMMENDED PLUGINS                               *quarto-recommended-plugins*
+
+Quarto works great with a number of existing plugins in the neovim ecosystem.
+You can find semi-opinionated but still minimal configurations for `nvim` and
+`tmux`, for use with quarto, R and python in these two repositories:
+
+
+- https://github.com/jmbuhr/quarto-nvim-kickstarter
+- https://github.com/jmbuhr/tmux-kickstarter
+
+
+Generated by panvimdoc <https://github.com/kdheepak/panvimdoc>
+
+vim:tw=78:ts=8:noet:ft=help:norl:
