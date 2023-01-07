@@ -1,4 +1,4 @@
-*quarto.txt*                                           Quarto mode for neovim.
+*quarto.txt*          For Neovim >= 0.8.0         Last change: 2023 January 07
 
 ==============================================================================
 Table of Contents                                   *quarto-table-of-contents*
@@ -31,7 +31,7 @@ Install the plugin from GitHub with your favourite neovim plugin manager e.g.
 
 packer.nvim <https://github.com/wbthomason/packer.nvim>:
 
->
+>lua
     use { 'quarto-dev/quarto-nvim',
       requires = {
         'neovim/nvim-lspconfig',
@@ -43,7 +43,7 @@ packer.nvim <https://github.com/wbthomason/packer.nvim>:
 
 or lazy <https://github.com/folke/lazy.nvim>
 
->
+>lua
     { 'quarto-dev/quarto-nvim',
       dependencies = {
         'jmbuhr/otter.nvim',
@@ -54,7 +54,7 @@ or lazy <https://github.com/folke/lazy.nvim>
 
 or vim-plug <https://github.com/junegunn/vim-plug>
 
->
+>vim
     Plug 'quarto-dev/quarto-nvim'
     Plug 'neovim/nvim-lspconfig'
     Plug 'jmbuhr/otter.nvim'
@@ -67,14 +67,14 @@ PREVIEW ~
 
 Use the command
 
->
+>vim
     QuartoPreview
 <
 
 
 or access the function from lua, e.g. to create a keybinding:
 
->
+>lua
     local quarto = require'quarto'
     vim.keymap.set('n', '<leader>qp', quarto.quartoPreview, {silent = true, noremap = true})
 <
@@ -90,7 +90,7 @@ You can pass a lua table with options to the setup function. It will be merged
 with the default options, which are shown below in the example (i.e. if you
 are fine with the defaults you don’t have to call the setup function).
 
->
+>lua
     require'quarto'.setup{
       debug = false,
       closePreviewOnExit = true,
@@ -124,7 +124,7 @@ USAGE ~
 
 Enable quarto-nvim’s lsp features by configuring it with
 
->
+>lua
     require'quarto'.setup{
       lspFeatures = {
         enabled = true,
@@ -135,7 +135,7 @@ Enable quarto-nvim’s lsp features by configuring it with
 
 Or explicitly run
 
->
+>vim
     QuartoActivate
     QuartoDiagnostics
 <
@@ -143,7 +143,7 @@ Or explicitly run
 
 or
 
->
+>vim
     lua require'quarto'.activate
     lua require'quarto'.enableDiagnostics
 <
@@ -159,7 +159,7 @@ AUTOCOMPLETION ~
 in quarto code chunks. With the quarto language features enabled, you can add
 the source in your `cmp` configuration:
 
->
+>lua
     -- ...
       sources = {
         { name = 'otter' },
@@ -197,7 +197,7 @@ in the wiki <https://github.com/quarto-dev/quarto-nvim/wiki>.
 
 AVAILABLE COMMNDS                                   *quarto-available-commnds*
 
->
+>vim
     QuartoPreview
     QuartoClosePreview
     QuartoHelp <..>
