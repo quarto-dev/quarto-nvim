@@ -12,19 +12,23 @@ def hello():
   print("Hello")
 ```
 
+```bash
+git clone
+```
+
 This is how we call it:
 
 ```{python} 
 hello()
 ```
 
-```{haskell}
+```haskell
 xs = [x | x <- [1..10]]
 ```
 
 We can press `gd` to go to its definition.
 
-Let's demonstrate the autompletion:
+Let's demonstrate the autocompletion:
 
 ```{python} 
 import numpy as np
@@ -53,5 +57,4 @@ hello_from_r()
 ```{r}
 library(tidyverse)
 ```
-
 
