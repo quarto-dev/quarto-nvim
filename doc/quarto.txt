@@ -1,4 +1,4 @@
-*quarto.txt*                                           Quarto mode for neovim.
+*quarto.txt*          For Neovim >= 0.8.0         Last change: 2023 January 17
 
 ==============================================================================
 Table of Contents                                   *quarto-table-of-contents*
@@ -27,7 +27,7 @@ example configuration:
 
 PACKER.NVIM <HTTPS://GITHUB.COM/WBTHOMASON/PACKER.NVIM> ~
 
->
+>lua
     use { 'quarto-dev/quarto-nvim',
         requires = {
           'jmbuhr/otter.nvim',
@@ -54,7 +54,7 @@ PACKER.NVIM <HTTPS://GITHUB.COM/WBTHOMASON/PACKER.NVIM> ~
 
 LAZY.NVIM <HTTPS://GITHUB.COM/FOLKE/LAZY.NVIM> ~
 
->
+>lua
       { 'quarto-dev/quarto-nvim',
         dependencies = {
           'jmbuhr/otter.nvim',
@@ -81,7 +81,7 @@ LAZY.NVIM <HTTPS://GITHUB.COM/FOLKE/LAZY.NVIM> ~
 
 VIM-PLUG <HTTPS://GITHUB.COM/JUNEGUNN/VIM-PLUG> ~
 
->
+>vim
     Plug 'quarto-dev/quarto-nvim'
     Plug 'neovim/nvim-lspconfig'
     Plug 'jmbuhr/otter.nvim'
@@ -94,14 +94,14 @@ PREVIEW ~
 
 Use the command
 
->
+>vim
     QuartoPreview
 <
 
 
 or access the function from lua, e.g. to create a keybinding:
 
->
+>lua
     local quarto = require'quarto'
     vim.keymap.set('n', '<leader>qp', quarto.quartoPreview, {silent = true, noremap = true})
 <
@@ -116,7 +116,7 @@ CONFIGURE                                                   *quarto-configure*
 You can pass a lua table with options to the setup function. It will be merged
 with the default options, which are shown below in the example:
 
->
+>lua
     require'quarto'.setup{
       debug = false,
       closePreviewOnExit = true,
@@ -152,7 +152,7 @@ USAGE ~
 
 Enable quarto-nvim’s lsp features by configuring it with
 
->
+>lua
     require'quarto'.setup{
       lspFeatures = {
         enabled = true,
@@ -171,7 +171,7 @@ AUTOCOMPLETION ~
 in quarto code chunks. With the quarto language features enabled, you can add
 the source in your `cmp` configuration:
 
->
+>lua
     -- ...
       sources = {
         { name = 'otter' },
@@ -209,7 +209,7 @@ in the wiki <https://github.com/quarto-dev/quarto-nvim/wiki>.
 
 AVAILABLE COMMNDS                                   *quarto-available-commnds*
 
->
+>vim
     QuartoPreview
     QuartoClosePreview
     QuartoHelp <..>
