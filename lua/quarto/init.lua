@@ -110,20 +110,7 @@ M.quartoHover = function()
 end
 
 
-M.quartoDefinition = function()
-  local main_nr = api.nvim_get_current_buf()
-  local main_uri = vim.uri_from_bufnr(main_nr)
-  otter.send_request(main_nr, "textDocument/definition", function(response)
-    if response.uri ~= nil then
-      if require'otter.tools.functions'.is_otterpath(response.uri) then
-          response.uri = main_uri
-      end
-      return response
-    end
-    end
-  )
-end
-
+M.quartoDefinition = require'otter'.ask_definition
 
 M.searchHelp = function(cmd_input)
   local topic = cmd_input.args
@@ -149,14 +136,16 @@ end
 M.setup = function(opt)
   M.config = vim.tbl_deep_extend('force', M.defaultConfig, opt or {})
 
-  api.nvim_create_autocmd({"BufEnter"}, {
-    pattern = {"*.qmd"},
-    callback = function ()
+  api.nvim_create_autocmd({ "BufEnter" }, {
+    pattern = { "*.qmd" },
+    callback = function()
       if M.config.lspFeatures.enabled and vim.bo.buftype ~= 'terminal' then
         M.activate()
 
-        vim.api.nvim_buf_set_keymap(0, 'n', M.config.keymap.definition, ":lua require'quarto'.quartoDefinition()<cr>", { silent = true })
-        vim.api.nvim_buf_set_keymap(0, 'n', M.config.keymap.hover, ":lua require'quarto'.quartoHover()<cr>", { silent = true })
+        vim.api.nvim_buf_set_keymap(0, 'n', M.config.keymap.definition, ":lua require'quarto'.quartoDefinition()<cr>",
+          { silent = true })
+        vim.api.nvim_buf_set_keymap(0, 'n', M.config.keymap.hover, ":lua require'quarto'.quartoHover()<cr>",
+          { silent = true })
 
         if M.config.lspFeatures.diagnostics.enabled then
           M.enableDiagnostics()
