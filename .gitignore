@@ -3,3 +3,6 @@ example.html
 example*.R
 example*.py
 example*.hs
+examples/*.docx
+examples/*.html
+examples/*.pdf

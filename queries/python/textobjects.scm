@@ -1,4 +1,4 @@
 (
-  (comment) @codechunk
-  (#eq? @codechunk "#%%")
+  (comment) @codechunk.inner
+  (#eq? @codechunk.inner "#%%")
 )
