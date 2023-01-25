@@ -138,6 +138,8 @@ M.setup = function(opt)
 
   api.nvim_create_autocmd({ "BufEnter" }, {
     pattern = { "*.qmd" },
+    group = vim.api.nvim_create_augroup('QuartoSetup', {}),
+    desc = 'set up quarto',
     callback = function()
       if M.config.lspFeatures.enabled and vim.bo.buftype ~= 'terminal' then
         M.activate()
