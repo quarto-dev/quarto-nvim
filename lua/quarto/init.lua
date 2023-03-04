@@ -10,6 +10,7 @@ M.defaultConfig = {
   lspFeatures = {
     enabled = false,
     languages = { 'r', 'python', 'julia' },
+    chunks = 'curly', -- 'curly' or 'all'
     diagnostics = {
       enabled = true,
       triggers = { "BufWrite" }
@@ -116,7 +117,30 @@ M.searchHelp = function(cmd_input)
 end
 
 M.activate = function()
-  otter.activate(M.config.lspFeatures.languages, M.config.lspFeatures.completion.enabled)
+  local tsqueries = nil
+  if M.config.lspFeatures.chunks == 'all' then
+    tsqueries = {
+      quarto = [[
+      (fenced_code_block
+      (info_string
+        (language) @lang
+      )
+      (code_fence_content) @code (#offset! @code)
+      )]],
+    }
+  elseif M.config.lspFeatures.chunks == 'curly' then
+    tsqueries = {
+      quarto = [[
+      (fenced_code_block
+      (info_string
+        (language) @lang
+      ) @info
+        (#match? @info "{")
+      (code_fence_content) @code (#offset! @code)
+      )]],
+    }
+  end
+  otter.activate(M.config.lspFeatures.languages, M.config.lspFeatures.completion.enabled, tsqueries)
 end
 
 -- setup
