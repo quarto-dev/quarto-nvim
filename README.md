@@ -100,6 +100,7 @@ require'quarto'.setup{
   lspFeatures = {
     enabled = false,
     languages = { 'r', 'python', 'julia' },
+    chunks = 'curly', -- 'curly' or 'all'
     diagnostics = {
       enabled = true,
       triggers = { "BufWrite" }

@@ -96,21 +96,8 @@ M.enableDiagnostics = function()
   })
 end
 
-M.quartoHover = function()
-  local main_nr = api.nvim_get_current_buf()
-  otter.send_request(main_nr, "textDocument/hover", function(response)
-    local ok, filtered_response = pcall(tools.replace_header_div, response)
-    if ok then
-      return filtered_response
-    else
-      return response
-    end
-  end
-  )
-end
-
-
-M.quartoDefinition = require'otter'.ask_definition
+M.quartoHover = otter.ask_hover
+M.quartoDefinition =otter.ask_definition
 
 M.searchHelp = function(cmd_input)
   local topic = cmd_input.args
