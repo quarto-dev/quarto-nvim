@@ -4,12 +4,12 @@
 Table of Contents                                   *quarto-table-of-contents*
 
 1. quarto-nvim                                            |quarto-quarto-nvim|
-  - Setup                                                       |quarto-setup|
-  - Usage                                                       |quarto-usage|
-  - Configure                                               |quarto-configure|
-  - Language support                                 |quarto-language-support|
-  - Available Commnds                               |quarto-available-commnds|
-  - Recommended Plugins                           |quarto-recommended-plugins|
+  - Setup                                           |quarto-quarto-nvim-setup|
+  - Usage                                           |quarto-quarto-nvim-usage|
+  - Configure                                   |quarto-quarto-nvim-configure|
+  - Language support                     |quarto-quarto-nvim-language-support|
+  - Available Commnds                   |quarto-quarto-nvim-available-commnds|
+  - Recommended Plugins               |quarto-quarto-nvim-recommended-plugins|
 
 ==============================================================================
 1. quarto-nvim                                            *quarto-quarto-nvim*
@@ -20,14 +20,16 @@ manuscripts in neovim.
 **Note**: Some functionality has been refactored into its own library
 otter.nvim <https://github.com/jmbuhr/otter.nvim> for better extensibility.
 
-SETUP                                                           *quarto-setup*
+
+SETUP                                               *quarto-quarto-nvim-setup*
 
 Install the plugin from GitHub with your favourite neovim plugin manager. With
 example configuration:
 
-PACKER.NVIM <HTTPS://GITHUB.COM/WBTHOMASON/PACKER.NVIM> ~
 
->
+PACKER.NVIM ~
+
+>lua
     use { 'quarto-dev/quarto-nvim',
         requires = {
           'jmbuhr/otter.nvim',
@@ -52,9 +54,9 @@ PACKER.NVIM <HTTPS://GITHUB.COM/WBTHOMASON/PACKER.NVIM> ~
 <
 
 
-LAZY.NVIM <HTTPS://GITHUB.COM/FOLKE/LAZY.NVIM> ~
+LAZY.NVIM ~
 
->
+>lua
       { 'quarto-dev/quarto-nvim',
         dependencies = {
           'jmbuhr/otter.nvim',
@@ -79,50 +81,51 @@ LAZY.NVIM <HTTPS://GITHUB.COM/FOLKE/LAZY.NVIM> ~
 <
 
 
-VIM-PLUG <HTTPS://GITHUB.COM/JUNEGUNN/VIM-PLUG> ~
+VIM-PLUG ~
 
->
+>vim
     Plug 'quarto-dev/quarto-nvim'
     Plug 'neovim/nvim-lspconfig'
     Plug 'jmbuhr/otter.nvim'
 <
 
 
-USAGE                                                           *quarto-usage*
+USAGE                                               *quarto-quarto-nvim-usage*
+
 
 PREVIEW ~
 
 Use the command
 
->
+>vim
     QuartoPreview
 <
 
-
 or access the function from lua, e.g. to create a keybinding:
 
->
+>lua
     local quarto = require'quarto'
     vim.keymap.set('n', '<leader>qp', quarto.quartoPreview, {silent = true, noremap = true})
 <
-
 
 Then use the keyboard shortcut to open `quarto preview` for the current file or
 project in the active working directory in the neovim integrated terminal in a
 new tab.
 
-CONFIGURE                                                   *quarto-configure*
+
+CONFIGURE                                       *quarto-quarto-nvim-configure*
 
 You can pass a lua table with options to the setup function. It will be merged
 with the default options, which are shown below in the example:
 
->
+>lua
     require'quarto'.setup{
       debug = false,
       closePreviewOnExit = true,
       lspFeatures = {
         enabled = false,
         languages = { 'r', 'python', 'julia' },
+        chunks = 'curly', -- 'curly' or 'all'
         diagnostics = {
           enabled = true,
           triggers = { "BufWrite" }
@@ -138,21 +141,23 @@ with the default options, which are shown below in the example:
     }
 <
 
-
 If you only need `QuartoPreview`, you don’t have to call the setup function.
 
-LANGUAGE SUPPORT                                     *quarto-language-support*
+
+LANGUAGE SUPPORT                         *quarto-quarto-nvim-language-support*
+
 
 DEMO ~
 
 
 https://user-images.githubusercontent.com/17450586/209436101-4dd560f4-c876-4dbc-a0f4-b3a2cbff0748.mp4
 
+
 USAGE ~
 
 Enable quarto-nvim’s lsp features by configuring it with
 
->
+>lua
     require'quarto'.setup{
       lspFeatures = {
         enabled = true,
@@ -160,9 +165,9 @@ Enable quarto-nvim’s lsp features by configuring it with
     }
 <
 
-
 After enabling the language features, you can open the hover documentation for
 R, python and julia code chunks with `K` (or configure a different shortcut).
+
 
 AUTOCOMPLETION ~
 
@@ -171,7 +176,7 @@ AUTOCOMPLETION ~
 in quarto code chunks. With the quarto language features enabled, you can add
 the source in your `cmp` configuration:
 
->
+>lua
     -- ...
       sources = {
         { name = 'otter' },
@@ -194,10 +199,10 @@ want. Add file `.lintr` to your home folder and fill it with:
       )
 <
 
-
 You can now also enable other lsp features, such as the show hover function and
 shortcut, independent of showing diagnostics by enabling lsp features but not
 enabling diagnostics.
+
 
 OTHER EDGECASES ~
 
@@ -207,9 +212,10 @@ have a fix, I will be very happy about a pull request! Or, what might
 ultimately be the cleaner way of documenting language specific issues, an entry
 in the wiki <https://github.com/quarto-dev/quarto-nvim/wiki>.
 
-AVAILABLE COMMNDS                                   *quarto-available-commnds*
 
->
+AVAILABLE COMMNDS                       *quarto-quarto-nvim-available-commnds*
+
+>vim
     QuartoPreview
     QuartoClosePreview
     QuartoHelp <..>
@@ -219,16 +225,15 @@ AVAILABLE COMMNDS                                   *quarto-available-commnds*
 <
 
 
-RECOMMENDED PLUGINS                               *quarto-recommended-plugins*
+RECOMMENDED PLUGINS                   *quarto-quarto-nvim-recommended-plugins*
 
 Quarto works great with a number of existing plugins in the neovim ecosystem.
 You can find semi-opinionated but still minimal configurations for `nvim` and
 `tmux`, for use with quarto, R and python in these two repositories:
 
 
-- https://github.com/jmbuhr/quarto-nvim-kickstarter
-- https://github.com/jmbuhr/tmux-kickstarter
-
+- <https://github.com/jmbuhr/quarto-nvim-kickstarter>
+- <https://github.com/jmbuhr/tmux-kickstarter>
 
 Generated by panvimdoc <https://github.com/kdheepak/panvimdoc>
 
