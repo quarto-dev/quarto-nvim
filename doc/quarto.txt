@@ -1,4 +1,4 @@
-*quarto.txt*                                           Quarto mode for neovim.
+*quarto.txt*           For Neovim >= 0.8.0          Last change: 2023 March 11
 
 ==============================================================================
 Table of Contents                                   *quarto-table-of-contents*
@@ -17,8 +17,8 @@ Table of Contents                                   *quarto-table-of-contents*
 Quarto-nvim provides tools for working on quarto <https://quarto.org/>
 manuscripts in neovim.
 
-**Note**: Some functionality has been refactored into its own library
-otter.nvim <https://github.com/jmbuhr/otter.nvim> for better extensibility.
+**Note**Some functionality has been refactored into its own library otter.nvim
+<https://github.com/jmbuhr/otter.nvim> for better extensibility.
 
 
 SETUP                                               *quarto-quarto-nvim-setup*
