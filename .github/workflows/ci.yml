@@ -54,7 +54,7 @@ jobs:
         id: release
         with:
           release-type: simple
-          package-name: lazy.nvim
+          package-name: quarto-nvim
       - uses: actions/checkout@v2
       - name: tag stable versions
         if: ${{ steps.release.outputs.release_created }}
