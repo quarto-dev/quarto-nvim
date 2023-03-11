@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.7.1](https://github.com/quarto-dev/quarto-nvim/compare/v0.7.0...v0.7.1) (2023-03-11)
+
+
+### Bug Fixes
+
+* format and trigger release ([9e2adb0](https://github.com/quarto-dev/quarto-nvim/commit/9e2adb0e93e2d3c7ae1ce0471bcd8113faa03521))
+* just use otter.ask_hover ([31ba845](https://github.com/quarto-dev/quarto-nvim/commit/31ba845274e2a1f77dd5ebe2890e182856776a15))
+
 ## [0.7.0](https://github.com/quarto-dev/quarto-nvim/compare/v0.6.0...v0.7.0) (2023-02-15)
 
 
