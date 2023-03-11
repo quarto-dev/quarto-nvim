@@ -98,7 +98,7 @@ M.enableDiagnostics = function()
 end
 
 M.quartoHover = otter.ask_hover
-M.quartoDefinition =otter.ask_definition
+M.quartoDefinition = otter.ask_definition
 
 M.searchHelp = function(cmd_input)
   local topic = cmd_input.args
