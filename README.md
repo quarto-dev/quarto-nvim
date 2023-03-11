@@ -15,7 +15,9 @@ With example configuration:
 use { 'quarto-dev/quarto-nvim',
     requires = {
       'jmbuhr/otter.nvim',
-      'neovim/nvim-lspconfig'
+      'hrsh7th/nvim-cmp',
+      'neovim/nvim-lspconfig',
+      'nvim-treesitter/nvim-treesitter'
     },
     config = function()
       require 'quarto'.setup {
@@ -41,7 +43,9 @@ use { 'quarto-dev/quarto-nvim',
   { 'quarto-dev/quarto-nvim',
     dependencies = {
       'jmbuhr/otter.nvim',
-      'neovim/nvim-lspconfig'
+      'hrsh7th/nvim-cmp',
+      'neovim/nvim-lspconfig',
+      'nvim-treesitter/nvim-treesitter'
     },
     config = function()
       require 'quarto'.setup {
@@ -67,6 +71,8 @@ use { 'quarto-dev/quarto-nvim',
 Plug 'quarto-dev/quarto-nvim'
 Plug 'neovim/nvim-lspconfig'
 Plug 'jmbuhr/otter.nvim'
+Plug 'hrsh7th/nvim-cmp'
+Plug 'nvim-treesitter/nvim-treesitter'
 ```
 
 ## Usage
