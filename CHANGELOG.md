@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.2](https://github.com/quarto-dev/quarto-nvim/compare/v0.7.1...v0.7.2) (2023-03-11)
+
+
+### Bug Fixes
+
+* fix package name for release ([96f741c](https://github.com/quarto-dev/quarto-nvim/commit/96f741cd04dd769e9ce1c1aaa913ee6296594a47))
+
 ## [0.7.1](https://github.com/quarto-dev/quarto-nvim/compare/v0.7.0...v0.7.1) (2023-03-11)
 
 
