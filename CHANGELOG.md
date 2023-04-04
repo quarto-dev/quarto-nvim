@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.7.3](https://github.com/quarto-dev/quarto-nvim/compare/v0.7.2...v0.7.3) (2023-04-04)
+
+
+### Bug Fixes
+
+* activate quarto only once per buffer ([9de52c8](https://github.com/quarto-dev/quarto-nvim/commit/9de52c85423fbc218f7324be4af662c32aee3da9))
+* remove debug statement ([a9f9f98](https://github.com/quarto-dev/quarto-nvim/commit/a9f9f98da951ee7146d519ddc624013e6bdcd6aa))
+
 ## [0.7.2](https://github.com/quarto-dev/quarto-nvim/compare/v0.7.1...v0.7.2) (2023-03-11)
 
 
