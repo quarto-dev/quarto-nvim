@@ -152,7 +152,6 @@ M.setup = function(opt)
     group = vim.api.nvim_create_augroup('QuartoSetup', {}),
     desc = 'set up quarto',
     callback = function()
-      vim.print('quarto setup')
       if M.config.lspFeatures.enabled and vim.bo.buftype ~= 'terminal' then
         M.activate()
 
