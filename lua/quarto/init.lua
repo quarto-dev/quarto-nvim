@@ -92,7 +92,6 @@ M.enableDiagnostics = function()
       for lang, bufnr in pairs(bufnrs) do
         local diag = vim.diagnostic.get(bufnr)
         local ns = api.nvim_create_namespace('quarto-lang-' .. lang)
-        print('diagnostics for' .. lang)
         vim.diagnostic.reset(ns, main_nr)
         vim.diagnostic.set(ns, main_nr, diag, {})
       end
