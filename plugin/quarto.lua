@@ -8,3 +8,4 @@ api.nvim_create_user_command('QuartoActivate', quarto.activate, {})
 api.nvim_create_user_command('QuartoHelp', quarto.searchHelp, {nargs=1})
 api.nvim_create_user_command('QuartoHover', quarto.quartoHover, {})
 
+vim.treesitter.language.register('markdown', 'quarto')
