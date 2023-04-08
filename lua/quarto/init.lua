@@ -10,11 +10,11 @@ M.defaultConfig = {
   closePreviewOnExit = true,
   lspFeatures = {
     enabled = false,
-    languages = { 'r', 'python', 'julia' },
+    languages = { 'r', 'python', 'julia', 'bash' },
     chunks = 'curly', -- 'curly' or 'all'
     diagnostics = {
       enabled = true,
-      triggers = { "BufWrite" }
+      triggers = { "BufWritePost" }
     },
     completion = {
       enabled = false,
