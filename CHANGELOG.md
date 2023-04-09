@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.0](https://github.com/quarto-dev/quarto-nvim/compare/v0.7.3...v0.8.0) (2023-04-09)
+
+
+### Features
+
+* nvim 0.9.0! ([#50](https://github.com/quarto-dev/quarto-nvim/issues/50)) ([ac9bafe](https://github.com/quarto-dev/quarto-nvim/commit/ac9bafe821aecfa7e3071d5b6e936588e0deff4c))
+
 ## [0.7.3](https://github.com/quarto-dev/quarto-nvim/compare/v0.7.2...v0.7.3) (2023-04-04)
 
 
