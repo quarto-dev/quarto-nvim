@@ -2,8 +2,6 @@
 
 Quarto-nvim provides tools for working on [quarto](https://quarto.org/) manuscripts in Neovim.
 
-Quarto-nvim requires Neovim >= **v0.9.0** (https://github.com/neovim/neovim/releases/tag/stable).
-
 ## Setup
 
 You can install `quarto-nvim` from GitHub with your favourite Neovim plugin manager
@@ -26,6 +24,22 @@ Plugins and their configuration to look out for in this file are:
     'jmbuhr/otter.nvim',
     'hrsh7th/nvim-cmp',
     'neovim/nvim-lspconfig',
+    'nvim-treesitter/nvim-treesitter'
+}
+```
+
+Quarto-nvim requires Neovim >= **v0.9.0** (<https://github.com/neovim/neovim/releases/tag/stable>).
+If you are unable to update Neovim, you can specify a specific version of the plugins
+involved instead of the latest stable version.
+How you do this will vary depending on your plugin manager, but you can see one example using `lazy.nvim` here:
+<https://github.com/jmbuhr/quarto-nvim-kickstarter/blob/nvim-0.8.3/lua/plugins/quarto.lua>
+
+The `version = ...` lines to look out for are for the following plugins:
+
+```lua
+{
+    'quarto-dev/quarto-nvim',
+    'jmbuhr/otter.nvim',
     'nvim-treesitter/nvim-treesitter'
 }
 ```
