@@ -3,20 +3,21 @@ local api = vim.api
 local util = require "lspconfig.util"
 local tools = require 'quarto.tools'
 local otter = require 'otter'
+local otterkeeper = require'otter.keeper'
 
 M.defaultConfig = {
   debug = false,
   closePreviewOnExit = true,
   lspFeatures = {
-    enabled = false,
-    languages = { 'r', 'python', 'julia' },
+    enabled = true,
+    languages = { 'r', 'python', 'julia', 'bash' },
     chunks = 'curly', -- 'curly' or 'all'
     diagnostics = {
       enabled = true,
-      triggers = { "BufWrite" }
+      triggers = { "BufWritePost" }
     },
     completion = {
-      enabled = false,
+      enabled = true,
     },
   },
   keymap = {
@@ -86,12 +87,13 @@ M.enableDiagnostics = function()
     buffer = main_nr,
     group = api.nvim_create_augroup("quartoLSPDiagnositcs", { clear = false }),
     callback = function(_, _)
-      local bufnrs = otter.sync_raft(main_nr)
-      for _, bufnr in ipairs(bufnrs) do
+      local bufnrs = otterkeeper._otters_attached[main_nr].buffers
+      otterkeeper.sync_raft(main_nr)
+      for lang, bufnr in pairs(bufnrs) do
         local diag = vim.diagnostic.get(bufnr)
-        local ns = api.nvim_create_namespace('quarto-lang-' .. bufnr)
-        vim.diagnostic.reset(ns, 0)
-        vim.diagnostic.set(ns, 0, diag, {})
+        local ns = api.nvim_create_namespace('quarto-lang-' .. lang)
+        vim.diagnostic.reset(ns, main_nr)
+        vim.diagnostic.set(ns, main_nr, diag, {})
       end
     end
   })
