@@ -9,7 +9,7 @@ M.defaultConfig = {
   debug = false,
   closePreviewOnExit = true,
   lspFeatures = {
-    enabled = false,
+    enabled = true,
     languages = { 'r', 'python', 'julia', 'bash' },
     chunks = 'curly', -- 'curly' or 'all'
     diagnostics = {
@@ -17,7 +17,7 @@ M.defaultConfig = {
       triggers = { "BufWritePost" }
     },
     completion = {
-      enabled = false,
+      enabled = true,
     },
   },
   keymap = {

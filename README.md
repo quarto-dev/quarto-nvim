@@ -2,6 +2,8 @@
 
 Quarto-nvim provides tools for working on [quarto](https://quarto.org/) manuscripts in Neovim.
 
+Quarto-nvim requires Neovim >= **v0.9.0** (https://github.com/neovim/neovim/releases/tag/stable).
+
 ## Setup
 
 You can install `quarto-nvim` from GitHub with your favourite Neovim plugin manager
@@ -11,7 +13,9 @@ Because Quarto provides a lot of functionality through integration with existing
 some of those have to be told about the existence of `quarto-nvim` (like e.g. registering
 it as a source for the autocompletion plugin `nvim-cmp`).
 
-As such, we recommend you to experiment with the [quarto-nvim kickstarter configuration](https://github.com/jmbuhr/quarto-nvim-kickstarter) and then pick the relevant parts from [`lua/plugins/quarto.lua`](https://github.com/jmbuhr/quarto-nvim-kickstarter/blob/main/lua/plugins/quarto.lua)
+As such, we recommend you to experiment with the [quarto-nvim kickstarter configuration](https://github.com/jmbuhr/quarto-nvim-kickstarter)
+and then pick the relevant parts from the
+[`lua/plugins/quarto.lua`](https://github.com/jmbuhr/quarto-nvim-kickstarter/blob/main/lua/plugins/quarto.lua) file
 to integrate it into your own existing configuration.
 
 Plugins and their configuration to look out for in this file are:
@@ -26,8 +30,38 @@ Plugins and their configuration to look out for in this file are:
 }
 ```
 
-
 ## Usage
+
+### Configure
+
+You can pass a lua table with options to the setup function
+as shown in [quarto-nvim-kickstarter/..quarto.lua](https://github.com/jmbuhr/quarto-nvim-kickstarter/blob/main/lua/plugins/quarto.lua)
+
+It will be merged with the default options, which are shown below in the example.
+If you want to use the defaults, simply call `setup` without arguments or with an empty table.
+
+```lua
+require'quarto'.setup{
+  debug = false,
+  closePreviewOnExit = true,
+  lspFeatures = {
+    enabled = true,
+    languages = { 'r', 'python', 'julia', 'bash' },
+    chunks = 'curly', -- 'curly' or 'all'
+    diagnostics = {
+      enabled = true,
+      triggers = { "BufWritePost" }
+    },
+    completion = {
+      enabled = true,
+    },
+  },
+  keymap = {
+    hover = 'K',
+    definition = 'gd'
+  }
+}
+```
 
 ### Preview
 
@@ -45,38 +79,6 @@ vim.keymap.set('n', '<leader>qp', quarto.quartoPreview, {silent = true, noremap 
 ```
 
 Then use the keyboard shortcut to open `quarto preview` for the current file or project in the active working directory in the neovim integrated terminal in a new tab.
-
-## Configure
-
-You can pass a lua table with options to the setup function
-as shown in [quarto-nvim-kickstarter/..quarto.lua](https://github.com/jmbuhr/quarto-nvim-kickstarter/blob/main/lua/plugins/quarto.lua)
-
-It will be merged with the default options, which are shown below in the example:
-
-```lua
-require'quarto'.setup{
-  debug = false,
-  closePreviewOnExit = true,
-  lspFeatures = {
-    enabled = false,
-    languages = { 'r', 'python', 'julia' },
-    chunks = 'curly', -- 'curly' or 'all'
-    diagnostics = {
-      enabled = true,
-      triggers = { "BufWritePost" }
-    },
-    completion = {
-      enabled = false,
-    },
-  },
-  keymap = {
-    hover = 'K',
-    definition = 'gd'
-  }
-}
-```
-
-If you only need `QuartoPreview`, you don't have to call the setup function.
 
 ## Language support
 
