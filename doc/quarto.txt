@@ -1,9 +1,10 @@
-*quarto.txt*           For Neovim >= 0.8.0          Last change: 2023 April 09
+*quarto.txt*           For Neovim >= 0.8.0          Last change: 2023 April 12
 
 ==============================================================================
 Table of Contents                                   *quarto-table-of-contents*
 
 1. quarto-nvim                                            |quarto-quarto-nvim|
+  - Walkthrough                               |quarto-quarto-nvim-walkthrough|
   - Setup                                           |quarto-quarto-nvim-setup|
   - Usage                                           |quarto-quarto-nvim-usage|
   - Language support                     |quarto-quarto-nvim-language-support|
@@ -14,12 +15,22 @@ Table of Contents                                   *quarto-table-of-contents*
 1. quarto-nvim                                            *quarto-quarto-nvim*
 
 Quarto-nvim provides tools for working on quarto <https://quarto.org/>
-manuscripts in Neovim.
+manuscripts in Neovim. You can get started with Quarto here
+<https://quarto.org/docs/get-started/>
+
+
+WALKTHROUGH                                   *quarto-quarto-nvim-walkthrough*
+
+The get started section <https://quarto.org/docs/get-started/hello/neovim.html>
+also comes with a video version to walk you through. The playlist is extened as
+more features are added, so join us for a "Coffee with Quarto and Neovim"
+
+<https://youtu.be/3sj7clNowlA?list=PLabWm-zCaD1axcMGvf7wFxJz8FZmyHSJ7>
 
 
 SETUP                                               *quarto-quarto-nvim-setup*
 
-You can install `quarto-nvim` from GitHub with your favourite Neovim plugin
+Youcan install `quarto-nvim` from GitHub with your favourite Neovim plugin
 manager like lazy.nvim <https://github.com/folke/lazy.nvim>, packer.nvim
 <https://github.com/wbthomason/packer.nvim> or VimPlug
 <https://github.com/junegunn/vim-plug>.
@@ -207,7 +218,7 @@ RECOMMENDED PLUGINS                   *quarto-quarto-nvim-recommended-plugins*
 
 Quarto works great with a number of existing plugins in the neovim ecosystem.
 You can find semi-opinionated but still minimal configurations for `nvim` and
-`tmux`, for use with quarto, R and python in these two repositories:
+`tmux`, for use with Quarto, R and python in these two repositories:
 
 
 - <https://github.com/jmbuhr/quarto-nvim-kickstarter>
