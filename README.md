@@ -1,6 +1,14 @@
 # quarto-nvim
 
 Quarto-nvim provides tools for working on [quarto](https://quarto.org/) manuscripts in Neovim.
+You can get started with Quarto [here](https://quarto.org/docs/get-started/)
+
+## Walkthrough
+
+The [get started section](https://quarto.org/docs/get-started/hello/neovim.html) also comes with a video version to walk you through.
+The playlist is extened as more features are added, so join us for a "Coffee with Quarto and Neovim":
+
+<https://youtu.be/3sj7clNowlA?list=PLabWm-zCaD1axcMGvf7wFxJz8FZmyHSJ7>
 
 ## Setup
 
@@ -168,7 +176,7 @@ QuartoHover
 Quarto works great with a number of existing plugins in the neovim ecosystem.
 You can find semi-opinionated but still minimal
 configurations for `nvim` and `tmux`,
-for use with quarto, R and python in these two repositories:
+for use with Quarto, R and python in these two repositories:
 
 - <https://github.com/jmbuhr/quarto-nvim-kickstarter>
 - <https://github.com/jmbuhr/tmux-kickstarter>
