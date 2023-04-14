@@ -58,6 +58,9 @@ function M.quartoPreview()
   vim.cmd('tabprevious')
   api.nvim_buf_set_var(0, 'quartoOutputBuf', quartoOutputBuf)
 
+  if not M.config then
+    return
+  end
 
   -- close preview terminal on exit of the quarto buffer
   if M.config.closePreviewOnExit then
