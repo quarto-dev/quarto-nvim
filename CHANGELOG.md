@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.9.0](https://github.com/quarto-dev/quarto-nvim/compare/v0.8.1...v0.9.0) (2023-04-20)
+
+
+### Features
+
+* QuartoSendAbove and QuartoSendAll commands to send code to ([cb2bb7d](https://github.com/quarto-dev/quarto-nvim/commit/cb2bb7d47f02b5abfa60fa80d24fe4b4b9120d92))
+
 ## [0.8.1](https://github.com/quarto-dev/quarto-nvim/compare/v0.8.0...v0.8.1) (2023-04-20)
 
 
