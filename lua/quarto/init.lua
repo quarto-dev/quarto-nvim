@@ -37,7 +37,11 @@ function M.quartoPreview()
     cmd = 'quarto preview'
   else
     mode = "file"
-    cmd = 'quarto preview \'' .. buffer_path .. '\''
+    if vim.loop.os_uname().sysname == "Windows_NT" then
+      cmd = 'quarto preview \\"' .. buffer_path .. '\\"'
+    else
+      cmd = 'quarto preview \'' .. buffer_path .. '\''
+    end
   end
 
   local quarto_extensions = { ".qmd", ".Rmd", ".ipynb", ".md" }
