@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.1](https://github.com/quarto-dev/quarto-nvim/compare/v0.8.0...v0.8.1) (2023-04-20)
+
+
+### Bug Fixes
+
+* quarto preview in Windows/PowerShell ([#53](https://github.com/quarto-dev/quarto-nvim/issues/53)) ([8980f73](https://github.com/quarto-dev/quarto-nvim/commit/8980f739045867b2c59612e380ecb32dbf3df803))
+
 ## [0.8.0](https://github.com/quarto-dev/quarto-nvim/compare/v0.7.3...v0.8.0) (2023-04-09)
 
 
