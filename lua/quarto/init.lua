@@ -174,5 +174,31 @@ M.setup = function(opt)
   })
 end
 
+local function concat(ls)
+  local s = ''
+  for _,l in ipairs(ls) do
+    if l ~= '' then
+      s = s..'\n'..l
+    end
+  end
+  return s..'\n'
+end
+
+M.quartoSendAbove = function ()
+  local lines = otterkeeper.get_language_lines_to_cursor()
+  if lines == nil then return end
+  lines = concat(lines)
+  vim.fn['slime#send'](lines)
+end
+
+
+M.quartoSendAll = function ()
+  local lines = otterkeeper.get_language_lines()
+  if lines == nil then return end
+  lines = concat(lines)
+  vim.fn['slime#send'](lines)
+end
+
+
 
 return M
