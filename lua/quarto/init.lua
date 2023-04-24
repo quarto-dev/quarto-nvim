@@ -37,7 +37,11 @@ function M.quartoPreview()
     cmd = 'quarto preview'
   else
     mode = "file"
-    cmd = 'quarto preview \'' .. buffer_path .. '\''
+    if vim.loop.os_uname().sysname == "Windows_NT" then
+      cmd = 'quarto preview \\"' .. buffer_path .. '\\"'
+    else
+      cmd = 'quarto preview \'' .. buffer_path .. '\''
+    end
   end
 
   local quarto_extensions = { ".qmd", ".Rmd", ".ipynb", ".md" }
@@ -172,6 +176,32 @@ M.setup = function(opt)
     end,
   })
 end
+
+local function concat(ls)
+  local s = ''
+  for _,l in ipairs(ls) do
+    if l ~= '' then
+      s = s..'\n'..l
+    end
+  end
+  return s..'\n'
+end
+
+M.quartoSendAbove = function ()
+  local lines = otterkeeper.get_language_lines_to_cursor()
+  if lines == nil then return end
+  lines = concat(lines)
+  vim.fn['slime#send'](lines)
+end
+
+
+M.quartoSendAll = function ()
+  local lines = otterkeeper.get_language_lines()
+  if lines == nil then return end
+  lines = concat(lines)
+  vim.fn['slime#send'](lines)
+end
+
 
 
 return M

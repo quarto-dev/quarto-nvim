@@ -22,6 +22,8 @@ api.nvim_create_user_command('QuartoDiagnostics', quarto.enableDiagnostics, {})
 api.nvim_create_user_command('QuartoActivate', quarto.activate, {})
 api.nvim_create_user_command('QuartoHelp', quarto.searchHelp, { nargs = 1 })
 api.nvim_create_user_command('QuartoHover', quarto.quartoHover, {})
+api.nvim_create_user_command('QuartoSendAbove', quarto.quartoSendAbove, {})
+api.nvim_create_user_command('QuartoSendAll', quarto.quartoSendAll, {})
 
 vim.treesitter.language.register('markdown', 'quarto')
 
