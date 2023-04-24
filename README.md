@@ -97,10 +97,14 @@ or access the function from lua, e.g. to create a keybinding:
 
 ```lua
 local quarto = require'quarto'
+quarto.setup()
 vim.keymap.set('n', '<leader>qp', quarto.quartoPreview, {silent = true, noremap = true})
 ```
 
 Then use the keyboard shortcut to open `quarto preview` for the current file or project in the active working directory in the neovim integrated terminal in a new tab.
+
+Note: While you can use `QuartoPreview` without configuring the plugin via `quarto.setup`,
+other features strictly require it.
 
 ## Language support
 
@@ -110,18 +114,9 @@ https://user-images.githubusercontent.com/17450586/209436101-4dd560f4-c876-4dbc-
 
 ### Usage
 
-Enable quarto-nvim's lsp features by configuring it with
-
-```lua
-require'quarto'.setup{
-  lspFeatures = {
-    enabled = true,
-  }
-}
-```
-
-After enabling the language features, you can open the hover documentation
+With the language features enabled, you can open the hover documentation
 for R, python and julia code chunks with `K` (or configure a different shortcut).
+You can got-to-definition with `gd`.
 
 ### Autocompletion
 
@@ -169,6 +164,8 @@ QuartoHelp <..>
 QuartoActivate
 QuartoDiagnostics
 QuartoHover
+QuartoSendAbove
+QuartoSendAll
 ```
 
 ## Recommended Plugins
