@@ -3,7 +3,7 @@ local api = vim.api
 local util = require "lspconfig.util"
 local tools = require 'quarto.tools'
 local otter = require 'otter'
-local otterkeeper = require'otter.keeper'
+local otterkeeper = require 'otter.keeper'
 
 M.defaultConfig = {
   debug = false,
@@ -119,7 +119,8 @@ M.searchHelp = function(cmd_input)
   elseif sysname == "Darwin" then
     cmd = 'open "' .. url .. '"'
   else
-    print('sorry, I do not know how to make windows open a url with the default browser. This feature currently only works on linux and mac.')
+    print(
+      'sorry, I do not know how to make Windows open a url with the default browser. This feature currently only works on linux and mac.')
     return
   end
   vim.fn.jobstart(cmd)
@@ -179,25 +180,33 @@ end
 
 local function concat(ls)
   local s = ''
-  for _,l in ipairs(ls) do
+  for _, l in ipairs(ls) do
     if l ~= '' then
-      s = s..'\n'..l
+      s = s .. '\n' .. l
     end
   end
-  return s..'\n'
+  return s .. '\n'
 end
 
-M.quartoSendAbove = function ()
+M.quartoSendAbove = function()
   local lines = otterkeeper.get_language_lines_to_cursor()
-  if lines == nil then return end
+  if lines == nil then
+    print(
+    'No code chunks found for the current language, which is detected based on the current code block. Is your cursor in a code block?')
+    return
+  end
   lines = concat(lines)
   vim.fn['slime#send'](lines)
 end
 
 
-M.quartoSendAll = function ()
+M.quartoSendAll = function()
   local lines = otterkeeper.get_language_lines()
-  if lines == nil then return end
+  if lines == nil then
+    print(
+    'No code chunks found for the current language, which is detected based on the current code block. Is your cursor in a code block?')
+    return
+  end
   lines = concat(lines)
   vim.fn['slime#send'](lines)
 end
