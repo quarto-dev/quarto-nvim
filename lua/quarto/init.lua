@@ -90,15 +90,20 @@ end
 
 M.enableDiagnostics = function()
   local main_nr = api.nvim_get_current_buf()
+  local otter_nrs = otterkeeper._otters_attached[main_nr].buffers
+  local nss = {}
+  for lang, bufnr in pairs(otter_nrs) do
+    local ns = api.nvim_create_namespace('quarto-lang-' .. lang)
+    nss[bufnr] = ns
+  end
+
   api.nvim_create_autocmd(M.config.lspFeatures.diagnostics.triggers, {
     buffer = main_nr,
     group = api.nvim_create_augroup("quartoLSPDiagnositcs", { clear = false }),
     callback = function(_, _)
-      local bufnrs = otterkeeper._otters_attached[main_nr].buffers
       otterkeeper.sync_raft(main_nr)
-      for lang, bufnr in pairs(bufnrs) do
+      for bufnr, ns in pairs(nss) do
         local diag = vim.diagnostic.get(bufnr)
-        local ns = api.nvim_create_namespace('quarto-lang-' .. lang)
         vim.diagnostic.reset(ns, main_nr)
         vim.diagnostic.set(ns, main_nr, diag, {})
       end
@@ -151,13 +156,16 @@ M.activate = function()
     }
   end
   otter.activate(M.config.lspFeatures.languages, M.config.lspFeatures.completion.enabled, tsqueries)
+  if M.config.lspFeatures.diagnostics.enabled then
+    M.enableDiagnostics()
+  end
 end
 
 -- setup
 M.setup = function(opt)
   M.config = vim.tbl_deep_extend('force', M.defaultConfig, opt or {})
 
-  api.nvim_create_autocmd({ "BufReadPost" }, {
+  api.nvim_create_autocmd({ "BufEnter" }, {
     pattern = { "*.qmd" },
     group = vim.api.nvim_create_augroup('QuartoSetup', {}),
     desc = 'set up quarto',
@@ -192,7 +200,7 @@ M.quartoSendAbove = function()
   local lines = otterkeeper.get_language_lines_to_cursor()
   if lines == nil then
     print(
-    'No code chunks found for the current language, which is detected based on the current code block. Is your cursor in a code block?')
+      'No code chunks found for the current language, which is detected based on the current code block. Is your cursor in a code block?')
     return
   end
   lines = concat(lines)
@@ -204,7 +212,7 @@ M.quartoSendAll = function()
   local lines = otterkeeper.get_language_lines()
   if lines == nil then
     print(
-    'No code chunks found for the current language, which is detected based on the current code block. Is your cursor in a code block?')
+      'No code chunks found for the current language, which is detected based on the current code block. Is your cursor in a code block?')
     return
   end
   lines = concat(lines)
