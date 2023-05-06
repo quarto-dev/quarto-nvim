@@ -208,8 +208,31 @@ M.quartoSendAbove = function()
 end
 
 
+M.quartoSendBelow = function()
+  local lines = otterkeeper.get_language_lines_from_cursor()
+  if lines == nil then
+    print(
+      'No code chunks found for the current language, which is detected based on the current code block. Is your cursor in a code block?')
+    return
+  end
+  lines = concat(lines)
+  vim.fn['slime#send'](lines)
+end
+
+
 M.quartoSendAll = function()
   local lines = otterkeeper.get_language_lines()
+  if lines == nil then
+    print(
+      'No code chunks found for the current language, which is detected based on the current code block. Is your cursor in a code block?')
+    return
+  end
+  lines = concat(lines)
+  vim.fn['slime#send'](lines)
+end
+
+M.quartoSendRange = function()
+  local lines = otterkeeper.get_language_lines_in_visual_selection()
   if lines == nil then
     print(
       'No code chunks found for the current language, which is detected based on the current code block. Is your cursor in a code block?')
