@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.10.0](https://github.com/quarto-dev/quarto-nvim/compare/v0.9.0...v0.10.0) (2023-05-06)
+
+
+### Features
+
+* QuartoSendBelow and QuartoSendRange ([7226eee](https://github.com/quarto-dev/quarto-nvim/commit/7226eeecd42182c0051a0959983e15e9a4e0b939))
+
+
+### Performance Improvements
+
+* **diagnostics:** initialize diagnostic namespaces once and save ids ([f60eb6a](https://github.com/quarto-dev/quarto-nvim/commit/f60eb6a877c17af8c92490e96148172463b68627))
+
 ## [0.9.0](https://github.com/quarto-dev/quarto-nvim/compare/v0.8.1...v0.9.0) (2023-04-20)
 
 
