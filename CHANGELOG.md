@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.10.1](https://github.com/quarto-dev/quarto-nvim/compare/v0.10.0...v0.10.1) (2023-05-20)
+
+
+### Bug Fixes
+
+* remove duplicate queries (closes [#58](https://github.com/quarto-dev/quarto-nvim/issues/58)) ([9306dcc](https://github.com/quarto-dev/quarto-nvim/commit/9306dcc7272655e46712a26a15c65d801b8b7b2e))
+
 ## [0.10.0](https://github.com/quarto-dev/quarto-nvim/compare/v0.9.0...v0.10.0) (2023-05-06)
 
 
