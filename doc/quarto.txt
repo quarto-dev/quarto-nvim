@@ -1,4 +1,4 @@
-*quarto.txt*            For Neovim >= 0.8.0           Last change: 2023 May 06
+*quarto.txt*            For Neovim >= 0.8.0           Last change: 2023 May 20
 
 ==============================================================================
 Table of Contents                                   *quarto-table-of-contents*
@@ -216,7 +216,6 @@ RECOMMENDED PLUGINS                   *quarto-quarto-nvim-recommended-plugins*
 Quarto works great with a number of existing plugins in the neovim ecosystem.
 You can find semi-opinionated but still minimal configurations for `nvim` and
 `tmux`, for use with Quarto, R and python in these two repositories:
-
 
 - <https://github.com/jmbuhr/quarto-nvim-kickstarter>
 - <https://github.com/jmbuhr/tmux-kickstarter>
