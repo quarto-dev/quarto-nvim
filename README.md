@@ -1,7 +1,7 @@
 # quarto-nvim
 
 Quarto-nvim provides tools for working on [quarto](https://quarto.org/) manuscripts in Neovim.
-You can get started with Quarto [here](https://quarto.org/docs/get-started/)
+You can get started with Quarto [here](https://quarto.org/docs/get-started/).
 
 ## Walkthrough
 
