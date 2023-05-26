@@ -21,7 +21,7 @@ api.nvim_create_user_command('QuartoClosePreview', quarto.quartoClosePreview, {}
 api.nvim_create_user_command('QuartoDiagnostics', quarto.enableDiagnostics, {})
 api.nvim_create_user_command('QuartoActivate', quarto.activate, {})
 api.nvim_create_user_command('QuartoHelp', quarto.searchHelp, { nargs = 1 })
-api.nvim_create_user_command('QuartoHover', quarto.quartoHover, {})
+api.nvim_create_user_command('QuartoHover', ':require"otter".ask_hover()<cr>', {})
 api.nvim_create_user_command('QuartoSendAbove', quarto.quartoSendAbove, {})
 api.nvim_create_user_command('QuartoSendBelow', quarto.quartoSendBelow, {})
 api.nvim_create_user_command('QuartoSendAll', quarto.quartoSendAll, {})

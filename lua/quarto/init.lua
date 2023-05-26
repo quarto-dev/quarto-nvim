@@ -22,7 +22,9 @@ M.defaultConfig = {
   },
   keymap = {
     hover = 'K',
-    definition = 'gd'
+    definition = 'gd',
+    rename = '<leader>lR',
+    references = 'gr',
   }
 }
 
@@ -111,8 +113,6 @@ M.enableDiagnostics = function()
   })
 end
 
-M.quartoHover = otter.ask_hover
-M.quartoDefinition = otter.ask_definition
 
 M.searchHelp = function(cmd_input)
   local topic = cmd_input.args
@@ -173,9 +173,13 @@ M.setup = function(opt)
       if M.config.lspFeatures.enabled and vim.bo.buftype ~= 'terminal' then
         M.activate()
 
-        vim.api.nvim_buf_set_keymap(0, 'n', M.config.keymap.definition, ":lua require'quarto'.quartoDefinition()<cr>",
+        vim.api.nvim_buf_set_keymap(0, 'n', M.config.keymap.definition, ":lua require'otter'.ask_definition()<cr>",
           { silent = true })
-        vim.api.nvim_buf_set_keymap(0, 'n', M.config.keymap.hover, ":lua require'quarto'.quartoHover()<cr>",
+        vim.api.nvim_buf_set_keymap(0, 'n', M.config.keymap.hover, ":lua require'otter'.ask_hover()<cr>",
+          { silent = true })
+        vim.api.nvim_buf_set_keymap(0, 'n', M.config.keymap.rename, ":lua require'otter'.ask_rename()<cr>",
+          { silent = true })
+        vim.api.nvim_buf_set_keymap(0, 'n', M.config.keymap.references, ":lua require'otter'.ask_references()<cr>",
           { silent = true })
 
         if M.config.lspFeatures.diagnostics.enabled then
