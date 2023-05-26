@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.11.0](https://github.com/quarto-dev/quarto-nvim/compare/v0.10.1...v0.11.0) (2023-05-26)
+
+
+### Features
+
+* trigger release for otter.nvim rename and references ([2c013ae](https://github.com/quarto-dev/quarto-nvim/commit/2c013ae7f05554a78d9cb956ec73444513f336bf))
+
 ## [0.10.1](https://github.com/quarto-dev/quarto-nvim/compare/v0.10.0...v0.10.1) (2023-05-20)
 
 
