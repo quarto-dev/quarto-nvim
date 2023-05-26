@@ -1,4 +1,4 @@
-*quarto.txt*            For Neovim >= 0.8.0           Last change: 2023 May 20
+*quarto.txt*            For Neovim >= 0.8.0           Last change: 2023 May 26
 
 ==============================================================================
 Table of Contents                                   *quarto-table-of-contents*
@@ -107,7 +107,9 @@ or with an empty table.
       },
       keymap = {
         hover = 'K',
-        definition = 'gd'
+        definition = 'gd',
+        rename = '<leader>lR',
+        references = 'gr',
       }
     }
 <
