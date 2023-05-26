@@ -16,7 +16,7 @@ Table of Contents                                   *quarto-table-of-contents*
 
 Quarto-nvim provides tools for working on quarto <https://quarto.org/>
 manuscripts in Neovim. You can get started with Quarto here
-<https://quarto.org/docs/get-started/>
+<https://quarto.org/docs/get-started/>.
 
 
 WALKTHROUGH                                   *quarto-quarto-nvim-walkthrough*
