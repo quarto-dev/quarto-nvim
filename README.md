@@ -80,7 +80,9 @@ require'quarto'.setup{
   },
   keymap = {
     hover = 'K',
-    definition = 'gd'
+    definition = 'gd',
+    rename = '<leader>lR',
+    references = 'gr',
   }
 }
 ```
