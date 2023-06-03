@@ -10,8 +10,8 @@ M.defaultConfig = {
   closePreviewOnExit = true,
   lspFeatures = {
     enabled = true,
-    languages = { 'r', 'python', 'julia', 'bash' },
-    chunks = 'curly', -- 'curly' or 'all'
+    chunks = 'all',
+    languages = { 'r', 'python', 'julia', 'bash', 'html' },
     diagnostics = {
       enabled = true,
       triggers = { "BufWritePost" }
@@ -90,29 +90,6 @@ function M.quartoClosePreview()
   end
 end
 
-M.enableDiagnostics = function()
-  local main_nr = api.nvim_get_current_buf()
-  local otter_nrs = otterkeeper._otters_attached[main_nr].buffers
-  local nss = {}
-  for lang, bufnr in pairs(otter_nrs) do
-    local ns = api.nvim_create_namespace('quarto-lang-' .. lang)
-    nss[bufnr] = ns
-  end
-
-  api.nvim_create_autocmd(M.config.lspFeatures.diagnostics.triggers, {
-    buffer = main_nr,
-    group = api.nvim_create_augroup("quartoLSPDiagnositcs", { clear = false }),
-    callback = function(_, _)
-      otterkeeper.sync_raft(main_nr)
-      for bufnr, ns in pairs(nss) do
-        local diag = vim.diagnostic.get(bufnr)
-        vim.diagnostic.reset(ns, main_nr)
-        vim.diagnostic.set(ns, main_nr, diag, {})
-      end
-    end
-  })
-end
-
 
 M.searchHelp = function(cmd_input)
   local topic = cmd_input.args
@@ -132,33 +109,18 @@ M.searchHelp = function(cmd_input)
 end
 
 M.activate = function()
-  local tsqueries = nil
-  if M.config.lspFeatures.chunks == 'all' then
-    tsqueries = {
-      quarto = [[
+  local tsquery = nil
+  if M.config.lspFeatures.chunks == 'curly' then
+    tsquery = [[
       (fenced_code_block
       (info_string
-        (language) @lang
-      )
-      (code_fence_content) @code (#offset! @code)
-      )]],
-    }
-  elseif M.config.lspFeatures.chunks == 'curly' then
-    tsqueries = {
-      quarto = [[
-      (fenced_code_block
-      (info_string
-        (language) @lang
+        (language) @_lang
       ) @info
         (#match? @info "{")
-      (code_fence_content) @code (#offset! @code)
-      )]],
-    }
+      (code_fence_content) @content (#offset! @content)
+      )]]
   end
-  otter.activate(M.config.lspFeatures.languages, M.config.lspFeatures.completion.enabled, tsqueries)
-  if M.config.lspFeatures.diagnostics.enabled then
-    M.enableDiagnostics()
-  end
+  otter.activate(M.config.lspFeatures.languages, M.config.lspFeatures.completion.enabled, M.config.lspFeatures.diagnostics.enabled, tsquery)
 end
 
 -- setup
@@ -182,9 +144,6 @@ M.setup = function(opt)
         vim.api.nvim_buf_set_keymap(0, 'n', M.config.keymap.references, ":lua require'otter'.ask_references()<cr>",
           { silent = true })
 
-        if M.config.lspFeatures.diagnostics.enabled then
-          M.enableDiagnostics()
-        end
       end
     end,
   })
@@ -201,7 +160,7 @@ local function concat(ls)
 end
 
 M.quartoSendAbove = function()
-  local lines = otterkeeper.get_language_lines_to_cursor()
+  local lines = otterkeeper.get_language_lines_to_cursor(true)
   if lines == nil then
     print(
       'No code chunks found for the current language, which is detected based on the current code block. Is your cursor in a code block?')
@@ -213,7 +172,7 @@ end
 
 
 M.quartoSendBelow = function()
-  local lines = otterkeeper.get_language_lines_from_cursor()
+  local lines = otterkeeper.get_language_lines_from_cursor(true)
   if lines == nil then
     print(
       'No code chunks found for the current language, which is detected based on the current code block. Is your cursor in a code block?')
@@ -225,7 +184,7 @@ end
 
 
 M.quartoSendAll = function()
-  local lines = otterkeeper.get_language_lines()
+  local lines = otterkeeper.get_language_lines(true)
   if lines == nil then
     print(
       'No code chunks found for the current language, which is detected based on the current code block. Is your cursor in a code block?')
@@ -236,7 +195,7 @@ M.quartoSendAll = function()
 end
 
 M.quartoSendRange = function()
-  local lines = otterkeeper.get_language_lines_in_visual_selection()
+  local lines = otterkeeper.get_language_lines_in_visual_selection(true)
   if lines == nil then
     print(
       'No code chunks found for the current language, which is detected based on the current code block. Is your cursor in a code block?')
