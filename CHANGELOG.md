@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.12.0](https://github.com/quarto-dev/quarto-nvim/compare/v0.11.0...v0.12.0) (2023-06-03)
+
+
+### Features
+
+* add html support through otter.nvim update (injections) ([f9fbdab](https://github.com/quarto-dev/quarto-nvim/commit/f9fbdab68d4af02733e1b983f494ecd56e8f1050))
+
 ## [0.11.0](https://github.com/quarto-dev/quarto-nvim/compare/v0.10.1...v0.11.0) (2023-05-26)
 
 
