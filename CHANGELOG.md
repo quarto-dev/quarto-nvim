@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.13.0](https://github.com/quarto-dev/quarto-nvim/compare/v0.12.0...v0.13.0) (2023-06-06)
+
+
+### Features
+
+* enable completion for html also if only activating `curly` chunks ([27ac79f](https://github.com/quarto-dev/quarto-nvim/commit/27ac79fb897cee6452d05711241ff6318cd25a9d))
+
 ## [0.12.0](https://github.com/quarto-dev/quarto-nvim/compare/v0.11.0...v0.12.0) (2023-06-03)
 
 
