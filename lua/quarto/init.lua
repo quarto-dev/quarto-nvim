@@ -10,7 +10,7 @@ M.defaultConfig = {
   closePreviewOnExit = true,
   lspFeatures = {
     enabled = true,
-    chunks = 'all',
+    chunks = 'curly',
     languages = { 'r', 'python', 'julia', 'bash', 'html' },
     diagnostics = {
       enabled = true,
@@ -90,7 +90,6 @@ function M.quartoClosePreview()
   end
 end
 
-
 M.searchHelp = function(cmd_input)
   local topic = cmd_input.args
   local url = 'https://quarto.org/?q=' .. topic .. '&show-results=1'
@@ -118,9 +117,16 @@ M.activate = function()
       ) @info
         (#match? @info "{")
       (code_fence_content) @content (#offset! @content)
-      )]]
+      )
+      ((html_block) @html @combined)
+
+      ((minus_metadata) @yaml (#offset! @yaml 1 0 -1 0))
+      ((plus_metadata) @toml (#offset! @toml 1 0 -1 0))
+
+      ]]
   end
-  otter.activate(M.config.lspFeatures.languages, M.config.lspFeatures.completion.enabled, M.config.lspFeatures.diagnostics.enabled, tsquery)
+  otter.activate(M.config.lspFeatures.languages, M.config.lspFeatures.completion.enabled,
+    M.config.lspFeatures.diagnostics.enabled, tsquery)
 end
 
 -- setup
@@ -143,7 +149,6 @@ M.setup = function(opt)
           { silent = true })
         vim.api.nvim_buf_set_keymap(0, 'n', M.config.keymap.references, ":lua require'otter'.ask_references()<cr>",
           { silent = true })
-
       end
     end,
   })
@@ -159,6 +164,20 @@ local function concat(ls)
   return s .. '\n'
 end
 
+local function send(lines)
+  local yarepl = require 'yarepl'
+  lines = concat(lines)
+
+  if yarepl ~= nil then
+    yarepl._send_strings(0, 'ipython')
+  else
+    local success, error = pcall(vim.fn[vim.fn['slime#send'](lines)])
+    if not success then
+      vim.fn.notify('Install a REPL code sending plugin to use this feature. Options are yarepl.nvim and vim-slim.')
+    end
+  end
+end
+
 M.quartoSendAbove = function()
   local lines = otterkeeper.get_language_lines_to_cursor(true)
   if lines == nil then
@@ -166,8 +185,7 @@ M.quartoSendAbove = function()
       'No code chunks found for the current language, which is detected based on the current code block. Is your cursor in a code block?')
     return
   end
-  lines = concat(lines)
-  vim.fn['slime#send'](lines)
+  send(lines)
 end
 
 
@@ -178,8 +196,7 @@ M.quartoSendBelow = function()
       'No code chunks found for the current language, which is detected based on the current code block. Is your cursor in a code block?')
     return
   end
-  lines = concat(lines)
-  vim.fn['slime#send'](lines)
+  send(lines)
 end
 
 
@@ -190,8 +207,7 @@ M.quartoSendAll = function()
       'No code chunks found for the current language, which is detected based on the current code block. Is your cursor in a code block?')
     return
   end
-  lines = concat(lines)
-  vim.fn['slime#send'](lines)
+  send(lines)
 end
 
 M.quartoSendRange = function()
@@ -201,8 +217,7 @@ M.quartoSendRange = function()
       'No code chunks found for the current language, which is detected based on the current code block. Is your cursor in a code block?')
     return
   end
-  lines = concat(lines)
-  vim.fn['slime#send'](lines)
+  send(lines)
 end
 
 
