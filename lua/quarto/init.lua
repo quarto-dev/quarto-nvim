@@ -155,6 +155,7 @@ M.setup = function(opt)
 end
 
 local function concat(ls)
+  if not (type(ls) == "table") then return ls .. '\n\n' end
   local s = ''
   for _, l in ipairs(ls) do
     if l ~= '' then
@@ -165,17 +166,27 @@ local function concat(ls)
 end
 
 local function send(lines)
-  local yarepl = require 'yarepl'
   lines = concat(lines)
-
-  if yarepl ~= nil then
-    yarepl._send_strings(0, 'ipython')
+  local success, yarepl = pcall(require, 'yarepl')
+  if success then
+    yarepl._send_strings(0)
   else
-    local success, error = pcall(vim.fn[vim.fn['slime#send'](lines)])
-    if not success then
+    vim.fn['slime#send'](lines)
+    if success then
       vim.fn.notify('Install a REPL code sending plugin to use this feature. Options are yarepl.nvim and vim-slim.')
     end
   end
+
+end
+
+M.quartoSend = function()
+  local lines = otterkeeper.get_language_lines_around_cursor()
+  if lines == nil then
+    print(
+      'No code chunk detected around cursor')
+    return
+  end
+  send(lines)
 end
 
 M.quartoSendAbove = function()
