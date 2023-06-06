@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.13.1](https://github.com/quarto-dev/quarto-nvim/compare/v0.13.0...v0.13.1) (2023-06-06)
+
+
+### Bug Fixes
+
+* slime-sending. ([795133e](https://github.com/quarto-dev/quarto-nvim/commit/795133eaa3ee9995674d81f8718623f5aaf03bca))
+
 ## [0.13.0](https://github.com/quarto-dev/quarto-nvim/compare/v0.12.0...v0.13.0) (2023-06-06)
 
 
