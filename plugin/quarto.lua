@@ -26,5 +26,3 @@ api.nvim_create_user_command('QuartoSendBelow', quarto.quartoSendBelow, {})
 api.nvim_create_user_command('QuartoSendAll', quarto.quartoSendAll, {})
 api.nvim_create_user_command('QuartoSendRange', quarto.quartoSendRange, {range = 2})
 
-vim.treesitter.language.register('markdown', 'quarto')
-
