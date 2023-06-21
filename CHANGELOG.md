@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.13.2](https://github.com/quarto-dev/quarto-nvim/compare/v0.13.1...v0.13.2) (2023-06-21)
+
+
+### Performance Improvements
+
+* don't register quarto-&gt;markdown treesitter ft ([9f02823](https://github.com/quarto-dev/quarto-nvim/commit/9f02823d7b38b2e9c578bac085c430f14b74df3b))
+
 ## [0.13.1](https://github.com/quarto-dev/quarto-nvim/compare/v0.13.0...v0.13.1) (2023-06-06)
 
 
