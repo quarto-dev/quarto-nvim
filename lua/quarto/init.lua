@@ -28,6 +28,9 @@ M.defaultConfig = {
   }
 }
 
+-- use defaultConfig if not setup
+M.config = M.defaultConfig
+
 function M.quartoPreview()
   -- find root directory / check if it is a project
   local buffer_path = api.nvim_buf_get_name(0)
@@ -132,26 +135,6 @@ end
 -- setup
 M.setup = function(opt)
   M.config = vim.tbl_deep_extend('force', M.defaultConfig, opt or {})
-
-  api.nvim_create_autocmd({ "BufEnter" }, {
-    pattern = { "*.qmd" },
-    group = vim.api.nvim_create_augroup('QuartoSetup', {}),
-    desc = 'set up quarto',
-    callback = function()
-      if M.config.lspFeatures.enabled and vim.bo.buftype ~= 'terminal' then
-        M.activate()
-
-        vim.api.nvim_buf_set_keymap(0, 'n', M.config.keymap.definition, ":lua require'otter'.ask_definition()<cr>",
-          { silent = true })
-        vim.api.nvim_buf_set_keymap(0, 'n', M.config.keymap.hover, ":lua require'otter'.ask_hover()<cr>",
-          { silent = true })
-        vim.api.nvim_buf_set_keymap(0, 'n', M.config.keymap.rename, ":lua require'otter'.ask_rename()<cr>",
-          { silent = true })
-        vim.api.nvim_buf_set_keymap(0, 'n', M.config.keymap.references, ":lua require'otter'.ask_references()<cr>",
-          { silent = true })
-      end
-    end,
-  })
 end
 
 local function concat(ls)
