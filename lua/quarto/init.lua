@@ -23,8 +23,10 @@ M.defaultConfig = {
   keymap = {
     hover = 'K',
     definition = 'gd',
+    type_definition = 'gD',
     rename = '<leader>lR',
     references = 'gr',
+    document_symbols = 'gS',
   }
 }
 
