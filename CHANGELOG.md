@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.14.0](https://github.com/quarto-dev/quarto-nvim/compare/v0.13.2...v0.14.0) (2023-06-28)
+
+
+### Features
+
+* **lsp:** keybindings for ask_type_definition and ask_document_symbol ([2fd6169](https://github.com/quarto-dev/quarto-nvim/commit/2fd616956e65c9073d043eb631e251da6faa3404))
+
+
+### Bug Fixes
+
+* replace deprecated vim.loop with vim.uv ([1f043c8](https://github.com/quarto-dev/quarto-nvim/commit/1f043c81ec9e75046a6e1f315561e6333656d5c7))
+
+
+### Performance Improvements
+
+* put quarto init in ftplugin instea of autocommand ([1f2ccef](https://github.com/quarto-dev/quarto-nvim/commit/1f2ccefc22d3cad64bd10782b1670d8b6835cf1e))
+
 ## [0.13.2](https://github.com/quarto-dev/quarto-nvim/compare/v0.13.1...v0.13.2) (2023-06-21)
 
 
