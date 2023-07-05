@@ -44,7 +44,7 @@ function M.quartoPreview()
     cmd = 'quarto preview'
   else
     mode = "file"
-    if vim.uv.os_uname().sysname == "Windows_NT" then
+    if vim.loop.os_uname().sysname == "Windows_NT" then
       cmd = 'quarto preview \\"' .. buffer_path .. '\\"'
     else
       cmd = 'quarto preview \'' .. buffer_path .. '\''
@@ -98,7 +98,7 @@ end
 M.searchHelp = function(cmd_input)
   local topic = cmd_input.args
   local url = 'https://quarto.org/?q=' .. topic .. '&show-results=1'
-  local sysname = vim.uv.os_uname().sysname
+  local sysname = vim.loop.os_uname().sysname
   local cmd
   if sysname == "Linux" then
     cmd = 'xdg-open "' .. url .. '"'
