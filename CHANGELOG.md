@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.14.1](https://github.com/quarto-dev/quarto-nvim/compare/v0.14.0...v0.14.1) (2023-07-05)
+
+
+### Bug Fixes
+
+* fix [#76](https://github.com/quarto-dev/quarto-nvim/issues/76). Stick with vim.loop until stable release of nvim 0.10 (then it's vim.uv) ([aa42597](https://github.com/quarto-dev/quarto-nvim/commit/aa4259729e8b0878be8e06e98f601569059284b9))
+
 ## [0.14.0](https://github.com/quarto-dev/quarto-nvim/compare/v0.13.2...v0.14.0) (2023-06-28)
 
 
