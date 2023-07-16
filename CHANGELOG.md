@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.15.0](https://github.com/quarto-dev/quarto-nvim/compare/v0.14.1...v0.15.0) (2023-07-16)
+
+
+### Features
+
+* trigger release! ([fa9cc99](https://github.com/quarto-dev/quarto-nvim/commit/fa9cc994c4d76fa1e72778f5857cb8038451499f))
+
 ## [0.14.1](https://github.com/quarto-dev/quarto-nvim/compare/v0.14.0...v0.14.1) (2023-07-05)
 
 
