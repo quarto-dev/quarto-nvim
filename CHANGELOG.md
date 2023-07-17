@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.15.1](https://github.com/quarto-dev/quarto-nvim/compare/v0.15.0...v0.15.1) (2023-07-17)
+
+
+### Bug Fixes
+
+* clarify autcommand usage for setting keymaps ([d076de2](https://github.com/quarto-dev/quarto-nvim/commit/d076de2a43ad6b856b64da29dfa89cc1f6fba3f1))
+
 ## [0.15.0](https://github.com/quarto-dev/quarto-nvim/compare/v0.14.1...v0.15.0) (2023-07-16)
 
 
