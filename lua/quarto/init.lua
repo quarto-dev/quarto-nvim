@@ -135,41 +135,9 @@ M.activate = function()
 end
 
 
-local function set_keymaps()
-  vim.api.nvim_buf_set_keymap(0, 'n', M.config.keymap.definition, ":lua require'otter'.ask_definition()<cr>",
-    { silent = true })
-  vim.api.nvim_buf_set_keymap(0, 'n', M.config.keymap.type_definition, ":lua require'otter'.ask_type_definition()<cr>",
-    { silent = true })
-  vim.api.nvim_buf_set_keymap(0, 'n', M.config.keymap.hover, ":lua require'otter'.ask_hover()<cr>", { silent = true })
-  vim.api.nvim_buf_set_keymap(0, 'n', M.config.keymap.rename, ":lua require'otter'.ask_rename()<cr>", { silent = true })
-  vim.api.nvim_buf_set_keymap(0, 'n', M.config.keymap.references, ":lua require'otter'.ask_references()<cr>",
-    { silent = true })
-  vim.api.nvim_buf_set_keymap(0, 'n', M.config.keymap.document_symbols,
-    ":lua require'otter'.ask_document_symbols()<cr>", { silent = true })
-end
-
 -- setup
 M.setup = function(opt)
   M.config = vim.tbl_deep_extend('force', M.defaultConfig, opt or {})
-
-  vim.api.nvim_create_autocmd("BufEnter", {
-    pattern = '*.qmd',
-    group = vim.api.nvim_create_augroup('QuartoSetup', {}),
-    desc = 'set up quarto-nvim keymaps and completion',
-    callback = function ()
-      if M.config.lspFeatures.enabled then
-        M.activate()
-        set_keymaps()
-        -- set the keymap again if a language server attaches
-        -- directly to this buffer
-        -- because it probably overwrites these in `on_attach`
-        vim.api.nvim_create_autocmd("LspAttach", {
-          buffer = vim.api.nvim_get_current_buf(),
-          callback = set_keymaps,
-        })
-      end
-    end
-  })
 
 end
 
