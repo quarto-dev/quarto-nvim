@@ -13,6 +13,7 @@ local function set_keymaps()
   set(quarto.config.keymap.rename, ":lua require'otter'.ask_rename()<cr>")
   set(quarto.config.keymap.references, ":lua require'otter'.ask_references()<cr>")
   set(quarto.config.keymap.document_symbols, ":lua require'otter'.ask_document_symbols()<cr>")
+  set(quarto.config.keymap.format, ":lua require'otter'.ask_format()<cr>")
 end
 
 if quarto.config.lspFeatures.enabled then
