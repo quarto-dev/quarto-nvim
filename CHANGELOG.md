@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.16.0](https://github.com/quarto-dev/quarto-nvim/compare/v0.15.1...v0.16.0) (2023-08-27)
+
+
+### Features
+
+* format current code chunk ([4ba80ce](https://github.com/quarto-dev/quarto-nvim/commit/4ba80ce2ba73811228df88f4aa5294f528912417))
+
 ## [0.15.1](https://github.com/quarto-dev/quarto-nvim/compare/v0.15.0...v0.15.1) (2023-07-17)
 
 
