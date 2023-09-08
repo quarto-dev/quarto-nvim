@@ -34,7 +34,10 @@ M.defaultConfig = {
 -- use defaultConfig if not setup
 M.config = M.defaultConfig
 
-function M.quartoPreview()
+function M.quartoPreview(arg)
+  if not (type(arg) == "string") then
+    arg = ''
+  end
   -- find root directory / check if it is a project
   local buffer_path = api.nvim_buf_get_name(0)
   local root_dir = util.root_pattern("_quarto.yml")(buffer_path)
@@ -42,13 +45,13 @@ function M.quartoPreview()
   local mode
   if root_dir then
     mode = "project"
-    cmd = 'quarto preview'
+    cmd = 'quarto preview' .. ' ' .. arg
   else
     mode = "file"
     if vim.loop.os_uname().sysname == "Windows_NT" then
-      cmd = 'quarto preview \\"' .. buffer_path .. '\\"'
+      cmd = 'quarto preview \\"' .. buffer_path .. '\\"' .. ' ' ..  arg
     else
-      cmd = 'quarto preview \'' .. buffer_path .. '\''
+      cmd = 'quarto preview \'' .. buffer_path .. '\'' .. ' ' .. arg
     end
   end
 
