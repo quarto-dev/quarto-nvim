@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.17.0](https://github.com/quarto-dev/quarto-nvim/compare/v0.16.0...v0.17.0) (2023-09-08)
+
+
+### Features
+
+* pass arguments to quarto preview ([#88](https://github.com/quarto-dev/quarto-nvim/issues/88)) ([bad6f70](https://github.com/quarto-dev/quarto-nvim/commit/bad6f70269bcaf063513782c085aa2295ed3af25))
+
 ## [0.16.0](https://github.com/quarto-dev/quarto-nvim/compare/v0.15.1...v0.16.0) (2023-08-27)
 
 
