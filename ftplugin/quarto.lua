@@ -3,7 +3,7 @@ vim.b.slime_cell_delimiter = "```"
 local quarto = require'quarto'
 
 local function set_keymaps()
-  local b = 0
+  local b = vim.api.nvim_get_current_buf()
   local function set(lhs, rhs)
     vim.api.nvim_buf_set_keymap(b, 'n', lhs, rhs, { silent = true, noremap = true })
   end
