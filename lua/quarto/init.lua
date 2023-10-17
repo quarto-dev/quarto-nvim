@@ -1,34 +1,34 @@
 local M = {}
 local api = vim.api
-local util = require "lspconfig.util"
-local tools = require 'quarto.tools'
-local otter = require 'otter'
-local otterkeeper = require 'otter.keeper'
+local otter = require("otter")
+local otterkeeper = require("otter.keeper")
+local tools = require("quarto.tools")
+local util = require("lspconfig.util")
 
 M.defaultConfig = {
   debug = false,
   closePreviewOnExit = true,
   lspFeatures = {
     enabled = true,
-    chunks = 'curly',
-    languages = { 'r', 'python', 'julia', 'bash', 'html' },
+    chunks = "curly",
+    languages = { "r", "python", "julia", "bash", "html" },
     diagnostics = {
       enabled = true,
-      triggers = { "BufWritePost" }
+      triggers = { "BufWritePost" },
     },
     completion = {
       enabled = true,
     },
   },
   keymap = {
-    hover = 'K',
-    definition = 'gd',
-    type_definition = 'gD',
-    rename = '<leader>lR',
-    format = '<leader>lf',
-    references = 'gr',
-    document_symbols = 'gS',
-  }
+    hover = "K",
+    definition = "gd",
+    type_definition = "gD",
+    rename = "<leader>lR",
+    format = "<leader>lf",
+    references = "gr",
+    document_symbols = "gS",
+  },
 }
 
 -- use defaultConfig if not setup
@@ -36,7 +36,7 @@ M.config = M.defaultConfig
 
 function M.quartoPreview(opts)
   opts = opts or {}
-  local args = opts.args or ''
+  local args = opts.args or ""
 
   -- find root directory / check if it is a project
   local buffer_path = api.nvim_buf_get_name(0)
@@ -45,13 +45,13 @@ function M.quartoPreview(opts)
   local mode
   if root_dir then
     mode = "project"
-    cmd = 'quarto preview' .. ' ' .. args
+    cmd = "quarto preview" .. " " .. args
   else
     mode = "file"
     if vim.loop.os_uname().sysname == "Windows_NT" then
-      cmd = 'quarto preview \\"' .. buffer_path .. '\\"' .. ' ' .. args
+      cmd = 'quarto preview \\"' .. buffer_path .. '\\"' .. " " .. args
     else
-      cmd = 'quarto preview \'' .. buffer_path .. '\'' .. ' ' .. args
+      cmd = "quarto preview '" .. buffer_path .. "'" .. " " .. args
     end
   end
 
@@ -68,10 +68,10 @@ function M.quartoPreview(opts)
 
   -- run command in embedded terminal
   -- in a new tab and go back to the buffer
-  vim.cmd('tabedit term://' .. cmd)
+  vim.cmd("tabedit term://" .. cmd)
   local quartoOutputBuf = vim.api.nvim_get_current_buf()
-  vim.cmd('tabprevious')
-  api.nvim_buf_set_var(0, 'quartoOutputBuf', quartoOutputBuf)
+  vim.cmd("tabprevious")
+  api.nvim_buf_set_var(0, "quartoOutputBuf", quartoOutputBuf)
 
   if not M.config then
     return
@@ -86,14 +86,16 @@ function M.quartoPreview(opts)
         if api.nvim_buf_is_loaded(quartoOutputBuf) then
           api.nvim_buf_delete(quartoOutputBuf, { force = true })
         end
-      end
+      end,
     })
   end
 end
 
 function M.quartoClosePreview()
-  local success, quartoOutputBuf = pcall(api.nvim_buf_get_var, 0, 'quartoOutputBuf')
-  if not success then return end
+  local success, quartoOutputBuf = pcall(api.nvim_buf_get_var, 0, "quartoOutputBuf")
+  if not success then
+    return
+  end
   if api.nvim_buf_is_loaded(quartoOutputBuf) then
     api.nvim_buf_delete(quartoOutputBuf, { force = true })
   end
@@ -101,7 +103,7 @@ end
 
 M.searchHelp = function(cmd_input)
   local topic = cmd_input.args
-  local url = 'https://quarto.org/?q=' .. topic .. '&show-results=1'
+  local url = "https://quarto.org/?q=" .. topic .. "&show-results=1"
   local sysname = vim.loop.os_uname().sysname
   local cmd
   if sysname == "Linux" then
@@ -110,7 +112,8 @@ M.searchHelp = function(cmd_input)
     cmd = 'open "' .. url .. '"'
   else
     print(
-      'sorry, I do not know how to make Windows open a url with the default browser. This feature currently only works on linux and mac.')
+      "sorry, I do not know how to make Windows open a url with the default browser. This feature currently only works on linux and mac."
+    )
     return
   end
   vim.fn.jobstart(cmd)
@@ -118,7 +121,7 @@ end
 
 M.activate = function()
   local tsquery = nil
-  if M.config.lspFeatures.chunks == 'curly' then
+  if M.config.lspFeatures.chunks == "curly" then
     tsquery = [[
       (fenced_code_block
       (info_string
@@ -134,36 +137,41 @@ M.activate = function()
 
       ]]
   end
-  otter.activate(M.config.lspFeatures.languages, M.config.lspFeatures.completion.enabled,
-    M.config.lspFeatures.diagnostics.enabled, tsquery)
+  otter.activate(
+    M.config.lspFeatures.languages,
+    M.config.lspFeatures.completion.enabled,
+    M.config.lspFeatures.diagnostics.enabled,
+    tsquery
+  )
 end
-
 
 -- setup
 M.setup = function(opt)
-  M.config = vim.tbl_deep_extend('force', M.defaultConfig, opt or {})
+  M.config = vim.tbl_deep_extend("force", M.defaultConfig, opt or {})
 end
 
 local function concat(ls)
-  if not (type(ls) == "table") then return ls .. '\n\n' end
-  local s = ''
+  if not (type(ls) == "table") then
+    return ls .. "\n\n"
+  end
+  local s = ""
   for _, l in ipairs(ls) do
-    if l ~= '' then
-      s = s .. '\n' .. l
+    if l ~= "" then
+      s = s .. "\n" .. l
     end
   end
-  return s .. '\n'
+  return s .. "\n"
 end
 
 local function send(lines)
   lines = concat(lines)
-  local success, yarepl = pcall(require, 'yarepl')
+  local success, yarepl = pcall(require, "yarepl")
   if success then
     yarepl._send_strings(0)
   else
-    vim.fn['slime#send'](lines)
+    vim.fn["slime#send"](lines)
     if success then
-      vim.fn.notify('Install a REPL code sending plugin to use this feature. Options are yarepl.nvim and vim-slim.')
+      vim.fn.notify("Install a REPL code sending plugin to use this feature. Options are yarepl.nvim and vim-slim.")
     end
   end
 end
@@ -171,8 +179,7 @@ end
 M.quartoSend = function()
   local lines = otterkeeper.get_language_lines_around_cursor()
   if lines == nil then
-    print(
-      'No code chunk detected around cursor')
+    print("No code chunk detected around cursor")
     return
   end
   send(lines)
@@ -182,29 +189,30 @@ M.quartoSendAbove = function()
   local lines = otterkeeper.get_language_lines_to_cursor(true)
   if lines == nil then
     print(
-      'No code chunks found for the current language, which is detected based on the current code block. Is your cursor in a code block?')
+      "No code chunks found for the current language, which is detected based on the current code block. Is your cursor in a code block?"
+    )
     return
   end
   send(lines)
 end
-
 
 M.quartoSendBelow = function()
   local lines = otterkeeper.get_language_lines_from_cursor(true)
   if lines == nil then
     print(
-      'No code chunks found for the current language, which is detected based on the current code block. Is your cursor in a code block?')
+      "No code chunks found for the current language, which is detected based on the current code block. Is your cursor in a code block?"
+    )
     return
   end
   send(lines)
 end
 
-
 M.quartoSendAll = function()
   local lines = otterkeeper.get_language_lines(true)
   if lines == nil then
     print(
-      'No code chunks found for the current language, which is detected based on the current code block. Is your cursor in a code block?')
+      "No code chunks found for the current language, which is detected based on the current code block. Is your cursor in a code block?"
+    )
     return
   end
   send(lines)
@@ -214,12 +222,11 @@ M.quartoSendRange = function()
   local lines = otterkeeper.get_language_lines_in_visual_selection(true)
   if lines == nil then
     print(
-      'No code chunks found for the current language, which is detected based on the current code block. Is your cursor in a code block?')
+      "No code chunks found for the current language, which is detected based on the current code block. Is your cursor in a code block?"
+    )
     return
   end
   send(lines)
 end
-
-
 
 return M
