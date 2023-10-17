@@ -1,6 +1,6 @@
 vim.b.slime_cell_delimiter = "```"
 
-local quarto = require'quarto'
+local quarto = require 'quarto'
 
 local function set_keymaps()
   local b = vim.api.nvim_get_current_buf()
@@ -35,4 +35,3 @@ if quarto.config.lspFeatures.enabled then
     callback = set_keymaps,
   })
 end
-

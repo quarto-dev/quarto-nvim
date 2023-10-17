@@ -49,7 +49,7 @@ function M.quartoPreview(opts)
   else
     mode = "file"
     if vim.loop.os_uname().sysname == "Windows_NT" then
-      cmd = 'quarto preview \\"' .. buffer_path .. '\\"' .. ' ' ..  args
+      cmd = 'quarto preview \\"' .. buffer_path .. '\\"' .. ' ' .. args
     else
       cmd = 'quarto preview \'' .. buffer_path .. '\'' .. ' ' .. args
     end
@@ -142,7 +142,6 @@ end
 -- setup
 M.setup = function(opt)
   M.config = vim.tbl_deep_extend('force', M.defaultConfig, opt or {})
-
 end
 
 local function concat(ls)
@@ -167,7 +166,6 @@ local function send(lines)
       vim.fn.notify('Install a REPL code sending plugin to use this feature. Options are yarepl.nvim and vim-slim.')
     end
   end
-
 end
 
 M.quartoSend = function()

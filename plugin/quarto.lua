@@ -16,7 +16,7 @@ end
 local quarto = require 'quarto'
 local api = vim.api
 
-api.nvim_create_user_command('QuartoPreview', quarto.quartoPreview, {nargs = '*'})
+api.nvim_create_user_command('QuartoPreview', quarto.quartoPreview, { nargs = '*' })
 api.nvim_create_user_command('QuartoClosePreview', quarto.quartoClosePreview, {})
 api.nvim_create_user_command('QuartoActivate', quarto.activate, {})
 api.nvim_create_user_command('QuartoHelp', quarto.searchHelp, { nargs = 1 })
@@ -25,5 +25,4 @@ api.nvim_create_user_command('QuartoSend', quarto.quartoSend, {})
 api.nvim_create_user_command('QuartoSendAbove', quarto.quartoSendAbove, {})
 api.nvim_create_user_command('QuartoSendBelow', quarto.quartoSendBelow, {})
 api.nvim_create_user_command('QuartoSendAll', quarto.quartoSendAll, {})
-api.nvim_create_user_command('QuartoSendRange', quarto.quartoSendRange, {range = 2})
-
+api.nvim_create_user_command('QuartoSendRange', quarto.quartoSendRange, { range = 2 })
