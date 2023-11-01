@@ -167,6 +167,52 @@ Other languages might have similar issues (e.g. I see a lot of warnings about wh
 If you come across them and have a fix, I will be very happy about a pull request!
 Or, what might ultimately be the cleaner way of documenting language specific issues, an entry in the [wiki](https://github.com/quarto-dev/quarto-nvim/wiki).
 
+## Running Code
+
+Quarto-nvim doesn't run code for you, instead, it will interface with existing code running
+plugins and tell them what to run. There are currently two such code running plugins that quarto
+will work with:
+1. [molten-nvim](https://github.com/benlubas/molten-nvim) - a code runner that supports the jupyter
+   kernel, renders output below each code cell, and optionally renders images in the terminal.
+2. [vim-slime](https://github.com/jpalardy/vim-slime) - a general purpose code runner with support
+   for sending code to integrated nvim terminals, tmux panes, and many others.
+
+I recommend picking a code runner, setting it up based on its README, and then coming back
+to this point to learn how Quarto will augment that code runner.
+
+This plugin enables easily sending code cells to your code runner. This is exposed to the user in
+two different ways: commands, covered below; and lua functions, covered right here. *By default
+these functions will only run cells that are the same language as the current cell.*
+
+Quarto exposes code running functions through to runner module: `require('quarto.runner')`. Those
+functions are:
+- `run_cell()` - runs the current cell
+- `run_above(multi_lang)` - runs all the cells above the current one, **and** the current one, in order
+- `run_below(multi_lang)` - runs all the cells below the current one, **and** the current one, in order
+- `run_all(multi_lang)` - runs all the cells in the document
+- `run_line(multi_lang)` - runs the line of code at your cursor
+- `run_range()` - run code inside the visual range
+
+Each function that takes the optional `multi_lang` argument will run cells of all languages when
+called with the value `true`, and will only run cells that match the language of the current cell
+otherwise. As a result, just calling `run_all()` will run all cells that match the language of the
+current cell.
+
+
+Here are some example run mappings:
+```lua
+local runner = require("quarto.runner")
+vim.keymap.set("n", "<localleader>rc", runner.run_cell, { desc = "run cell", silent = true })
+vim.keymap.set("n", "<localleader>ra", runner.run_above, { desc = "run cell and above", silent = true })
+vim.keymap.set("n", "<localleader>rA", runner.run_all, { desc = "run all cells", silent = true })
+vim.keymap.set("n", "<localleader>rl", runner.run_line, { desc = "run line", silent = true })
+vim.keymap.set("v", "<localleader>r", runner.run_range, { desc = "run line", silent = true })
+vim.keymap.set("n", "<localleader>RA", function()
+  runner.run_all(true)
+end, { desc = "run all cells of all languages", silent = true })
+```
+
+
 ## Available Commands
 
 ```vim

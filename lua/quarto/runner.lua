@@ -61,7 +61,7 @@ end
 ---@field to table<number>
 
 ---@class CodeCell
----@field lang string
+---@field lang string?
 ---@field text table<string>
 ---@field range Range
 
@@ -148,7 +148,6 @@ Runner.run_all = function(multi_lang)
 end
 
 Runner.run_line = function()
-  print("run line")
   local buf = vim.api.nvim_get_current_buf()
   local lang = otterkeeper.get_current_language_context()
   local pos = vim.api.nvim_win_get_cursor(0)
@@ -179,7 +178,6 @@ Runner.run_range = function()
 
   if vstart and vend then
     local range = { from = { vstart[2] - 1, vstart[1] }, to = { vend[2], vend[1] } }
-    P(range)
     send({ lang = otterkeeper.get_current_language_context(), range = range, text = lines })
   else
     print("No visual selection")
