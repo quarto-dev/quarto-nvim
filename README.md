@@ -66,7 +66,7 @@ It will be merged with the default options, which are shown below in the example
 If you want to use the defaults, simply call `setup` without arguments or with an empty table.
 
 ```lua
-require'quarto'.setup{
+require('quarto').setup({
   debug = false,
   closePreviewOnExit = true,
   lspFeatures = {
@@ -76,6 +76,13 @@ require'quarto'.setup{
     diagnostics = {
       enabled = true,
       triggers = { "BufWritePost" }
+    },
+    codeRunner = {
+      enabled = false,
+      default_method = nil, -- 'molten-nvim' or 'vim-slime'
+      ft_runners = {}, -- filetype to runner, ie. `{ python = "molten-nvim" }`.
+                     -- Takes precedence over `default_method`
+      never_run = { "yaml" }, -- filetypes which are never sent to a code runner
     },
     completion = {
       enabled = true,
@@ -87,7 +94,7 @@ require'quarto'.setup{
     rename = '<leader>lR',
     references = 'gr',
   }
-}
+})
 ```
 
 ### Preview
@@ -101,9 +108,9 @@ QuartoPreview
 or access the function from lua, e.g. to create a keybinding:
 
 ```lua
-local quarto = require'quarto'
+local quarto = require('quarto')
 quarto.setup()
-vim.keymap.set('n', '<leader>qp', quarto.quartoPreview, {silent = true, noremap = true})
+vim.keymap.set('n', '<leader>qp', quarto.quartoPreview, { silent = true, noremap = true })
 ```
 
 Then use the keyboard shortcut to open `quarto preview` for the current file or project in the active working directory in the neovim integrated terminal in a new tab.
@@ -154,13 +161,13 @@ You can now also enable other lsp features, such as the show hover function
 and shortcut, independent of showing diagnostics by enabling lsp features
 but not enabling diagnostics.
 
-### Other edgecases
+### Other Edge Cases
 
 Other languages might have similar issues (e.g. I see a lot of warnings about whitespace when activating diagnostics with `lua`).
 If you come across them and have a fix, I will be very happy about a pull request!
 Or, what might ultimately be the cleaner way of documenting language specific issues, an entry in the [wiki](https://github.com/quarto-dev/quarto-nvim/wiki).
 
-## Available Commnds
+## Available Commands
 
 ```vim
 QuartoPreview
@@ -169,8 +176,11 @@ QuartoHelp <..>
 QuartoActivate
 QuartoDiagnostics
 QuartoHover
+QuartoSend
 QuartoSendAbove
+QuartoSendBelow
 QuartoSendAll
+QuartoSendLine
 ```
 
 ## Recommended Plugins

@@ -16,14 +16,11 @@ M.defaultConfig = {
     },
   },
   codeRunner = {
-    enabled = true,
-    ft_runners = {}, -- filetype to runner, allowing different runners for different languages
-    never_run = { "yaml" }, -- filetypes to never try to run
-    default_method = "molten-nvim", -- or 'yarepl' or 'vim-slime'
-    -- TODO: implement auto target switching
-    -- auto_target_switching = false, -- automatically try to send the code to the correct place instead of asking every time
-    -- this should be implemented by just remembering where each language was sent, and not
-    -- prompting the user every time
+    enabled = false,
+    default_method = nil, -- 'molten-nvim' or 'vim-slime'
+    ft_runners = {}, -- filetype to runner, ie. `{ python = "molten-nvim" }`.
+                     -- Takes precedence over `default_method`
+    never_run = { "yaml" }, -- filetypes which are never sent to a code runner
   },
   keymap = {
     hover = "K",
