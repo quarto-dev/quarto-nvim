@@ -7,9 +7,6 @@ local get_config = require("quarto.config").get_config
 local no_code_found =
   "No code chunks found for the current language, which is detected based on the current code block. Is your cursor in a code block?"
 
----@class CodeRunner
----@field run function
-
 local function overlaps_range(range, other)
   return range.from[1] <= other.to[1] and other.from[1] <= range.to[1]
 end
@@ -18,8 +15,8 @@ end
 ---ignore list
 ---@param lang string?
 ---@param code_chunks table<string, CodeCell>
----@param range Range
----@return table<CodeCell>
+---@param range CodeRange
+---@return CodeCell[]
 local function extract_code_cells_in_range(lang, code_chunks, range)
   local chunks = {}
 
@@ -46,14 +43,18 @@ local function extract_code_cells_in_range(lang, code_chunks, range)
   return chunks
 end
 
----@class Range
----@field from table<number>
----@field to table<number>
+-- type `Range` is already defined twice in nvim core
+---@class CodeRange
+---@field from table<integer>
+---@field to table<integer>
 
 ---@class CodeCell
 ---@field lang string?
 ---@field text table<string>
----@field range Range
+---@field range CodeRange
+
+---@class CodeRunner
+---@field run function
 
 ---send code cell to the correct repl based on language, and user configuration
 ---@param cell CodeCell
@@ -74,12 +75,12 @@ local function send(cell, opts)
 end
 
 ---run the code chunks for the given language that overlap the given range
----@param range Range a range, for with any overlapping code cells are run
+---@param range CodeRange a range, for with any overlapping code cells are run
 ---@param multi_lang boolean?
 local function run(range, multi_lang)
   local buf = vim.api.nvim_get_current_buf()
   local lang = nil
-  if multi_lang then
+  if not multi_lang then
     lang = otterkeeper.get_current_language_context()
   end
 
@@ -138,7 +139,7 @@ Runner.run_line = function()
   local cell = {
     lang = lang,
     range = { from = { pos[1] - 1, 0 }, to = { pos[1], 0 } },
-    text = { vim.api.nvim_buf_get_lines(buf, pos[1] - 1, pos[1], false) },
+    text = vim.api.nvim_buf_get_lines(buf, pos[1] - 1, pos[1], false),
   }
 
   send(cell, { ignore_cols = true })

@@ -79,9 +79,9 @@ require('quarto').setup({
     },
     codeRunner = {
       enabled = false,
-      default_method = nil, -- 'molten-nvim' or 'vim-slime'
-      ft_runners = {}, -- filetype to runner, ie. `{ python = "molten-nvim" }`.
-                     -- Takes precedence over `default_method`
+      default_method = nil, -- 'molten' or 'slime'
+      ft_runners = {}, -- filetype to runner, ie. `{ python = "molten" }`.
+                       -- Takes precedence over `default_method`
       never_run = { "yaml" }, -- filetypes which are never sent to a code runner
     },
     completion = {
@@ -180,9 +180,9 @@ will work with:
 I recommend picking a code runner, setting it up based on its README, and then coming back
 to this point to learn how Quarto will augment that code runner.
 
-This plugin enables easily sending code cells to your code runner. This is exposed to the user in
-two different ways: commands, covered below; and lua functions, covered right here. *By default
-these functions will only run cells that are the same language as the current cell.*
+This plugin enables easily sending code cells to your code runner. There are two different ways to
+do this: commands, covered below; and lua functions, covered right here. *By default these functions
+will only run cells that are the same language as the current cell.*
 
 Quarto exposes code running functions through to runner module: `require('quarto.runner')`. Those
 functions are:
@@ -202,11 +202,11 @@ current cell.
 Here are some example run mappings:
 ```lua
 local runner = require("quarto.runner")
-vim.keymap.set("n", "<localleader>rc", runner.run_cell, { desc = "run cell", silent = true })
+vim.keymap.set("n", "<localleader>rc", runner.run_cell,  { desc = "run cell", silent = true })
 vim.keymap.set("n", "<localleader>ra", runner.run_above, { desc = "run cell and above", silent = true })
-vim.keymap.set("n", "<localleader>rA", runner.run_all, { desc = "run all cells", silent = true })
-vim.keymap.set("n", "<localleader>rl", runner.run_line, { desc = "run line", silent = true })
-vim.keymap.set("v", "<localleader>r", runner.run_range, { desc = "run line", silent = true })
+vim.keymap.set("n", "<localleader>rA", runner.run_all,   { desc = "run all cells", silent = true })
+vim.keymap.set("n", "<localleader>rl", runner.run_line,  { desc = "run line", silent = true })
+vim.keymap.set("v", "<localleader>r",  runner.run_range, { desc = "run line", silent = true })
 vim.keymap.set("n", "<localleader>RA", function()
   runner.run_all(true)
 end, { desc = "run all cells of all languages", silent = true })
