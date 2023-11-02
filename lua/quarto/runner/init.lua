@@ -2,23 +2,13 @@
 local Runner = {}
 
 local otterkeeper = require("otter.keeper")
-local config = require("quarto.config").config
+local get_config = require("quarto.config").get_config
 
 local no_code_found =
   "No code chunks found for the current language, which is detected based on the current code block. Is your cursor in a code block?"
 
-local function concat(ls)
-  if type(ls) ~= "table" then
-    return ls .. "\n\n"
-  end
-  local s = ""
-  for _, l in ipairs(ls) do
-    if l ~= "" then
-      s = s .. "\n" .. l
-    end
-  end
-  return s .. "\n"
-end
+---@class CodeRunner
+---@field run function
 
 local function overlaps_range(range, other)
   return range.from[1] <= other.to[1] and other.from[1] <= range.to[1]
@@ -41,7 +31,7 @@ local function extract_code_cells_in_range(lang, code_chunks, range)
     end
   else
     for l, lang_chunks in pairs(code_chunks) do
-      if vim.tbl_contains(config.codeRunner.never_run, l) then
+      if vim.tbl_contains(get_config().codeRunner.never_run, l) then
         goto continue
       end
       for _, chunk in ipairs(lang_chunks) do
@@ -70,24 +60,16 @@ end
 ---@param opts table?
 local function send(cell, opts)
   opts = opts or { ignore_cols = false }
-  local runner = config.codeRunner.default_method
-  local ft_runners = config.codeRunner.ft_runners
+  local runner = get_config().codeRunner.default_method
+  local ft_runners = get_config().codeRunner.ft_runners
   if cell.lang ~= nil and ft_runners[cell.lang] ~= nil then
     runner = ft_runners[cell.lang]
   end
 
-  if runner == "molten-nvim" then
-    local range = cell.range
-    if opts.ignore_cols then
-      vim.fn.MoltenEvaluateRange(range.from[1] + 1, range.to[1])
-    else
-      vim.fn.MoltenEvaluateRange(range.from[1] + 1, range.to[1], range.from[2] + 1, range.to[2] + 1)
-    end
-  elseif runner == "vim-slime" then
-    local text_lines = concat(cell.text)
-    vim.fn["slime#send"](text_lines)
+  if runner ~= nil then
+    require("quarto.runner." .. runner).run(cell, opts.ignore_cols)
   else
-    vim.notify("[Quarto] send called with an unrecognized runner", vim.log.levels.ERROR)
+    vim.notify("[Quarto] couldn't find appropriate code runner for language: " .. cell.lang, vim.log.levels.ERROR)
   end
 end
 

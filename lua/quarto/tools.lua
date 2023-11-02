@@ -14,4 +14,17 @@ M.replace_header_div = function(response)
   return response
 end
 
+M.concat = function(ls)
+  if type(ls) ~= "table" then
+    return ls .. "\n\n"
+  end
+  local s = ""
+  for _, l in ipairs(ls) do
+    if l ~= "" then
+      s = s .. "\n" .. l
+    end
+  end
+  return s .. "\n"
+end
+
 return M

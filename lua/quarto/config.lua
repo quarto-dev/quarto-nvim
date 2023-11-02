@@ -17,7 +17,7 @@ M.defaultConfig = {
   },
   codeRunner = {
     enabled = false,
-    default_method = nil, -- 'molten-nvim' or 'vim-slime'
+    default_method = nil, -- 'molten' or 'slime'
     ft_runners = {}, -- filetype to runner, ie. `{ python = "molten-nvim" }`.
                      -- Takes precedence over `default_method`
     never_run = { "yaml" }, -- filetypes which are never sent to a code runner
@@ -34,6 +34,10 @@ M.defaultConfig = {
 }
 
 -- use defaultConfig if not setup
-M.config = M.defaultConfig
+M.config = M.config or M.defaultConfig
+
+M.get_config = function()
+  return M.config
+end
 
 return M

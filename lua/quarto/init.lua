@@ -119,15 +119,18 @@ end
 -- setup
 M.setup = function(opt)
   cfg.config = vim.tbl_deep_extend("force", cfg.defaultConfig, opt or {})
+
+  if cfg.config.codeRunner.enabled then
+    -- setup top level run functions
+    local runner = require("quarto.runner")
+    M.quartoSend = runner.run_cell
+    M.quartoSendAbove = runner.run_above
+    M.quartoSendBelow = runner.run_below
+    M.quartoSendAll = runner.run_all
+    M.quartoSendRange = runner.run_range
+    M.quartoSendLine = runner.run_line
+  end
 end
 
--- setup top level run functions
-local runner = require("quarto.runner")
-M.quartoSend = runner.run_cell
-M.quartoSendAbove = runner.run_above
-M.quartoSendBelow = runner.run_below
-M.quartoSendAll = runner.run_all
-M.quartoSendRange = runner.run_range
-M.quartoSendLine = runner.run_line
 
 return M
