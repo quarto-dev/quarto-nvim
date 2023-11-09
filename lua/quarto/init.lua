@@ -129,6 +129,14 @@ M.setup = function(opt)
     M.quartoSendAll = runner.run_all
     M.quartoSendRange = runner.run_range
     M.quartoSendLine = runner.run_line
+
+    -- setup run user commands
+    api.nvim_create_user_command("QuartoSend", runner.run_cell, {})
+    api.nvim_create_user_command("QuartoSendAbove", runner.run_above, {})
+    api.nvim_create_user_command("QuartoSendBelow", runner.run_below, {})
+    api.nvim_create_user_command("QuartoSendAll", runner.run_all, {})
+    api.nvim_create_user_command("QuartoSendRange", runner.run_range, { range = 2 })
+    api.nvim_create_user_command("QuartoSendLine", runner.run_line, {})
   end
 end
 

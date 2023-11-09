@@ -20,12 +20,3 @@ api.nvim_create_user_command("QuartoClosePreview", quarto.quartoClosePreview, {}
 api.nvim_create_user_command("QuartoActivate", quarto.activate, {})
 api.nvim_create_user_command("QuartoHelp", quarto.searchHelp, { nargs = 1 })
 api.nvim_create_user_command("QuartoHover", ':require"otter".ask_hover()<cr>', {})
-
-if require('quarto.config').get_config().codeRunner.enabled then
-  api.nvim_create_user_command("QuartoSend", quarto.quartoSend, {})
-  api.nvim_create_user_command("QuartoSendAbove", quarto.quartoSendAbove, {})
-  api.nvim_create_user_command("QuartoSendBelow", quarto.quartoSendBelow, {})
-  api.nvim_create_user_command("QuartoSendAll", quarto.quartoSendAll, {})
-  api.nvim_create_user_command("QuartoSendRange", quarto.quartoSendRange, { range = 2 })
-  api.nvim_create_user_command("QuartoSendLine", quarto.quartoSendLine, {})
-end
