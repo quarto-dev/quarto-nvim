@@ -2,7 +2,7 @@
 local Runner = {}
 
 local otterkeeper = require("otter.keeper")
-local get_config = require("quarto.config").get_config
+local config = require("quarto.config").config
 
 local no_code_found =
   "No code chunks found for the current language, which is detected based on the current code block. Is your cursor in a code block?"
@@ -28,7 +28,7 @@ local function extract_code_cells_in_range(lang, code_chunks, range)
     end
   else
     for l, lang_chunks in pairs(code_chunks) do
-      if vim.tbl_contains(get_config().codeRunner.never_run, l) then
+      if vim.tbl_contains(config.codeRunner.never_run, l) then
         goto continue
       end
       for _, chunk in ipairs(lang_chunks) do
@@ -61,8 +61,8 @@ end
 ---@param opts table?
 local function send(cell, opts)
   opts = opts or { ignore_cols = false }
-  local runner = get_config().codeRunner.default_method
-  local ft_runners = get_config().codeRunner.ft_runners
+  local runner = config.codeRunner.default_method
+  local ft_runners = config.codeRunner.ft_runners
   if cell.lang ~= nil and ft_runners[cell.lang] ~= nil then
     runner = ft_runners[cell.lang]
   end
