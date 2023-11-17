@@ -85,6 +85,11 @@ local function run(range, multi_lang)
   end
 
   otterkeeper.sync_raft(buf)
+  local oa = otterkeeper._otters_attached[buf]
+  if oa == nil then
+    vim.notify("[Quarto] it seems that the code runner isn't initialized for this buffer.", vim.log.levels.ERROR)
+    return
+  end
   local chunks = otterkeeper._otters_attached[buf].code_chunks
 
   local filtered = extract_code_cells_in_range(lang, chunks, range)
