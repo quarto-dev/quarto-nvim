@@ -66,7 +66,7 @@ It will be merged with the default options, which are shown below in the example
 If you want to use the defaults, simply call `setup` without arguments or with an empty table.
 
 ```lua
-require'quarto'.setup{
+require('quarto').setup({
   debug = false,
   closePreviewOnExit = true,
   lspFeatures = {
@@ -76,6 +76,13 @@ require'quarto'.setup{
     diagnostics = {
       enabled = true,
       triggers = { "BufWritePost" }
+    },
+    codeRunner = {
+      enabled = false,
+      default_method = nil, -- 'molten' or 'slime'
+      ft_runners = {}, -- filetype to runner, ie. `{ python = "molten" }`.
+                       -- Takes precedence over `default_method`
+      never_run = { "yaml" }, -- filetypes which are never sent to a code runner
     },
     completion = {
       enabled = true,
@@ -87,7 +94,7 @@ require'quarto'.setup{
     rename = '<leader>lR',
     references = 'gr',
   }
-}
+})
 ```
 
 ### Preview
@@ -101,9 +108,9 @@ QuartoPreview
 or access the function from lua, e.g. to create a keybinding:
 
 ```lua
-local quarto = require'quarto'
+local quarto = require('quarto')
 quarto.setup()
-vim.keymap.set('n', '<leader>qp', quarto.quartoPreview, {silent = true, noremap = true})
+vim.keymap.set('n', '<leader>qp', quarto.quartoPreview, { silent = true, noremap = true })
 ```
 
 Then use the keyboard shortcut to open `quarto preview` for the current file or project in the active working directory in the neovim integrated terminal in a new tab.
@@ -154,13 +161,59 @@ You can now also enable other lsp features, such as the show hover function
 and shortcut, independent of showing diagnostics by enabling lsp features
 but not enabling diagnostics.
 
-### Other edgecases
+### Other Edge Cases
 
 Other languages might have similar issues (e.g. I see a lot of warnings about whitespace when activating diagnostics with `lua`).
 If you come across them and have a fix, I will be very happy about a pull request!
 Or, what might ultimately be the cleaner way of documenting language specific issues, an entry in the [wiki](https://github.com/quarto-dev/quarto-nvim/wiki).
 
-## Available Commnds
+## Running Code
+
+Quarto-nvim doesn't run code for you, instead, it will interface with existing code running
+plugins and tell them what to run. There are currently two such code running plugins that quarto
+will work with:
+1. [molten-nvim](https://github.com/benlubas/molten-nvim) - a code runner that supports the jupyter
+   kernel, renders output below each code cell, and optionally renders images in the terminal.
+2. [vim-slime](https://github.com/jpalardy/vim-slime) - a general purpose code runner with support
+   for sending code to integrated nvim terminals, tmux panes, and many others.
+
+I recommend picking a code runner, setting it up based on its README, and then coming back
+to this point to learn how Quarto will augment that code runner.
+
+This plugin enables easily sending code cells to your code runner. There are two different ways to
+do this: commands, covered below; and lua functions, covered right here. *By default these functions
+will only run cells that are the same language as the current cell.*
+
+Quarto exposes code running functions through to runner module: `require('quarto.runner')`. Those
+functions are:
+- `run_cell()` - runs the current cell
+- `run_above(multi_lang)` - runs all the cells above the current one, **and** the current one, in order
+- `run_below(multi_lang)` - runs all the cells below the current one, **and** the current one, in order
+- `run_all(multi_lang)` - runs all the cells in the document
+- `run_line(multi_lang)` - runs the line of code at your cursor
+- `run_range()` - run code inside the visual range
+
+Each function that takes the optional `multi_lang` argument will run cells of all languages when
+called with the value `true`, and will only run cells that match the language of the current cell
+otherwise. As a result, just calling `run_all()` will run all cells that match the language of the
+current cell.
+
+
+Here are some example run mappings:
+```lua
+local runner = require("quarto.runner")
+vim.keymap.set("n", "<localleader>rc", runner.run_cell,  { desc = "run cell", silent = true })
+vim.keymap.set("n", "<localleader>ra", runner.run_above, { desc = "run cell and above", silent = true })
+vim.keymap.set("n", "<localleader>rA", runner.run_all,   { desc = "run all cells", silent = true })
+vim.keymap.set("n", "<localleader>rl", runner.run_line,  { desc = "run line", silent = true })
+vim.keymap.set("v", "<localleader>r",  runner.run_range, { desc = "run line", silent = true })
+vim.keymap.set("n", "<localleader>RA", function()
+  runner.run_all(true)
+end, { desc = "run all cells of all languages", silent = true })
+```
+
+
+## Available Commands
 
 ```vim
 QuartoPreview
@@ -169,8 +222,11 @@ QuartoHelp <..>
 QuartoActivate
 QuartoDiagnostics
 QuartoHover
+QuartoSend
 QuartoSendAbove
+QuartoSendBelow
 QuartoSendAll
+QuartoSendLine
 ```
 
 ## Recommended Plugins
