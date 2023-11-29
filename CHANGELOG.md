@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.18.0](https://github.com/quarto-dev/quarto-nvim/compare/v0.17.0...v0.18.0) (2023-11-29)
+
+
+### Features
+
+* configurable code runner with molten-nvim integration ([#99](https://github.com/quarto-dev/quarto-nvim/issues/99)) ([eacd8ff](https://github.com/quarto-dev/quarto-nvim/commit/eacd8ff211923c1b11a021ae6291bc34d9472948))
+
+
+### Bug Fixes
+
+* get current bufnr in ftplugin instead of relying on 0 ([af34813](https://github.com/quarto-dev/quarto-nvim/commit/af3481378ba7b664499fd1bbb9ae5fd6612d04fc))
+* readme configruation ([#103](https://github.com/quarto-dev/quarto-nvim/issues/103)) ([1fe0f16](https://github.com/quarto-dev/quarto-nvim/commit/1fe0f163c42efdddb4d8b9ac8ac0e55eb20ff17c))
+* user commands giving bad args to run funcs ([#101](https://github.com/quarto-dev/quarto-nvim/issues/101)) ([68ac6c0](https://github.com/quarto-dev/quarto-nvim/commit/68ac6c0500bcd0f3e978bd16c7d56e93ee8928da))
+
 ## [0.17.0](https://github.com/quarto-dev/quarto-nvim/compare/v0.16.0...v0.17.0) (2023-09-08)
 
 
