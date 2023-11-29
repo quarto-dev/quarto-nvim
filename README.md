@@ -77,16 +77,16 @@ require('quarto').setup({
       enabled = true,
       triggers = { "BufWritePost" }
     },
-    codeRunner = {
-      enabled = false,
-      default_method = nil, -- 'molten' or 'slime'
-      ft_runners = {}, -- filetype to runner, ie. `{ python = "molten" }`.
-                       -- Takes precedence over `default_method`
-      never_run = { "yaml" }, -- filetypes which are never sent to a code runner
-    },
     completion = {
       enabled = true,
     },
+  },
+  codeRunner = {
+    enabled = false,
+    default_method = nil, -- 'molten' or 'slime'
+    ft_runners = {}, -- filetype to runner, ie. `{ python = "molten" }`.
+                     -- Takes precedence over `default_method`
+    never_run = { "yaml" }, -- filetypes which are never sent to a code runner
   },
   keymap = {
     hover = 'K',
