@@ -1,4 +1,4 @@
-*quarto.txt*         For Neovim >= 0.8.0         Last change: 2023 November 20
+*quarto.txt*         For Neovim >= 0.8.0         Last change: 2023 November 29
 
 ==============================================================================
 Table of Contents                                   *quarto-table-of-contents*
@@ -106,16 +106,16 @@ or with an empty table.
           enabled = true,
           triggers = { "BufWritePost" }
         },
-        codeRunner = {
-          enabled = false,
-          default_method = nil, -- 'molten' or 'slime'
-          ft_runners = {}, -- filetype to runner, ie. `{ python = "molten" }`.
-                           -- Takes precedence over `default_method`
-          never_run = { "yaml" }, -- filetypes which are never sent to a code runner
-        },
         completion = {
           enabled = true,
         },
+      },
+      codeRunner = {
+        enabled = false,
+        default_method = nil, -- 'molten' or 'slime'
+        ft_runners = {}, -- filetype to runner, ie. `{ python = "molten" }`.
+                         -- Takes precedence over `default_method`
+        never_run = { "yaml" }, -- filetypes which are never sent to a code runner
       },
       keymap = {
         hover = 'K',
