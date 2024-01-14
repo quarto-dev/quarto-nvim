@@ -155,7 +155,7 @@ Runner.run_line = function()
   send(cell, { ignore_cols = true })
 end
 
--- NOTE: This function will not work the same with molten as it does with slime. Generally, code
+-- NOTE: This function will not work the same with molten as it does with slime/iron. Generally, code
 -- runners which run code based on the CodeCell range field, will not work when the user selects
 -- code across cells. But it will work if a selection is entirely within a cell.
 -- Also: This function cannot run multiple languages at once.

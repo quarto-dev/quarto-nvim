@@ -83,7 +83,7 @@ require('quarto').setup({
   },
   codeRunner = {
     enabled = false,
-    default_method = nil, -- 'molten' or 'slime'
+    default_method = nil, -- 'molten', 'slime', or 'iron'
     ft_runners = {}, -- filetype to runner, ie. `{ python = "molten" }`.
                      -- Takes precedence over `default_method`
     never_run = { "yaml" }, -- filetypes which are never sent to a code runner
@@ -176,6 +176,8 @@ will work with:
    kernel, renders output below each code cell, and optionally renders images in the terminal.
 2. [vim-slime](https://github.com/jpalardy/vim-slime) - a general purpose code runner with support
    for sending code to integrated nvim terminals, tmux panes, and many others.
+3. [iron.nvim](https://github.com/Vigemus/iron.nvim) - general purpose code runner and library for
+    within-neovim REPL interaction in splits or floating windows.
 
 I recommend picking a code runner, setting it up based on its README, and then coming back
 to this point to learn how Quarto will augment that code runner.
