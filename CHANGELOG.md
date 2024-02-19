@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.18.1](https://github.com/quarto-dev/quarto-nvim/compare/v0.18.0...v0.18.1) (2024-02-19)
+
+
+### Bug Fixes
+
+* make disabling keybindings easier. refs [#116](https://github.com/quarto-dev/quarto-nvim/issues/116) ([1b15dd1](https://github.com/quarto-dev/quarto-nvim/commit/1b15dd175b974cb8c83b022f68cc07c02c9c465b))
+* QuartoHover user function ([#113](https://github.com/quarto-dev/quarto-nvim/issues/113)) ([a4760c0](https://github.com/quarto-dev/quarto-nvim/commit/a4760c0b275972bc8ef577f7521771d17cb0cd17))
+
 ## [0.18.0](https://github.com/quarto-dev/quarto-nvim/compare/v0.17.0...v0.18.0) (2023-11-29)
 
 
