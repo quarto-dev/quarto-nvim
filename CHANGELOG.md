@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.18.2](https://github.com/quarto-dev/quarto-nvim/compare/v0.18.1...v0.18.2) (2024-02-19)
+
+
+### Bug Fixes
+
+* only require otter when activating ([5336b86](https://github.com/quarto-dev/quarto-nvim/commit/5336b86dc3d0517075debe8906671daeeab9f5ed))
+
 ## [0.18.1](https://github.com/quarto-dev/quarto-nvim/compare/v0.18.0...v0.18.1) (2024-02-19)
 
 
