@@ -4,9 +4,14 @@ local config = require("quarto.config").config
 local quarto = require("quarto")
 
 local function set_keymaps()
+  if not config.keymap then
+    return
+  end
   local b = vim.api.nvim_get_current_buf()
   local function set(lhs, rhs)
-    vim.api.nvim_buf_set_keymap(b, "n", lhs, rhs, { silent = true, noremap = true })
+    if lhs then
+      vim.api.nvim_buf_set_keymap(b, "n", lhs, rhs, { silent = true, noremap = true })
+    end
   end
   set(config.keymap.definition, ":lua require'otter'.ask_definition()<cr>")
   set(config.keymap.type_definition, ":lua require'otter'.ask_type_definition()<cr>")

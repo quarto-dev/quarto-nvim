@@ -66,16 +66,16 @@ It will be merged with the default options, which are shown below in the example
 If you want to use the defaults, simply call `setup` without arguments or with an empty table.
 
 ```lua
-require('quarto').setup({
+require('quarto').setup{
   debug = false,
   closePreviewOnExit = true,
   lspFeatures = {
     enabled = true,
-    languages = { 'r', 'python', 'julia', 'bash' },
-    chunks = 'curly', -- 'curly' or 'all'
+    chunks = "curly",
+    languages = { "r", "python", "julia", "bash", "html" },
     diagnostics = {
       enabled = true,
-      triggers = { "BufWritePost" }
+      triggers = { "BufWritePost" },
     },
     completion = {
       enabled = true,
@@ -89,12 +89,16 @@ require('quarto').setup({
     never_run = { "yaml" }, -- filetypes which are never sent to a code runner
   },
   keymap = {
-    hover = 'K',
-    definition = 'gd',
-    rename = '<leader>lR',
-    references = 'gr',
+    -- set whole section or individual keys to `false` to disable
+    hover = "K",
+    definition = "gd",
+    type_definition = "gD",
+    rename = "<leader>lR",
+    format = "<leader>lf",
+    references = "gr",
+    document_symbols = "gS",
   }
-})
+}
 ```
 
 ### Preview
