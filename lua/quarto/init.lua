@@ -1,7 +1,6 @@
 local M = {}
 local api = vim.api
 local cfg = require("quarto.config")
-local otter = require("otter")
 local tools = require("quarto.tools")
 local util = require("lspconfig.util")
 
@@ -108,7 +107,7 @@ M.activate = function()
 
       ]]
   end
-  otter.activate(
+  require'otter'.activate(
     cfg.config.lspFeatures.languages,
     cfg.config.lspFeatures.completion.enabled,
     cfg.config.lspFeatures.diagnostics.enabled,
