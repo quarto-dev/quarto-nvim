@@ -17,7 +17,7 @@ M.defaultConfig = {
   },
   codeRunner = {
     enabled = false,
-    default_method = nil, -- "molten" or "slime"
+    default_method = nil, -- "molten", "slime", or "iron"
     ft_runners = {}, -- filetype to runner, ie. `{ python = "molten" }`.
                      -- Takes precedence over `default_method`
     never_run = { "yaml" }, -- filetypes which are never sent to a code runner

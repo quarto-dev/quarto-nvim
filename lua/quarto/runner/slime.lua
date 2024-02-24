@@ -1,6 +1,6 @@
 local concat = require('quarto.tools').concat
 
----Run the code cell with molten
+---Run the code cell with slime
 ---@param cell CodeCell
 ---@param _ boolean
 local function run(cell, _)
