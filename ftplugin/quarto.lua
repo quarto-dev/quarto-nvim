@@ -1,7 +1,7 @@
-vim.b.slime_cell_delimiter = "```"
+vim.b.slime_cell_delimiter = '```'
 
-local config = require("quarto.config").config
-local quarto = require("quarto")
+local config = require('quarto.config').config
+local quarto = require 'quarto'
 
 local function set_keymaps()
   if not config.keymap then
@@ -10,7 +10,7 @@ local function set_keymaps()
   local b = vim.api.nvim_get_current_buf()
   local function set(lhs, rhs)
     if lhs then
-      vim.api.nvim_buf_set_keymap(b, "n", lhs, rhs, { silent = true, noremap = true })
+      vim.api.nvim_buf_set_keymap(b, 'n', lhs, rhs, { silent = true, noremap = true })
     end
   end
   set(config.keymap.definition, ":lua require'otter'.ask_definition()<cr>")
@@ -35,9 +35,9 @@ if config.lspFeatures.enabled then
   -- is used in the lspconfig setup
   -- because this gets executed after the `LspAttach` autocommand
   -- <https://github.com/neovim/neovim/blob/d0d132fbd055834cbecb3d4e3a123a6ea8f099ec/runtime/lua/vim/lsp.lua#L1702-L1711>
-  vim.api.nvim_create_autocmd("LspAttach", {
+  vim.api.nvim_create_autocmd('LspAttach', {
     buffer = vim.api.nvim_get_current_buf(),
-    group = vim.api.nvim_create_augroup("QuartoKeymapSetup", {}),
+    group = vim.api.nvim_create_augroup('QuartoKeymapSetup', {}),
     callback = set_keymaps,
   })
 end

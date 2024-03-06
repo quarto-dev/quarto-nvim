@@ -1,11 +1,10 @@
 --- Code runner, configurable to use different engines.
 local Runner = {}
 
-local otterkeeper = require("otter.keeper")
-local config = require("quarto.config").config
+local otterkeeper = require 'otter.keeper'
+local config = require('quarto.config').config
 
-local no_code_found =
-  "No code chunks found for the current language, which is detected based on the current code block. Is your cursor in a code block?"
+local no_code_found = 'No code chunks found for the current language, which is detected based on the current code block. Is your cursor in a code block?'
 
 local function overlaps_range(range, other)
   return range.from[1] <= other.to[1] and other.from[1] <= range.to[1]
@@ -68,7 +67,7 @@ local function send(cell, opts)
   end
 
   if runner ~= nil then
-    require("quarto.runner." .. runner).run(cell, opts.ignore_cols)
+    require('quarto.runner.' .. runner).run(cell, opts.ignore_cols)
   else
     vim.notify("[Quarto] couldn't find appropriate code runner for language: " .. cell.lang, vim.log.levels.ERROR)
   end
@@ -161,14 +160,14 @@ Runner.run_range = function()
     return
   end
 
-  local vstart = vim.fn.getpos("'<")
-  local vend = vim.fn.getpos("'>")
+  local vstart = vim.fn.getpos "'<"
+  local vend = vim.fn.getpos "'>"
 
   if vstart and vend then
     local range = { from = { vstart[2] - 1, vstart[1] }, to = { vend[2], vend[1] } }
-    send({ lang = otterkeeper.get_current_language_context(), range = range, text = lines })
+    send { lang = otterkeeper.get_current_language_context(), range = range, text = lines }
   else
-    print("No visual selection")
+    print 'No visual selection'
   end
 end
 

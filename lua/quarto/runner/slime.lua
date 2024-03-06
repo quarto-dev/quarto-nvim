@@ -5,7 +5,7 @@ local concat = require('quarto.tools').concat
 ---@param _ boolean
 local function run(cell, _)
   local text_lines = concat(cell.text)
-  vim.fn["slime#send"](text_lines)
+  vim.fn['slime#send'](text_lines)
 end
 
 ---@class CodeRunner
