@@ -1,4 +1,4 @@
-*quarto.txt*         For Neovim >= 0.8.0         Last change: 2024 February 19
+*quarto.txt*           For Neovim >= 0.8.0          Last change: 2024 March 06
 
 ==============================================================================
 Table of Contents                                   *quarto-table-of-contents*
