@@ -24,9 +24,6 @@ and then pick the relevant parts from the
 [`lua/plugins/quarto.lua`](https://github.com/jmbuhr/quarto-nvim-kickstarter/blob/main/lua/plugins/quarto.lua) file
 to integrate it into your own existing configuration.
 
-There is also a smaller configuration for slotting into your existing `lazy.nvim` (e.g. [LazyVim](https://www.lazyvim.org/)) configuration at
-<https://github.com/jmbuhr/lazyvim-starter-for-quarto/blob/main/lua/plugins/quarto.lua>
-
 Plugins and their configuration to look out for in either of those files are:
 
 ```lua
