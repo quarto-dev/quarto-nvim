@@ -22,22 +22,27 @@ local function set_keymaps()
   set(config.keymap.format, ":lua require'otter'.ask_format()<cr>")
 end
 
+local otterconfig = require('otter.config').cfg
+
 if config.lspFeatures.enabled then
   quarto.activate()
-  set_keymaps()
-  -- set the keymap again if a language server attaches
-  -- directly to this buffer
-  -- because it probably overwrites these in `LspAttach`
-  -- TODO: make this more robust
-  -- This currently only works if 'LspAttach' is used
-  -- directly, e.g. in LazyVim
-  -- It does no work if the `on_attach` callback
-  -- is used in the lspconfig setup
-  -- because this gets executed after the `LspAttach` autocommand
-  -- <https://github.com/neovim/neovim/blob/d0d132fbd055834cbecb3d4e3a123a6ea8f099ec/runtime/lua/vim/lsp.lua#L1702-L1711>
-  vim.api.nvim_create_autocmd('LspAttach', {
-    buffer = vim.api.nvim_get_current_buf(),
-    group = vim.api.nvim_create_augroup('QuartoKeymapSetup', {}),
-    callback = set_keymaps,
-  })
+  -- only manually set keyjaks if not already done by otter
+  if not otterconfig.lsp.hijack then
+    set_keymaps()
+    -- set the keymap again if a language server attaches
+    -- directly to this buffer
+    -- because it probably overwrites these in `LspAttach`
+    -- TODO: make this more robust
+    -- This currently only works if 'LspAttach' is used
+    -- directly, e.g. in LazyVim
+    -- It does no work if the `on_attach` callback
+    -- is used in the lspconfig setup
+    -- because this gets executed after the `LspAttach` autocommand
+    -- <https://github.com/neovim/neovim/blob/d0d132fbd055834cbecb3d4e3a123a6ea8f099ec/runtime/lua/vim/lsp.lua#L1702-L1711>
+    vim.api.nvim_create_autocmd('LspAttach', {
+      buffer = vim.api.nvim_get_current_buf(),
+      group = vim.api.nvim_create_augroup('QuartoKeymapSetup', {}),
+      callback = set_keymaps,
+    })
+  end
 end
