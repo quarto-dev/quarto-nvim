@@ -22,15 +22,6 @@ M.defaultConfig = {
     -- Takes precedence over `default_method`
     never_run = { 'yaml' }, -- filetypes which are never sent to a code runner
   },
-  keymap = {
-    hover = 'K',
-    definition = 'gd',
-    type_definition = 'gD',
-    rename = '<leader>lR',
-    format = '<leader>lf',
-    references = 'gr',
-    document_symbols = 'gS',
-  },
 }
 
 -- use defaultConfig if not setup
