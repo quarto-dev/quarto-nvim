@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.0.0](https://github.com/quarto-dev/quarto-nvim/compare/v0.18.2...v1.0.0) (2024-06-29)
+
+
+### ⚠ BREAKING CHANGES
+
+* remove the need for custom otter.nvim keybindings ([#135](https://github.com/quarto-dev/quarto-nvim/issues/135))
+
+### Features
+
+* remove the need for custom otter.nvim keybindings ([#135](https://github.com/quarto-dev/quarto-nvim/issues/135)) ([1665721](https://github.com/quarto-dev/quarto-nvim/commit/1665721f7ba16671f519f3cd87382bc28258af04))
+
 ## [0.18.2](https://github.com/quarto-dev/quarto-nvim/compare/v0.18.1...v0.18.2) (2024-02-19)
 
 
