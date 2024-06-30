@@ -156,8 +156,8 @@ Uou can open the hover documentation for R, python and julia code chunks with
 for your completion plugin.
 
 A list of currently available language server requests can be found in the
-[otter.nvim
-documentation(https://github.com/jmbuhr/otter.nvim?tab=readme-ov-file#lsp-methods-currently-implemented).
+otter.nvim documentation
+<https://github.com/jmbuhr/otter.nvim?tab=readme-ov-file#lsp-methods-currently-implemented>.
 
 
 R DIAGNOSTICS CONFIGURATION ~
