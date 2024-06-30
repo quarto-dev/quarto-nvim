@@ -15,11 +15,7 @@ The playlist is extened as more features are added, so join us for a "Coffee wit
 You can install `quarto-nvim` from GitHub with your favourite Neovim plugin manager
 like [lazy.nvim](https://github.com/folke/lazy.nvim), [packer.nvim](https://github.com/wbthomason/packer.nvim) or [VimPlug](https://github.com/junegunn/vim-plug).
 
-Because Quarto provides a lot of functionality through integration with existing plugins,
-some of those have to be told about the existence of `quarto-nvim` (like e.g. registering
-it as a source for the autocompletion plugin `nvim-cmp`).
-
-As such, we recommend you to experiment with the [quarto-nvim kickstarter configuration](https://github.com/jmbuhr/quarto-nvim-kickstarter)
+Because Quarto provides a lot of functionality through integration with existing plugins, we recommend to experiment with the [quarto-nvim kickstarter configuration](https://github.com/jmbuhr/quarto-nvim-kickstarter)
 and then pick the relevant parts from the
 [`lua/plugins/quarto.lua`](https://github.com/jmbuhr/quarto-nvim-kickstarter/blob/main/lua/plugins/quarto.lua) file
 to integrate it into your own existing configuration.
@@ -85,16 +81,6 @@ require('quarto').setup{
                      -- Takes precedence over `default_method`
     never_run = { "yaml" }, -- filetypes which are never sent to a code runner
   },
-  keymap = {
-    -- set whole section or individual keys to `false` to disable
-    hover = "K",
-    definition = "gd",
-    type_definition = "gD",
-    rename = "<leader>lR",
-    format = "<leader>lf",
-    references = "gr",
-    document_symbols = "gS",
-  }
 }
 ```
 
@@ -121,28 +107,18 @@ other features strictly require it.
 
 ## Language support
 
+`quarto-nvim` automatically activates `otter.nvim` for quarto files if language features are enabled.
+
 ### Demo
 
 https://user-images.githubusercontent.com/17450586/209436101-4dd560f4-c876-4dbc-a0f4-b3a2cbff0748.mp4
 
 ### Usage
 
-With the language features enabled, you can open the hover documentation
-for R, python and julia code chunks with `K` (or configure a different shortcut).
-You can got-to-definition with `gd`.
+Uou can open the hover documentation for R, python and julia code chunks with `K`, got-to-definition with `gd` etc.
+and get autocompletion via the lsp source for your completion plugin.
 
-### Autocompletion
-
-`quarto-nvim` now comes with a completion source for [nvim-cmp](https://github.com/hrsh7th/nvim-cmp) to deliver swift autocompletion for code in quarto code chunks.
-With the quarto language features enabled, you can add the source in your `cmp` configuration:
-
-```lua
--- ...
-  sources = {
-    { name = 'otter' },
-  }
--- ...
-```
+A list of currently available language server requests can be found in the [otter.nvim documentation(https://github.com/jmbuhr/otter.nvim?tab=readme-ov-file#lsp-methods-currently-implemented).
 
 ### R diagnostics configuration
 
@@ -201,6 +177,7 @@ current cell.
 
 
 Here are some example run mappings:
+
 ```lua
 local runner = require("quarto.runner")
 vim.keymap.set("n", "<localleader>rc", runner.run_cell,  { desc = "run cell", silent = true })
@@ -232,11 +209,8 @@ QuartoSendLine
 
 ## Recommended Plugins
 
-Quarto works great with a number of existing plugins in the neovim ecosystem.
-You can find semi-opinionated but still minimal
-configurations for `nvim` and `tmux`,
-for use with Quarto, R and python in these two repositories:
+Quarto works great with a number of plugins in the neovim ecosystem.
+You can find my personal (and thus up-to-date) configuration for use with Quarto, R and python here:
 
-- <https://github.com/jmbuhr/quarto-nvim-kickstarter>
-- <https://github.com/jmbuhr/tmux-kickstarter>
+<https://github.com/jmbuhr/quarto-nvim-kickstarter>
 
