@@ -118,7 +118,7 @@ https://user-images.githubusercontent.com/17450586/209436101-4dd560f4-c876-4dbc-
 Uou can open the hover documentation for R, python and julia code chunks with `K`, got-to-definition with `gd` etc.
 and get autocompletion via the lsp source for your completion plugin.
 
-A list of currently available language server requests can be found in the [otter.nvim documentation(https://github.com/jmbuhr/otter.nvim?tab=readme-ov-file#lsp-methods-currently-implemented).
+A list of currently available language server requests can be found in the [otter.nvim documentation](https://github.com/jmbuhr/otter.nvim?tab=readme-ov-file#lsp-methods-currently-implemented).
 
 ### R diagnostics configuration
 
