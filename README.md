@@ -13,9 +13,26 @@ The playlist is extened as more features are added, so join us for a "Coffee wit
 ## Setup
 
 You can install `quarto-nvim` from GitHub with your favourite Neovim plugin manager
-like [lazy.nvim](https://github.com/folke/lazy.nvim), [packer.nvim](https://github.com/wbthomason/packer.nvim) or [VimPlug](https://github.com/junegunn/vim-plug).
+like [lazy.nvim](https://github.com/folke/lazy.nvim),
+[packer.nvim](https://github.com/wbthomason/packer.nvim) or [VimPlug](https://github.com/junegunn/vim-plug).
 
-Because Quarto provides a lot of functionality through integration with existing plugins, we recommend to experiment with the [quarto-nvim kickstarter configuration](https://github.com/jmbuhr/quarto-nvim-kickstarter)
+Example `lazy.nvim` plugin specification:
+
+```lua
+-- plugins/quarto.lua
+return {
+  {
+    "quarto-dev/quarto-nvim",
+    dependencies = {
+      "jmbuhr/otter.nvim",
+      "nvim-treesitter/nvim-treesitter",
+    },
+  },
+}
+```
+
+Because Quarto provides a lot of functionality through integration with existing plugins,
+we recommend to experiment with the [quarto-nvim kickstarter configuration](https://github.com/jmbuhr/quarto-nvim-kickstarter)
 and then pick the relevant parts from the
 [`lua/plugins/quarto.lua`](https://github.com/jmbuhr/quarto-nvim-kickstarter/blob/main/lua/plugins/quarto.lua) file
 to integrate it into your own existing configuration.
