@@ -1,4 +1,4 @@
-*quarto.txt*           For Neovim >= 0.8.0           Last change: 2024 June 30
+*quarto.txt*           For Neovim >= 0.8.0           Last change: 2024 July 05
 
 ==============================================================================
 Table of Contents                                   *quarto-table-of-contents*
@@ -35,6 +35,21 @@ Youcan install `quarto-nvim` from GitHub with your favourite Neovim plugin
 manager like lazy.nvim <https://github.com/folke/lazy.nvim>, packer.nvim
 <https://github.com/wbthomason/packer.nvim> or VimPlug
 <https://github.com/junegunn/vim-plug>.
+
+Example `lazy.nvim` plugin specification:
+
+>lua
+    -- plugins/quarto.lua
+    return {
+      {
+        "quarto-dev/quarto-nvim",
+        dependencies = {
+          "jmbuhr/otter.nvim",
+          "nvim-treesitter/nvim-treesitter",
+        },
+      },
+    }
+<
 
 Because Quarto provides a lot of functionality through integration with
 existing plugins, we recommend to experiment with the quarto-nvim kickstarter
