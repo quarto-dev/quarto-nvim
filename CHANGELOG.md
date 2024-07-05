@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/quarto-dev/quarto-nvim/compare/v1.0.0...v1.0.1) (2024-06-30)
+
+
+### Bug Fixes
+
+* use renamed table from otter.nvim. fixes [#137](https://github.com/quarto-dev/quarto-nvim/issues/137). ([c873128](https://github.com/quarto-dev/quarto-nvim/commit/c87312856469c8aaa30b3097a1280eea58ab1902))
+
 ## [1.0.0](https://github.com/quarto-dev/quarto-nvim/compare/v0.18.2...v1.0.0) (2024-06-29)
 
 
