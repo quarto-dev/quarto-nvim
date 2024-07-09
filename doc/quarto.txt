@@ -1,4 +1,4 @@
-*quarto.txt*           For Neovim >= 0.8.0           Last change: 2024 July 05
+*quarto.txt*           For Neovim >= 0.8.0           Last change: 2024 July 09
 
 ==============================================================================
 Table of Contents                                   *quarto-table-of-contents*
@@ -70,22 +70,8 @@ Plugins and their configuration to look out for in either of those files are:
     }
 <
 
-Quarto-nvim requires Neovim >= **v0.9.0**
-(<https://github.com/neovim/neovim/releases/tag/stable>). If you are unable to
-update Neovim, you can specify a specific version of the plugins involved
-instead of the latest stable version. How you do this will vary depending on
-your plugin manager, but you can see one example using `lazy.nvim` here:
-<https://github.com/jmbuhr/quarto-nvim-kickstarter/blob/nvim-0.8.3/lua/plugins/quarto.lua>
-
-The `version = ...` lines to look out for are for the following plugins:
-
->lua
-    {
-        'quarto-dev/quarto-nvim',
-        'jmbuhr/otter.nvim',
-        'nvim-treesitter/nvim-treesitter'
-    }
-<
+Quarto-nvim requires the latest Neovim stable version
+<https://github.com/neovim/neovim/releases/tag/stable> (>= `v0.10.0`).
 
 
 USAGE                                               *quarto-quarto-nvim-usage*
