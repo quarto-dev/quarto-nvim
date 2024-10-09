@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.2](https://github.com/quarto-dev/quarto-nvim/compare/v1.0.1...v1.0.2) (2024-10-09)
+
+
+### Bug Fixes
+
+* register markdown grammar for quarto and rmd until our own grammar is ready (https://github.com/jmbuhr/tree-sitter-pandoc-markdown) refs https://github.com/jmbuhr/otter.nvim/issues/179 ([1d10f13](https://github.com/quarto-dev/quarto-nvim/commit/1d10f135937613ca71a84975fe75b5b76a35065e))
+
 ## [1.0.1](https://github.com/quarto-dev/quarto-nvim/compare/v1.0.0...v1.0.1) (2024-06-30)
 
 
