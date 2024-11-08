@@ -152,7 +152,7 @@ https://user-images.githubusercontent.com/17450586/209436101-4dd560f4-c876-4dbc-
 
 USAGE ~
 
-Uou can open the hover documentation for R, python and julia code chunks with
+You can open the hover documentation for R, python and julia code chunks with
 `K`, got-to-definition with `gd` etc. and get autocompletion via the lsp source
 for your completion plugin.
 
@@ -245,7 +245,6 @@ AVAILABLE COMMANDS                     *quarto-quarto-nvim-available-commands*
     QuartoHelp <..>
     QuartoActivate
     QuartoDiagnostics
-    QuartoHover
     QuartoSend
     QuartoSendAbove
     QuartoSendBelow
