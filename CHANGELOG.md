@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.3](https://github.com/quarto-dev/quarto-nvim/compare/v1.0.2...v1.0.3) (2024-12-04)
+
+
+### Bug Fixes
+
+* Replace term:// with termopen() to resolve wildcard expansion error ([#153](https://github.com/quarto-dev/quarto-nvim/issues/153)) ([f810c62](https://github.com/quarto-dev/quarto-nvim/commit/f810c62842e9a8e9e2d44fa8a47196e7d36d79c4))
+
 ## [1.0.2](https://github.com/quarto-dev/quarto-nvim/compare/v1.0.1...v1.0.2) (2024-10-09)
 
 
