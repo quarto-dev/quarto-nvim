@@ -8,23 +8,21 @@ function M.quartoPreview(opts)
   opts = opts or {}
   local args = opts.args or ''
 
-  -- find root directory / check if it is a project
+  -- Find root directory / check if it is a project
   local buffer_path = api.nvim_buf_get_name(0)
   local root_dir = util.root_pattern '_quarto.yml'(buffer_path)
   local cmd
   local mode
+
   if root_dir then
     mode = 'project'
-    cmd = 'quarto preview' .. ' ' .. args
+    cmd = 'quarto preview ' .. args
   else
     mode = 'file'
-    if vim.loop.os_uname().sysname == 'Windows_NT' then
-      cmd = 'quarto preview \\"' .. buffer_path .. '\\"' .. ' ' .. args
-    else
-      cmd = "quarto preview '" .. buffer_path .. "'" .. ' ' .. args
-    end
+    cmd = 'quarto preview ' .. vim.fn.shellescape(buffer_path) .. ' ' .. args
   end
 
+  -- Check file extensions
   local quarto_extensions = { '.qmd', '.Rmd', '.ipynb', '.md' }
   local file_extension = buffer_path:match '^.+(%..+)$'
   if mode == 'file' and not file_extension then
@@ -36,19 +34,29 @@ function M.quartoPreview(opts)
     return
   end
 
-  -- run command in embedded terminal
-  -- in a new tab and go back to the buffer
-  vim.cmd('tabedit term://' .. cmd)
+  -- Store current tabpage
+  local current_tabpage = vim.api.nvim_get_current_tabpage()
+
+  -- Open a new tab for the terminal
+  vim.cmd('tabnew')
+  local term_buf = vim.api.nvim_create_buf(true, false)
+  vim.api.nvim_set_current_buf(term_buf)
+
+  vim.fn.termopen(cmd, {
+    on_exit = function(_, exit_code, _)
+      if exit_code ~= 0 then
+        vim.notify("Quarto preview exited with code " .. exit_code, vim.log.levels.ERROR)
+      end
+    end,
+  })
+
+  -- Store the terminal buffer and return to previous tab
   local quartoOutputBuf = vim.api.nvim_get_current_buf()
-  vim.cmd 'tabprevious'
+  vim.api.nvim_set_current_tabpage(current_tabpage)
   api.nvim_buf_set_var(0, 'quartoOutputBuf', quartoOutputBuf)
 
-  if not cfg.config then
-    return
-  end
-
-  -- close preview terminal on exit of the quarto buffer
-  if cfg.config.closePreviewOnExit then
+  -- Close preview terminal on exit of the Quarto buffer
+  if cfg.config and cfg.config.closePreviewOnExit then
     api.nvim_create_autocmd({ 'QuitPre', 'WinClosed' }, {
       buffer = api.nvim_get_current_buf(),
       group = api.nvim_create_augroup('quartoPreview', {}),
