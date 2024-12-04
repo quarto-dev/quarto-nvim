@@ -12,16 +12,35 @@ function M.quartoPreview(opts)
   local buffer_path = api.nvim_buf_get_name(0)
   local root_dir = util.root_pattern '_quarto.yml'(buffer_path)
   local cmd
+  local mode
 
   if root_dir then
+    mode = 'project'
     cmd = 'quarto preview ' .. args
   else
+    mode = 'file'
     cmd = 'quarto preview ' .. vim.fn.shellescape(buffer_path) .. ' ' .. args
   end
 
+  -- Check file extensions
+  local quarto_extensions = { '.qmd', '.Rmd', '.ipynb', '.md' }
+  local file_extension = buffer_path:match '^.+(%..+)$'
+  if mode == 'file' and not file_extension then
+    vim.notify 'Not in a file. exiting.'
+    return
+  end
+  if mode == 'file' and not tools.contains(quarto_extensions, file_extension) then
+    vim.notify('Not a quarto file, ends in ' .. file_extension .. ' exiting.')
+    return
+  end
+
+  -- Store current tabpage
+  local current_tabpage = vim.api.nvim_get_current_tabpage()
+
   -- Open a new tab for the terminal
-  vim.cmd('tabedit')
-  local term_buf = vim.api.nvim_get_current_buf()
+  vim.cmd('tabnew')
+  local term_buf = vim.api.nvim_create_buf(true, false)
+  vim.api.nvim_set_current_buf(term_buf)
 
   vim.fn.termopen(cmd, {
     on_exit = function(_, exit_code, _)
@@ -31,8 +50,10 @@ function M.quartoPreview(opts)
     end,
   })
 
-  -- Store the terminal buffer
-  api.nvim_buf_set_var(0, 'quartoOutputBuf', term_buf)
+  -- Store the terminal buffer and return to previous tab
+  local quartoOutputBuf = vim.api.nvim_get_current_buf()
+  vim.api.nvim_set_current_tabpage(current_tabpage)
+  api.nvim_buf_set_var(0, 'quartoOutputBuf', quartoOutputBuf)
 
   -- Close preview terminal on exit of the Quarto buffer
   if cfg.config and cfg.config.closePreviewOnExit then
@@ -40,8 +61,8 @@ function M.quartoPreview(opts)
       buffer = api.nvim_get_current_buf(),
       group = api.nvim_create_augroup('quartoPreview', {}),
       callback = function(_, _)
-        if api.nvim_buf_is_loaded(term_buf) then
-          api.nvim_buf_delete(term_buf, { force = true })
+        if api.nvim_buf_is_loaded(quartoOutputBuf) then
+          api.nvim_buf_delete(quartoOutputBuf, { force = true })
         end
       end,
     })
