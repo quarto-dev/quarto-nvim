@@ -66,8 +66,13 @@ local function send(cell, opts)
     runner = ft_runners[cell.lang]
   end
 
-  if runner ~= nil then
-    require('quarto.runner.' .. runner).run(cell, opts.ignore_cols)
+  -- if user passes a fn to config.codeRunner.default_method, we use that.
+  -- (this also means fns are allowed as values in ft_runners)
+  -- otherwise we lookup a string for pre-packaged runner function, e.g. "molten"
+  if type(runner) == "function" then
+        runner(cell, opts.ignore_cols)
+  elseif type(runner) == "string" then
+    require("quarto.runner." .. runner).run(cell, opts.ignore_cols)
   else
     vim.notify("[Quarto] couldn't find appropriate code runner for language: " .. cell.lang, vim.log.levels.ERROR)
   end
@@ -149,7 +154,7 @@ Runner.run_line = function()
   send(cell, { ignore_cols = true })
 end
 
--- NOTE: This function will not work the same with molten as it does with slime. Generally, code
+-- NOTE: This function will not work the same with molten as it does with slime/iron. Generally, code
 -- runners which run code based on the CodeCell range field, will not work when the user selects
 -- code across cells. But it will work if a selection is entirely within a cell.
 -- Also: This function cannot run multiple languages at once.
