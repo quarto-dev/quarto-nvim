@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.1.0](https://github.com/quarto-dev/quarto-nvim/compare/v1.0.2...v1.1.0) (2024-12-20)
+
+
+### Features
+
+* support Iron.nvim and user functions for sending code to REPL ([#109](https://github.com/quarto-dev/quarto-nvim/issues/109)) ([eb98585](https://github.com/quarto-dev/quarto-nvim/commit/eb98585b13f8d5ddc21c9a9413b7b3b848099653))
+
+
+### Bug Fixes
+
+* Replace term:// with termopen() to resolve wildcard expansion error ([#153](https://github.com/quarto-dev/quarto-nvim/issues/153)) ([f810c62](https://github.com/quarto-dev/quarto-nvim/commit/f810c62842e9a8e9e2d44fa8a47196e7d36d79c4))
+
 ## [1.0.2](https://github.com/quarto-dev/quarto-nvim/compare/v1.0.1...v1.0.2) (2024-10-09)
 
 
