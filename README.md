@@ -78,11 +78,11 @@ require('quarto').setup{
     },
   },
   codeRunner = {
-    enabled = false,
-    default_method = nil, -- 'molten', 'slime', or 'iron'
+    enabled = true,
+    default_method = "slime", -- "molten", "slime", "iron" or <function>
     ft_runners = {}, -- filetype to runner, ie. `{ python = "molten" }`.
-                     -- Takes precedence over `default_method`
-    never_run = { "yaml" }, -- filetypes which are never sent to a code runner
+    -- Takes precedence over `default_method`
+    never_run = { 'yaml' }, -- filetypes which are never sent to a code runner
   },
 }
 ```
@@ -150,8 +150,9 @@ Or, what might ultimately be the cleaner way of documenting language specific is
 ## Running Code
 
 Quarto-nvim doesn't run code for you, instead, it will interface with existing code running
-plugins and tell them what to run. There are currently two such code running plugins that quarto
+plugins and tell them what to run. There are currently three such code running plugins that quarto
 will work with:
+
 1. [molten-nvim](https://github.com/benlubas/molten-nvim) - a code runner that supports the jupyter
    kernel, renders output below each code cell, and optionally renders images in the terminal.
 2. [vim-slime](https://github.com/jpalardy/vim-slime) - a general purpose code runner with support
@@ -159,15 +160,18 @@ will work with:
 3. [iron.nvim](https://github.com/Vigemus/iron.nvim) - general purpose code runner and library for
     within-neovim REPL interaction in splits or floating windows.
 
-I recommend picking a code runner, setting it up based on its README, and then coming back
+We recommend picking a code runner, setting it up based on its respective README and then coming back
 to this point to learn how Quarto will augment that code runner.
 
-This plugin enables easily sending code cells to your code runner. There are two different ways to
-do this: commands, covered below; and lua functions, covered right here. *By default these functions
-will only run cells that are the same language as the current cell.*
+This plugin enables easily sending code cells to your code runner.
+There are two different ways to do this:
+commands, covered below; and lua functions, covered right here.
+_By default these functions will only run cells that are the same language as the current cell._
 
-Quarto exposes code running functions through to runner module: `require('quarto.runner')`. Those
+Quarto exposes code running functions through to runner module: `require('quarto.runner')`.
+Those
 functions are:
+
 - `run_cell()` - runs the current cell
 - `run_above(multi_lang)` - runs all the cells above the current one, **and** the current one, in order
 - `run_below(multi_lang)` - runs all the cells below the current one, **and** the current one, in order
@@ -179,7 +183,6 @@ Each function that takes the optional `multi_lang` argument will run cells of al
 called with the value `true`, and will only run cells that match the language of the current cell
 otherwise. As a result, just calling `run_all()` will run all cells that match the language of the
 current cell.
-
 
 Here are some example run mappings:
 
@@ -214,6 +217,8 @@ QuartoSendLine
 ## Recommended Plugins
 
 Quarto works great with a number of plugins in the neovim ecosystem.
-You can find my personal (and thus up-to-date) configuration for use with Quarto, R and python here:
+You can find my (@jmbuhr) personal (and thus up-to-date) configuration for use with Quarto, R and python here:
 
 <https://github.com/jmbuhr/quarto-nvim-kickstarter>
+
+But remember, the best config is always your own.
