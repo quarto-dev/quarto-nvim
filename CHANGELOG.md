@@ -1,5 +1,45 @@
 # Changelog
 
+## [1.0.2](https://github.com/quarto-dev/quarto-nvim/compare/v1.0.1...v1.0.2) (2024-10-09)
+
+
+### Bug Fixes
+
+* register markdown grammar for quarto and rmd until our own grammar is ready (https://github.com/jmbuhr/tree-sitter-pandoc-markdown) refs https://github.com/jmbuhr/otter.nvim/issues/179 ([1d10f13](https://github.com/quarto-dev/quarto-nvim/commit/1d10f135937613ca71a84975fe75b5b76a35065e))
+
+## [1.0.1](https://github.com/quarto-dev/quarto-nvim/compare/v1.0.0...v1.0.1) (2024-06-30)
+
+
+### Bug Fixes
+
+* use renamed table from otter.nvim. fixes [#137](https://github.com/quarto-dev/quarto-nvim/issues/137). ([c873128](https://github.com/quarto-dev/quarto-nvim/commit/c87312856469c8aaa30b3097a1280eea58ab1902))
+
+## [1.0.0](https://github.com/quarto-dev/quarto-nvim/compare/v0.18.2...v1.0.0) (2024-06-29)
+
+
+### ⚠ BREAKING CHANGES
+
+* remove the need for custom otter.nvim keybindings ([#135](https://github.com/quarto-dev/quarto-nvim/issues/135))
+
+### Features
+
+* remove the need for custom otter.nvim keybindings ([#135](https://github.com/quarto-dev/quarto-nvim/issues/135)) ([1665721](https://github.com/quarto-dev/quarto-nvim/commit/1665721f7ba16671f519f3cd87382bc28258af04))
+
+## [0.18.2](https://github.com/quarto-dev/quarto-nvim/compare/v0.18.1...v0.18.2) (2024-02-19)
+
+
+### Bug Fixes
+
+* only require otter when activating ([5336b86](https://github.com/quarto-dev/quarto-nvim/commit/5336b86dc3d0517075debe8906671daeeab9f5ed))
+
+## [0.18.1](https://github.com/quarto-dev/quarto-nvim/compare/v0.18.0...v0.18.1) (2024-02-19)
+
+
+### Bug Fixes
+
+* make disabling keybindings easier. refs [#116](https://github.com/quarto-dev/quarto-nvim/issues/116) ([1b15dd1](https://github.com/quarto-dev/quarto-nvim/commit/1b15dd175b974cb8c83b022f68cc07c02c9c465b))
+* QuartoHover user function ([#113](https://github.com/quarto-dev/quarto-nvim/issues/113)) ([a4760c0](https://github.com/quarto-dev/quarto-nvim/commit/a4760c0b275972bc8ef577f7521771d17cb0cd17))
+
 ## [0.18.0](https://github.com/quarto-dev/quarto-nvim/compare/v0.17.0...v0.18.0) (2023-11-29)
 
 

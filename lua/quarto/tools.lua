@@ -10,21 +10,21 @@ M.contains = function(list, x)
 end
 
 M.replace_header_div = function(response)
-  response.contents = response.contents:gsub('<div class="container">', "")
+  response.contents = response.contents:gsub('<div class="container">', '')
   return response
 end
 
 M.concat = function(ls)
-  if type(ls) ~= "table" then
-    return ls .. "\n\n"
+  if type(ls) ~= 'table' then
+    return ls .. '\n\n'
   end
-  local s = ""
+  local s = ''
   for _, l in ipairs(ls) do
-    if l ~= "" then
-      s = s .. "\n" .. l
+    if l ~= '' then
+      s = s .. '\n' .. l
     end
   end
-  return s .. "\n"
+  return s .. '\n'
 end
 
 return M

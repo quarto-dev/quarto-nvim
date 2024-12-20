@@ -13,19 +13,29 @@ The playlist is extened as more features are added, so join us for a "Coffee wit
 ## Setup
 
 You can install `quarto-nvim` from GitHub with your favourite Neovim plugin manager
-like [lazy.nvim](https://github.com/folke/lazy.nvim), [packer.nvim](https://github.com/wbthomason/packer.nvim) or [VimPlug](https://github.com/junegunn/vim-plug).
+like [lazy.nvim](https://github.com/folke/lazy.nvim),
+[packer.nvim](https://github.com/wbthomason/packer.nvim) or [VimPlug](https://github.com/junegunn/vim-plug).
+
+Example `lazy.nvim` plugin specification:
+
+```lua
+-- plugins/quarto.lua
+return {
+  {
+    "quarto-dev/quarto-nvim",
+    dependencies = {
+      "jmbuhr/otter.nvim",
+      "nvim-treesitter/nvim-treesitter",
+    },
+  },
+}
+```
 
 Because Quarto provides a lot of functionality through integration with existing plugins,
-some of those have to be told about the existence of `quarto-nvim` (like e.g. registering
-it as a source for the autocompletion plugin `nvim-cmp`).
-
-As such, we recommend you to experiment with the [quarto-nvim kickstarter configuration](https://github.com/jmbuhr/quarto-nvim-kickstarter)
+we recommend to experiment with the [quarto-nvim kickstarter configuration](https://github.com/jmbuhr/quarto-nvim-kickstarter)
 and then pick the relevant parts from the
 [`lua/plugins/quarto.lua`](https://github.com/jmbuhr/quarto-nvim-kickstarter/blob/main/lua/plugins/quarto.lua) file
 to integrate it into your own existing configuration.
-
-There is also a smaller configuration for slotting into your existing `lazy.nvim` (e.g. [LazyVim](https://www.lazyvim.org/)) configuration at
-<https://github.com/jmbuhr/lazyvim-starter-for-quarto/blob/main/lua/plugins/quarto.lua>
 
 Plugins and their configuration to look out for in either of those files are:
 
@@ -39,21 +49,7 @@ Plugins and their configuration to look out for in either of those files are:
 }
 ```
 
-Quarto-nvim requires Neovim >= **v0.9.0** (<https://github.com/neovim/neovim/releases/tag/stable>).
-If you are unable to update Neovim, you can specify a specific version of the plugins
-involved instead of the latest stable version.
-How you do this will vary depending on your plugin manager, but you can see one example using `lazy.nvim` here:
-<https://github.com/jmbuhr/quarto-nvim-kickstarter/blob/nvim-0.8.3/lua/plugins/quarto.lua>
-
-The `version = ...` lines to look out for are for the following plugins:
-
-```lua
-{
-    'quarto-dev/quarto-nvim',
-    'jmbuhr/otter.nvim',
-    'nvim-treesitter/nvim-treesitter'
-}
-```
+Quarto-nvim requires the latest [Neovim stable version](https://github.com/neovim/neovim/releases/tag/stable) (>= `v0.10.0`).
 
 ## Usage
 
@@ -66,16 +62,16 @@ It will be merged with the default options, which are shown below in the example
 If you want to use the defaults, simply call `setup` without arguments or with an empty table.
 
 ```lua
-require('quarto').setup({
+require('quarto').setup{
   debug = false,
   closePreviewOnExit = true,
   lspFeatures = {
     enabled = true,
-    languages = { 'r', 'python', 'julia', 'bash' },
-    chunks = 'curly', -- 'curly' or 'all'
+    chunks = "curly",
+    languages = { "r", "python", "julia", "bash", "html" },
     diagnostics = {
       enabled = true,
-      triggers = { "BufWritePost" }
+      triggers = { "BufWritePost" },
     },
     completion = {
       enabled = true,
@@ -88,13 +84,7 @@ require('quarto').setup({
                      -- Takes precedence over `default_method`
     never_run = { "yaml" }, -- filetypes which are never sent to a code runner
   },
-  keymap = {
-    hover = 'K',
-    definition = 'gd',
-    rename = '<leader>lR',
-    references = 'gr',
-  }
-})
+}
 ```
 
 ### Preview
@@ -120,28 +110,18 @@ other features strictly require it.
 
 ## Language support
 
+`quarto-nvim` automatically activates `otter.nvim` for quarto files if language features are enabled.
+
 ### Demo
 
 https://user-images.githubusercontent.com/17450586/209436101-4dd560f4-c876-4dbc-a0f4-b3a2cbff0748.mp4
 
 ### Usage
 
-With the language features enabled, you can open the hover documentation
-for R, python and julia code chunks with `K` (or configure a different shortcut).
-You can got-to-definition with `gd`.
+You can open the hover documentation for R, python and julia code chunks with `K`, got-to-definition with `gd` etc.
+and get autocompletion via the lsp source for your completion plugin.
 
-### Autocompletion
-
-`quarto-nvim` now comes with a completion source for [nvim-cmp](https://github.com/hrsh7th/nvim-cmp) to deliver swift autocompletion for code in quarto code chunks.
-With the quarto language features enabled, you can add the source in your `cmp` configuration:
-
-```lua
--- ...
-  sources = {
-    { name = 'otter' },
-  }
--- ...
-```
+A list of currently available language server requests can be found in the [otter.nvim documentation](https://github.com/jmbuhr/otter.nvim?tab=readme-ov-file#lsp-methods-currently-implemented).
 
 ### R diagnostics configuration
 
@@ -202,6 +182,7 @@ current cell.
 
 
 Here are some example run mappings:
+
 ```lua
 local runner = require("quarto.runner")
 vim.keymap.set("n", "<localleader>rc", runner.run_cell,  { desc = "run cell", silent = true })
@@ -223,7 +204,6 @@ QuartoClosePreview
 QuartoHelp <..>
 QuartoActivate
 QuartoDiagnostics
-QuartoHover
 QuartoSend
 QuartoSendAbove
 QuartoSendBelow
@@ -233,11 +213,7 @@ QuartoSendLine
 
 ## Recommended Plugins
 
-Quarto works great with a number of existing plugins in the neovim ecosystem.
-You can find semi-opinionated but still minimal
-configurations for `nvim` and `tmux`,
-for use with Quarto, R and python in these two repositories:
+Quarto works great with a number of plugins in the neovim ecosystem.
+You can find my personal (and thus up-to-date) configuration for use with Quarto, R and python here:
 
-- <https://github.com/jmbuhr/quarto-nvim-kickstarter>
-- <https://github.com/jmbuhr/tmux-kickstarter>
-
+<https://github.com/jmbuhr/quarto-nvim-kickstarter>

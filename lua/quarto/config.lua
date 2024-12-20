@@ -5,31 +5,22 @@ M.defaultConfig = {
   closePreviewOnExit = true,
   lspFeatures = {
     enabled = true,
-    chunks = "curly",
-    languages = { "r", "python", "julia", "bash", "html" },
+    chunks = 'curly',
+    languages = nil, -- nil means all languages found in the document
     diagnostics = {
       enabled = true,
-      triggers = { "BufWritePost" },
+      triggers = { 'BufWritePost' },
     },
     completion = {
       enabled = true,
     },
   },
   codeRunner = {
-    enabled = false,
-    default_method = nil, -- "molten", "slime", or "iron"
+    enabled = true,
+    default_method = "slime", -- "molten", "slime", "iron" or <function>
     ft_runners = {}, -- filetype to runner, ie. `{ python = "molten" }`.
-                     -- Takes precedence over `default_method`
-    never_run = { "yaml" }, -- filetypes which are never sent to a code runner
-  },
-  keymap = {
-    hover = "K",
-    definition = "gd",
-    type_definition = "gD",
-    rename = "<leader>lR",
-    format = "<leader>lf",
-    references = "gr",
-    document_symbols = "gS",
+    -- Takes precedence over `default_method`
+    never_run = { 'yaml' }, -- filetypes which are never sent to a code runner
   },
 }
 
