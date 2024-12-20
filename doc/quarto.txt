@@ -1,4 +1,4 @@
-*quarto.txt*         For Neovim >= 0.8.0         Last change: 2024 December 04
+*quarto.txt*         For Neovim >= 0.8.0         Last change: 2024 December 20
 
 ==============================================================================
 Table of Contents                                   *quarto-table-of-contents*
@@ -11,6 +11,7 @@ Table of Contents                                   *quarto-table-of-contents*
   - Running Code                             |quarto-quarto-nvim-running-code|
   - Available Commands                 |quarto-quarto-nvim-available-commands|
   - Recommended Plugins               |quarto-quarto-nvim-recommended-plugins|
+2. Links                                                        |quarto-links|
 
 ==============================================================================
 1. quarto-nvim                                            *quarto-quarto-nvim*
@@ -104,11 +105,11 @@ or with an empty table.
         },
       },
       codeRunner = {
-        enabled = false,
-        default_method = nil, -- 'molten', 'slime', or 'iron'
+        enabled = true,
+        default_method = "slime", -- "molten", "slime", "iron" or <function>
         ft_runners = {}, -- filetype to runner, ie. `{ python = "molten" }`.
-                         -- Takes precedence over `default_method`
-        never_run = { "yaml" }, -- filetypes which are never sent to a code runner
+        -- Takes precedence over `default_method`
+        never_run = { 'yaml' }, -- filetypes which are never sent to a code runner
       },
     }
 <
@@ -193,17 +194,18 @@ RUNNING CODE                                 *quarto-quarto-nvim-running-code*
 
 Quarto-nvim doesn’t run code for you, instead, it will interface with
 existing code running plugins and tell them what to run. There are currently
-two such code running plugins that quarto will work with: 1. molten-nvim
-<https://github.com/benlubas/molten-nvim> - a code runner that supports the
-jupyter kernel, renders output below each code cell, and optionally renders
-images in the terminal. 2. vim-slime <https://github.com/jpalardy/vim-slime> -
-a general purpose code runner with support for sending code to integrated nvim
-terminals, tmux panes, and many others. 3. Iron.nvim 
-<https://github.com/Vigemus/iron.nvim> general purpose code runner and library
-for within-neovim REPL interaction in splits or floating windows.
+three such code running plugins that quarto will work with:
 
-I recommend picking a code runner, setting it up based on its README, and then
-coming back to this point to learn how Quarto will augment that code runner.
+1. molten-nvim <https://github.com/benlubas/molten-nvim> - a code runner that supports the jupyter
+kernel, renders output below each code cell, and optionally renders images in the terminal.
+2. vim-slime <https://github.com/jpalardy/vim-slime> - a general purpose code runner with support
+for sending code to integrated nvim terminals, tmux panes, and many others.
+3. iron.nvim <https://github.com/Vigemus/iron.nvim> - general purpose code runner and library for
+within-neovim REPL interaction in splits or floating windows.
+
+We recommend picking a code runner, setting it up based on its respective
+README and then coming back to this point to learn how Quarto will augment that
+code runner.
 
 This plugin enables easily sending code cells to your code runner. There are
 two different ways to do this: commands, covered below; and lua functions,
@@ -211,13 +213,14 @@ covered right here. _By default these functions will only run cells that are
 the same language as the current cell._
 
 Quarto exposes code running functions through to runner module:
-`require('quarto.runner')`. Those functions are: - `run_cell()` - runs the
-current cell - `run_above(multi_lang)` - runs all the cells above the current
-one, **and** the current one, in order - `run_below(multi_lang)` - runs all the
-cells below the current one, **and** the current one, in order -
-`run_all(multi_lang)` - runs all the cells in the document -
-`run_line(multi_lang)` - runs the line of code at your cursor - `run_range()` -
-run code inside the visual range
+`require('quarto.runner')`. Those functions are:
+
+- `run_cell()` - runs the current cell
+- `run_above(multi_lang)` - runs all the cells above the current one, **and** the current one, in order
+- `run_below(multi_lang)` - runs all the cells below the current one, **and** the current one, in order
+- `run_all(multi_lang)` - runs all the cells in the document
+- `run_line(multi_lang)` - runs the line of code at your cursor
+- `run_range()` - run code inside the visual range
 
 Each function that takes the optional `multi_lang` argument will run cells of
 all languages when called with the value `true`, and will only run cells that
@@ -258,10 +261,17 @@ AVAILABLE COMMANDS                     *quarto-quarto-nvim-available-commands*
 RECOMMENDED PLUGINS                   *quarto-quarto-nvim-recommended-plugins*
 
 Quarto works great with a number of plugins in the neovim ecosystem. You can
-find my personal (and thus up-to-date) configuration for use with Quarto, R and
-python here:
+find my (@jmbuhr) personal (and thus up-to-date) configuration for use with
+Quarto, R and python here:
 
 <https://github.com/jmbuhr/quarto-nvim-kickstarter>
+
+But remember, the best config is always your own.
+
+==============================================================================
+2. Links                                                        *quarto-links*
+
+1. *@jmbuhr*: 
 
 Generated by panvimdoc <https://github.com/kdheepak/panvimdoc>
 
