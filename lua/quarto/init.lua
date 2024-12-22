@@ -4,6 +4,9 @@ local cfg = require 'quarto.config'
 local tools = require 'quarto.tools'
 local util = require 'lspconfig.util'
 
+---Quarto preview
+---@param opts table
+---@return nil|string url
 function M.quartoPreview(opts)
   opts = opts or {}
   local args = opts.args or ''
@@ -52,6 +55,8 @@ function M.quartoPreview(opts)
 
   -- Store the terminal buffer and return to previous tab
   local quartoOutputBuf = vim.api.nvim_get_current_buf()
+
+  -- go back to the previous tab
   vim.api.nvim_set_current_tabpage(current_tabpage)
   api.nvim_buf_set_var(0, 'quartoOutputBuf', quartoOutputBuf)
 
@@ -66,6 +71,34 @@ function M.quartoPreview(opts)
         end
       end,
     })
+  end
+end
+
+function M.quartoPreviewNoWatch()
+  M.quartoPreview({ args = '--no-watch-inputs' })
+end
+
+function M.quartoUpdatePreview()
+  local quartoOutputBuf = api.nvim_buf_get_var(0, 'quartoOutputBuf')
+  local query_start = 'Browse at http'
+  local lines = vim.api.nvim_buf_get_lines(quartoOutputBuf, 0, -1, false)
+  local url = nil
+  for _, line in ipairs(lines) do
+    if line:find(query_start) then
+      url = 'http' .. line:sub(#query_start+1)
+      break
+    end
+  end
+  if not url then
+    vim.notify('Could not find the preview url in the terminal buffer. Maybe it is still warming up. Check the buffer and try again.', vim.log.levels.WARN)
+    return
+  end
+  api.nvim_buf_set_var(0, 'quartoUrl', url)
+  local request_url = url .. 'quarto-render/'
+  local get_request = 'curl -s ' .. request_url
+  local response = vim.fn.system(get_request)
+  if response ~= 'rendered' then
+    vim.notify_once('Failed to update preview with command: ' .. get_request, vim.log.levels.ERROR)
   end
 end
 
