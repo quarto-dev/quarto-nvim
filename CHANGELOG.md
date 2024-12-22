@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.2.0](https://github.com/quarto-dev/quarto-nvim/compare/v1.1.0...v1.2.0) (2024-12-22)
+
+
+### Features
+
+* detect editor: render-on-save: false ([#159](https://github.com/quarto-dev/quarto-nvim/issues/159)) ([ca2d1c7](https://github.com/quarto-dev/quarto-nvim/commit/ca2d1c790e0d8a46096ed428255c65eb8eff7c30))
+* QuartoPreviewNoWatch and QuartoUpdatePreview commands ([#157](https://github.com/quarto-dev/quarto-nvim/issues/157)) ([601c32b](https://github.com/quarto-dev/quarto-nvim/commit/601c32b89cc77f0f44b9208a1347c3294a64338c))
+
 ## [1.1.0](https://github.com/quarto-dev/quarto-nvim/compare/v1.0.2...v1.1.0) (2024-12-20)
 
 
