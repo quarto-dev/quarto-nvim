@@ -17,6 +17,37 @@ function M.quartoPreview(opts)
   local cmd
   local mode
 
+
+  -- check for 
+  --
+  -- editor:
+  --   render-on-save: false
+  --
+  -- in _quarto.yml or the current qmd file
+
+  local render_on_save = true
+
+  local lines
+  if root_dir then
+    local quarto_config = root_dir .. '/_quarto.yml'
+    lines = vim.fn.readfile(quarto_config)
+  else
+    -- assumption: the yaml header is not longer than a generous 500 lines 
+    lines = vim.api.nvim_buf_get_lines(0, 0, 500, false)
+  end
+
+  local query = 'render%-on%-save: false'
+  for _, line in ipairs(lines) do
+    if line:find(query) then
+      render_on_save = false
+      break
+    end
+  end
+
+  if not render_on_save and string.find(args, '%-%-no%-watch%-inputs') == nil then
+    args = args .. ' --no-watch-inputs'
+  end
+
   if root_dir then
     mode = 'project'
     cmd = 'quarto preview ' .. args
