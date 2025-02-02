@@ -159,7 +159,20 @@ M.searchHelp = function(cmd_input)
   vim.fn.jobstart(cmd)
 end
 
+-- from https://github.com/neovim/nvim-lspconfig/blob/f98fa715acc975c2dd5fb5ba7ceddeb1cc725ad2/lua/lspconfig/util.lua#L23
+function M.bufname_valid(bufname)
+  if bufname:match '^/' or bufname:match '^[a-zA-Z]:' or bufname:match '^zipfile://' or bufname:match '^tarfile:' then
+    return true
+  end
+  return false
+end
+
 M.activate = function()
+  local bufname = vim.api.nvim_buf_get_name(0)
+  -- do not activate in special buffers, for example 'fugitive://...'
+  if not M.bufname_valid(bufname) then
+    return
+  end
   local tsquery = nil
   if cfg.config.lspFeatures.chunks == 'curly' then
     tsquery = [[
