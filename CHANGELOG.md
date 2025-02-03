@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.1](https://github.com/quarto-dev/quarto-nvim/compare/v1.2.0...v1.2.1) (2025-02-03)
+
+
+### Bug Fixes
+
+* do not activate in special buffers (fixes [#164](https://github.com/quarto-dev/quarto-nvim/issues/164)) ([#165](https://github.com/quarto-dev/quarto-nvim/issues/165)) ([bb710f4](https://github.com/quarto-dev/quarto-nvim/commit/bb710f433ea6b0acaeb672d26f6641bd5723e0ef))
+
 ## [1.2.0](https://github.com/quarto-dev/quarto-nvim/compare/v1.1.0...v1.2.0) (2024-12-22)
 
 
