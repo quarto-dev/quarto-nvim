@@ -6,7 +6,7 @@ You can get started with Quarto [here](https://quarto.org/docs/get-started/).
 ## Walkthrough
 
 The [get started section](https://quarto.org/docs/get-started/hello/neovim.html) also comes with a video version to walk you through.
-The playlist is extened as more features are added, so join us for a "Coffee with Quarto and Neovim":
+The playlist is extended as more features are added, so join us for a "Coffee with Quarto and Neovim":
 
 <https://youtu.be/3sj7clNowlA?list=PLabWm-zCaD1axcMGvf7wFxJz8FZmyHSJ7>
 
