@@ -177,7 +177,7 @@ functions are:
 - `run_below(multi_lang)` - runs all the cells below the current one, **and** the current one, in order
 - `run_all(multi_lang)` - runs all the cells in the document
 - `run_line(multi_lang)` - runs the line of code at your cursor
-- `run_range()` - run code inside the visual range
+- `run_range()` - run code cells inside (touched by) the current visual range
 
 Each function that takes the optional `multi_lang` argument will run cells of all languages when
 called with the value `true`, and will only run cells that match the language of the current cell
