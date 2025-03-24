@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.2](https://github.com/quarto-dev/quarto-nvim/compare/v1.2.1...v1.2.2) (2025-03-24)
+
+
+### Bug Fixes
+
+* make usercommands require quarto only on use ([74df376](https://github.com/quarto-dev/quarto-nvim/commit/74df3767fa6c0d00e152e317c983c495f2cade6a))
+
 ## [1.2.1](https://github.com/quarto-dev/quarto-nvim/compare/v1.2.0...v1.2.1) (2025-02-03)
 
 
