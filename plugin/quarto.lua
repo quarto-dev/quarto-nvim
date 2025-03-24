@@ -5,19 +5,12 @@ if vim.fn.has 'nvim-0.9.0' ~= 1 then
   How you do this will vary depending on your plugin manager, but you can see one example using `lazy.nvim` here:
   <https://github.com/jmbuhr/quarto-nvim-kickstarter/blob/nvim-0.8.3/lua/plugins/quarto.lua>
   ]]
-  local displayed = vim.notify_once(msg, vim.log.levels.WARN)
-  if displayed then
-    return msg
-  end
-  return
+  vim.notify_once(msg, vim.log.levels.WARN)
 end
 
-local quarto = require 'quarto'
-local api = vim.api
-
-api.nvim_create_user_command('QuartoPreview', quarto.quartoPreview, { nargs = '*' })
-api.nvim_create_user_command('QuartoPreviewNoWatch', quarto.quartoPreviewNoWatch, { nargs = '*' })
-api.nvim_create_user_command('QuartoUpdatePreview', quarto.quartoUpdatePreview, { nargs = '*' })
-api.nvim_create_user_command('QuartoClosePreview', quarto.quartoClosePreview, {})
-api.nvim_create_user_command('QuartoActivate', quarto.activate, {})
-api.nvim_create_user_command('QuartoHelp', quarto.searchHelp, { nargs = 1 })
+vim.api.nvim_create_user_command('QuartoPreview', require'quarto'.quartoPreview, { nargs = '*' })
+vim.api.nvim_create_user_command('QuartoPreviewNoWatch', require'quarto'.quartoPreviewNoWatch, { nargs = '*' })
+vim.api.nvim_create_user_command('QuartoUpdatePreview', require'quarto'.quartoUpdatePreview, { nargs = '*' })
+vim.api.nvim_create_user_command('QuartoClosePreview', require'quarto'.quartoClosePreview, {})
+vim.api.nvim_create_user_command('QuartoActivate', require'quarto'.activate, {})
+vim.api.nvim_create_user_command('QuartoHelp', require'quarto'.searchHelp, { nargs = 1 })
