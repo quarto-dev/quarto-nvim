@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.3](https://github.com/quarto-dev/quarto-nvim/compare/v1.2.2...v1.2.3) (2025-04-08)
+
+
+### Bug Fixes
+
+* copy lspconfig util functions to remove dependency. fixes [#175](https://github.com/quarto-dev/quarto-nvim/issues/175) ([06a9082](https://github.com/quarto-dev/quarto-nvim/commit/06a9082ade62f103663e14ce721dc7d372294895))
+
 ## [1.2.2](https://github.com/quarto-dev/quarto-nvim/compare/v1.2.1...v1.2.2) (2025-03-24)
 
 
