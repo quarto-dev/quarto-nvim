@@ -32,9 +32,9 @@ return {
 ```
 
 Because Quarto provides a lot of functionality through integration with existing plugins,
-we recommend to experiment with the [quarto-nvim kickstarter configuration](https://github.com/jmbuhr/quarto-nvim-kickstarter)
+you may want to experiment with my [config](https://github.com/jmbuhr/nvim-config)
 and then pick the relevant parts from the
-[`lua/plugins/quarto.lua`](https://github.com/jmbuhr/quarto-nvim-kickstarter/blob/main/lua/plugins/quarto.lua) file
+[`lua/plugins/quarto.lua`](https://github.com/jmbuhr/nvim-config/blob/main/lua/plugins/quarto.lua) file
 to integrate it into your own existing configuration.
 
 Plugins and their configuration to look out for in either of those files are:
@@ -49,15 +49,13 @@ Plugins and their configuration to look out for in either of those files are:
 }
 ```
 
-Quarto-nvim requires the latest [Neovim stable version](https://github.com/neovim/neovim/releases/tag/stable) (>= `v0.10.0`).
+Quarto-nvim requires [Neovim stable version](https://github.com/neovim/neovim/releases/tag/stable) >= `v0.10.0`.
 
 ## Usage
 
 ### Configure
 
-You can pass a lua table with options to the setup function
-as shown in [quarto-nvim-kickstarter/..quarto.lua](https://github.com/jmbuhr/quarto-nvim-kickstarter/blob/main/lua/plugins/quarto.lua)
-
+You can pass a lua table with options to the setup function or via `lazy.nvim`s `opts` keyword.
 It will be merged with the default options, which are shown below in the example.
 If you want to use the defaults, simply call `setup` without arguments or with an empty table.
 
@@ -219,6 +217,6 @@ QuartoSendLine
 Quarto works great with a number of plugins in the neovim ecosystem.
 You can find my (@jmbuhr) personal (and thus up-to-date) configuration for use with Quarto, R and python here:
 
-<https://github.com/jmbuhr/quarto-nvim-kickstarter>
+<https://github.com/jmbuhr/nvim-config>
 
 But remember, the best config is always your own.

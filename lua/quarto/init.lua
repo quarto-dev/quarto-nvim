@@ -2,7 +2,7 @@ local M = {}
 local api = vim.api
 local cfg = require 'quarto.config'
 local tools = require 'quarto.tools'
-local util = require 'lspconfig.util'
+local util = require 'quarto.util'
 
 ---Quarto preview
 ---@param opts table
