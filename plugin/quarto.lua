@@ -8,9 +8,9 @@ if vim.fn.has 'nvim-0.9.0' ~= 1 then
   vim.notify_once(msg, vim.log.levels.WARN)
 end
 
-vim.api.nvim_create_user_command('QuartoPreview', require'quarto'.quartoPreview, { nargs = '*' })
-vim.api.nvim_create_user_command('QuartoPreviewNoWatch', require'quarto'.quartoPreviewNoWatch, { nargs = '*' })
-vim.api.nvim_create_user_command('QuartoUpdatePreview', require'quarto'.quartoUpdatePreview, { nargs = '*' })
-vim.api.nvim_create_user_command('QuartoClosePreview', require'quarto'.quartoClosePreview, {})
-vim.api.nvim_create_user_command('QuartoActivate', require'quarto'.activate, {})
-vim.api.nvim_create_user_command('QuartoHelp', require'quarto'.searchHelp, { nargs = 1 })
+vim.api.nvim_create_user_command('QuartoPreview', require('quarto').quartoPreview, { nargs = '*' })
+vim.api.nvim_create_user_command('QuartoPreviewNoWatch', require('quarto').quartoPreviewNoWatch, { nargs = '*' })
+vim.api.nvim_create_user_command('QuartoUpdatePreview', require('quarto').quartoUpdatePreview, { nargs = '*' })
+vim.api.nvim_create_user_command('QuartoClosePreview', require('quarto').quartoClosePreview, {})
+vim.api.nvim_create_user_command('QuartoActivate', require('quarto').activate, {})
+vim.api.nvim_create_user_command('QuartoHelp', require('quarto').searchHelp, { nargs = 1 })

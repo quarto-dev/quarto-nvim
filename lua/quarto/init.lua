@@ -17,8 +17,7 @@ function M.quartoPreview(opts)
   local cmd
   local mode
 
-
-  -- check for 
+  -- check for
   --
   -- editor:
   --   render-on-save: false
@@ -32,7 +31,7 @@ function M.quartoPreview(opts)
     local quarto_config = root_dir .. '/_quarto.yml'
     lines = vim.fn.readfile(quarto_config)
   else
-    -- assumption: the yaml header is not longer than a generous 500 lines 
+    -- assumption: the yaml header is not longer than a generous 500 lines
     lines = vim.api.nvim_buf_get_lines(0, 0, 500, false)
   end
 
@@ -72,14 +71,14 @@ function M.quartoPreview(opts)
   local current_tabpage = vim.api.nvim_get_current_tabpage()
 
   -- Open a new tab for the terminal
-  vim.cmd('tabnew')
+  vim.cmd 'tabnew'
   local term_buf = vim.api.nvim_create_buf(true, false)
   vim.api.nvim_set_current_buf(term_buf)
 
   vim.fn.termopen(cmd, {
     on_exit = function(_, exit_code, _)
       if exit_code ~= 0 then
-        vim.notify("Quarto preview exited with code " .. exit_code, vim.log.levels.ERROR)
+        vim.notify('Quarto preview exited with code ' .. exit_code, vim.log.levels.ERROR)
       end
     end,
   })
@@ -106,7 +105,7 @@ function M.quartoPreview(opts)
 end
 
 function M.quartoPreviewNoWatch()
-  M.quartoPreview({ args = '--no-watch-inputs' })
+  M.quartoPreview { args = '--no-watch-inputs' }
 end
 
 function M.quartoUpdatePreview()
@@ -116,7 +115,7 @@ function M.quartoUpdatePreview()
   local url = nil
   for _, line in ipairs(lines) do
     if line:find(query_start) then
-      url = 'http' .. line:sub(#query_start+1)
+      url = 'http' .. line:sub(#query_start + 1)
       break
     end
   end
