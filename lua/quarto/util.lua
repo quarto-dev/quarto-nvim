@@ -15,6 +15,27 @@ function M.strip_archive_subpath(path)
   return path
 end
 
+function M.search_ancestors(startpath, func)
+  if nvim_eleven then
+    vim.validate('func', func, 'function')
+  end
+  if func(startpath) then
+    return startpath
+  end
+  local guard = 100
+  for path in vim.fs.parents(startpath) do
+    -- Prevent infinite recursion if our algorithm breaks
+    guard = guard - 1
+    if guard == 0 then
+      return
+    end
+
+    if func(path) then
+      return path
+    end
+  end
+end
+
 local function escape_wildcards(path)
   return path:gsub('([%[%]%?%*])', '\\%1')
 end
