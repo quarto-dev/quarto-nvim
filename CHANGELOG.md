@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.4](https://github.com/quarto-dev/quarto-nvim/compare/v1.2.3...v1.2.4) (2025-04-10)
+
+
+### Bug Fixes
+
+* add `search_ancestors` function to util ([#178](https://github.com/quarto-dev/quarto-nvim/issues/178)) ([6cf5fce](https://github.com/quarto-dev/quarto-nvim/commit/6cf5fce22c993ef06b954ad00fe722d9d162549e))
+
 ## [1.2.3](https://github.com/quarto-dev/quarto-nvim/compare/v1.2.2...v1.2.3) (2025-04-08)
 
 
