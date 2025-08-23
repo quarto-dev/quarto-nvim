@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.5](https://github.com/quarto-dev/quarto-nvim/compare/v1.2.4...v1.2.5) (2025-08-23)
+
+
+### Bug Fixes
+
+* pass `root_dir` to preview for project type ([#190](https://github.com/quarto-dev/quarto-nvim/issues/190)) ([e6b34cd](https://github.com/quarto-dev/quarto-nvim/commit/e6b34cdc56cad6e83f4d8c7737f4444f78ad29a2))
+
 ## [1.2.4](https://github.com/quarto-dev/quarto-nvim/compare/v1.2.3...v1.2.4) (2025-04-10)
 
 
