@@ -49,7 +49,7 @@ function M.quartoPreview(opts)
 
   if root_dir then
     mode = 'project'
-    cmd = 'quarto preview ' .. args
+    cmd = 'quarto preview ' .. vim.fn.shellescape(root_dir) .. ' ' .. args
   else
     mode = 'file'
     cmd = 'quarto preview ' .. vim.fn.shellescape(buffer_path) .. ' ' .. args
