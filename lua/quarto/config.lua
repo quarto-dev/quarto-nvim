@@ -1,6 +1,6 @@
-local M = {}
 
-M.defaultConfig = {
+---@class QuartoConfig
+QuartoConfig = {
   debug = false,
   closePreviewOnExit = true,
   lspFeatures = {
@@ -23,8 +23,3 @@ M.defaultConfig = {
     never_run = { 'yaml' }, -- filetypes which are never sent to a code runner
   },
 }
-
--- use defaultConfig if not setup
-M.config = M.config or M.defaultConfig
-
-return M
