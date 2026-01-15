@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.0.0](https://github.com/quarto-dev/quarto-nvim/compare/v1.2.5...v2.0.0) (2026-01-15)
+
+
+### ⚠ BREAKING CHANGES
+
+* make QuartoConfig global. fixes #196
+
+### Features
+
+* make QuartoConfig global. fixes [#196](https://github.com/quarto-dev/quarto-nvim/issues/196) ([11765f2](https://github.com/quarto-dev/quarto-nvim/commit/11765f24e8fce6a9bf0e127de80ea6aa227b71ce))
+
 ## [1.2.5](https://github.com/quarto-dev/quarto-nvim/compare/v1.2.4...v1.2.5) (2025-08-23)
 
 
