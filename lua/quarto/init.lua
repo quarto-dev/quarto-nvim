@@ -1,6 +1,9 @@
 local M = {}
+
+-- globally available QuartoConfig table
+require 'quarto.config'
+
 local api = vim.api
-local cfg = require 'quarto.config'
 local tools = require 'quarto.tools'
 local util = require 'quarto.util'
 
@@ -91,7 +94,7 @@ function M.quartoPreview(opts)
   api.nvim_buf_set_var(0, 'quartoOutputBuf', quartoOutputBuf)
 
   -- Close preview terminal on exit of the Quarto buffer
-  if cfg.config and cfg.config.closePreviewOnExit then
+  if QuartoConfig.closePreviewOnExit then
     api.nvim_create_autocmd({ 'QuitPre', 'WinClosed' }, {
       buffer = api.nvim_get_current_buf(),
       group = api.nvim_create_augroup('quartoPreview', {}),
@@ -173,7 +176,7 @@ M.activate = function()
     return
   end
   local tsquery = nil
-  if cfg.config.lspFeatures.chunks == 'curly' then
+  if QuartoConfig.lspFeatures.chunks == 'curly' then
     tsquery = [[
       (fenced_code_block
       (info_string
@@ -189,14 +192,14 @@ M.activate = function()
 
       ]]
   end
-  require('otter').activate(cfg.config.lspFeatures.languages, cfg.config.lspFeatures.completion.enabled, cfg.config.lspFeatures.diagnostics.enabled, tsquery)
+  require('otter').activate(QuartoConfig.lspFeatures.languages, QuartoConfig.lspFeatures.completion.enabled, QuartoConfig.lspFeatures.diagnostics.enabled, tsquery)
 end
 
 -- setup
-M.setup = function(opt)
-  cfg.config = vim.tbl_deep_extend('force', cfg.defaultConfig, opt or {})
+M.setup = function(opts)
+  QuartoConfig = vim.tbl_deep_extend('force', QuartoConfig, opts or {})
 
-  if cfg.config.codeRunner.enabled then
+  if QuartoConfig.codeRunner.enabled then
     -- setup top level run functions
     local runner = require 'quarto.runner'
     M.quartoSend = runner.run_cell

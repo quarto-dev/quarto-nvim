@@ -1,8 +1,9 @@
 --- Code runner, configurable to use different engines.
 local Runner = {}
 
+require('quarto.config')
+
 local otterkeeper = require 'otter.keeper'
-local config = require('quarto.config').config
 
 local no_code_found = 'No code chunks found for the current language, which is detected based on the current code block. Is your cursor in a code block?'
 
@@ -27,7 +28,7 @@ local function extract_code_cells_in_range(lang, code_chunks, range)
     end
   else
     for l, lang_chunks in pairs(code_chunks) do
-      if vim.tbl_contains(config.codeRunner.never_run, l) then
+      if vim.tbl_contains(QuartoConfig.codeRunner.never_run, l) then
         goto continue
       end
       for _, chunk in ipairs(lang_chunks) do
@@ -60,13 +61,13 @@ end
 ---@param opts table?
 local function send(cell, opts)
   opts = opts or { ignore_cols = false }
-  local runner = config.codeRunner.default_method
-  local ft_runners = config.codeRunner.ft_runners
+  local runner = QuartoConfig.codeRunner.default_method
+  local ft_runners = QuartoConfig.codeRunner.ft_runners
   if cell.lang ~= nil and ft_runners[cell.lang] ~= nil then
     runner = ft_runners[cell.lang]
   end
 
-  -- if user passes a fn to config.codeRunner.default_method, we use that.
+  -- if user passes a fn to QuartoConfig.codeRunner.default_method, we use that.
   -- (this also means fns are allowed as values in ft_runners)
   -- otherwise we lookup a string for pre-packaged runner function, e.g. "molten"
   if type(runner) == 'function' then

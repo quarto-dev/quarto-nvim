@@ -1,3 +1,11 @@
-QuartoPreview	quarto.txt	/*QuartoPreview*
-quarto.nvim	quarto.txt	/*quarto.nvim*
-quarto.quartoPreview()	quarto.txt	/*quarto.quartoPreview()*
+quarto-links	quarto.txt	/*quarto-links*
+quarto-quarto-nvim	quarto.txt	/*quarto-quarto-nvim*
+quarto-quarto-nvim-available-commands	quarto.txt	/*quarto-quarto-nvim-available-commands*
+quarto-quarto-nvim-language-support	quarto.txt	/*quarto-quarto-nvim-language-support*
+quarto-quarto-nvim-recommended-plugins	quarto.txt	/*quarto-quarto-nvim-recommended-plugins*
+quarto-quarto-nvim-running-code	quarto.txt	/*quarto-quarto-nvim-running-code*
+quarto-quarto-nvim-setup	quarto.txt	/*quarto-quarto-nvim-setup*
+quarto-quarto-nvim-usage	quarto.txt	/*quarto-quarto-nvim-usage*
+quarto-quarto-nvim-walkthrough	quarto.txt	/*quarto-quarto-nvim-walkthrough*
+quarto-table-of-contents	quarto.txt	/*quarto-table-of-contents*
+quarto.txt	quarto.txt	/*quarto.txt*
