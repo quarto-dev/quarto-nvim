@@ -1,4 +1,4 @@
-*quarto.txt*          For Neovim >= 0.8.0          Last change: 2025 August 23
+*quarto.txt*          For Neovim >= 0.8.0         Last change: 2026 January 15
 
 ==============================================================================
 Table of Contents                                   *quarto-table-of-contents*
@@ -25,14 +25,14 @@ WALKTHROUGH                                   *quarto-quarto-nvim-walkthrough*
 
 The get started section <https://quarto.org/docs/get-started/hello/neovim.html>
 also comes with a video version to walk you through. The playlist is extended
-as more features are added, so join us for a "Coffee with Quarto and Neovim"
+as more features are added, so join us for a "Coffee with Quarto and Neovim":
 
 <https://youtu.be/3sj7clNowlA?list=PLabWm-zCaD1axcMGvf7wFxJz8FZmyHSJ7>
 
 
 SETUP                                               *quarto-quarto-nvim-setup*
 
-Youcan install `quarto-nvim` from GitHub with your favourite Neovim plugin
+You can install `quarto-nvim` from GitHub with your favourite Neovim plugin
 manager like lazy.nvim <https://github.com/folke/lazy.nvim>, packer.nvim
 <https://github.com/wbthomason/packer.nvim> or VimPlug
 <https://github.com/junegunn/vim-plug>.
