@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.1](https://github.com/quarto-dev/quarto-nvim/compare/v2.0.0...v2.0.1) (2026-01-16)
+
+
+### Bug Fixes
+
+* make QuartoConfig allways available ([fb3f124](https://github.com/quarto-dev/quarto-nvim/commit/fb3f124b6bf73976ecf9595f41e472f3e2b0a9ea))
+
 ## [2.0.0](https://github.com/quarto-dev/quarto-nvim/compare/v1.2.5...v2.0.0) (2026-01-15)
 
 
