@@ -1,4 +1,4 @@
-*quarto.txt*          For Neovim >= 0.8.0         Last change: 2026 January 16
+*quarto.txt*          For Neovim >= 0.8.0         Last change: 2026 January 29
 
 ==============================================================================
 Table of Contents                                   *quarto-table-of-contents*
@@ -246,7 +246,6 @@ AVAILABLE COMMANDS                     *quarto-quarto-nvim-available-commands*
     QuartoClosePreview
     QuartoHelp <..>
     QuartoActivate
-    QuartoDiagnostics
     QuartoSend
     QuartoSendAbove
     QuartoSendBelow
