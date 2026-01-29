@@ -204,7 +204,6 @@ QuartoPreview
 QuartoClosePreview
 QuartoHelp <..>
 QuartoActivate
-QuartoDiagnostics
 QuartoSend
 QuartoSendAbove
 QuartoSendBelow
