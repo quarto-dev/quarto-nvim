@@ -59,7 +59,7 @@ function M.quartoPreview(opts)
   end
 
   -- Check file extensions
-  local quarto_extensions = { '.qmd', '.Rmd', '.ipynb', '.md' }
+  local quarto_extensions = { '.qmd', '.Rmd', '.ipynb', '.md', '.py', '.R', '.jl' }
   local file_extension = buffer_path:match '^.+(%..+)$'
   if mode == 'file' and not file_extension then
     vim.notify 'Not in a file. exiting.'
