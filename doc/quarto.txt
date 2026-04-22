@@ -1,4 +1,5 @@
-*quarto.txt*          For Neovim >= 0.8.0         Last change: 2026 January 29
+*quarto.txt*
+                             For Neovim >= 0.8.0    Last change: 2026 April 22
 
 ==============================================================================
 Table of Contents                                   *quarto-table-of-contents*
@@ -120,7 +121,7 @@ Use the command
     QuartoPreview
 <
 
-or access the function from lua, e.g. to create a keybinding:
+or access the function from lua, e.g. to create a keybinding:
 
 >lua
     local quarto = require('quarto')
@@ -180,7 +181,7 @@ enabling diagnostics.
 
 OTHER EDGE CASES ~
 
-Other languages might have similar issues (e.g. I see a lot of warnings about
+Other languages might have similar issues (e.g. I see a lot of warnings about
 whitespace when activating diagnostics with `lua`). If you come across them and
 have a fix, I will be very happy about a pull request! Or, what might
 ultimately be the cleaner way of documenting language specific issues, an entry
