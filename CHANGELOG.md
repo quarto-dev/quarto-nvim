@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.0](https://github.com/quarto-dev/quarto-nvim/compare/v2.0.1...v2.1.0) (2026-04-22)
+
+
+### Features
+
+* support .py, .R, .jl files in QuartoPreview ([#203](https://github.com/quarto-dev/quarto-nvim/issues/203)) ([cb72652](https://github.com/quarto-dev/quarto-nvim/commit/cb726523e47cf6e57864ab499a4b37730a31473b))
+
 ## [2.0.1](https://github.com/quarto-dev/quarto-nvim/compare/v2.0.0...v2.0.1) (2026-01-16)
 
 
