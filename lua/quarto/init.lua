@@ -178,18 +178,13 @@ M.activate = function()
   local tsquery = nil
   if QuartoConfig.lspFeatures.chunks == 'curly' then
     tsquery = [[
-      (fenced_code_block
-      (info_string
-        (language) @_lang
+      (pandoc_code_block
+      (attribute_specifier
+        (language_specifier) @_lang
       ) @info
         (#match? @info "{")
       (code_fence_content) @content (#offset! @content)
       )
-      ((html_block) @html @combined)
-
-      ((minus_metadata) @yaml (#offset! @yaml 1 0 -1 0))
-      ((plus_metadata) @toml (#offset! @toml 1 0 -1 0))
-
       ]]
   end
   require('otter').activate(QuartoConfig.lspFeatures.languages, QuartoConfig.lspFeatures.completion.enabled, QuartoConfig.lspFeatures.diagnostics.enabled, tsquery)
